@@ -206,7 +206,7 @@
 				var last;
 				console.log("acc");
 				for (var i = num; i > 0; i--) {
-					fetch("http://localhost/shop/global/query.php", {
+					fetch("http://localhost/shop/global/modul.php", {
 						method: 'post',
 						headers: {
 							"Content-type": "text/html"
