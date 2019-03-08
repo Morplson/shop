@@ -11,6 +11,7 @@
 	<script src="js/crusader.js"></script>
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
 
@@ -222,6 +223,13 @@
 					});
 
 				}
+
+			}
+
+			function buy(id, anzahl){
+
+
+
 
 			}
 		</script>
