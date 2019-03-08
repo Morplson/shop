@@ -3,18 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width">
 	<!--link rel="stylesheet" id="Pstyle" href="css/main.css"-->
 	<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:900&amp;subset=latin-ext" rel="stylesheet"> 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="js/crusader.js"></script>
 
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
-
+	<script>
+		document.cookie = "articles="+JSON.stringify([]);
+	</script>
 	<title>Railway</title>
 
 
@@ -175,7 +174,7 @@
 				</div>
 			</div>
 			<script type="text/javascript">
-				$(document).ready(function(){
+				document.addEventListener('DOMContentLoaded', function(){
 					request("trend",8,null,"top")
 				});
 			</script>
@@ -189,7 +188,7 @@
 			
 		</div>
 		<script type="text/javascript">
-			$(document).ready(function(){
+			document.addEventListener('DOMContentLoaded', function(){
 				request("main",40,null,"new")
 			});
  
@@ -203,11 +202,10 @@
 
 			function request(where, num, last, query){
 
-
-				var last;
 				console.log("acc");
 				for (var i = num; i > 0; i--) {
-					fetch("http://localhost/shop/global/modul.php", {
+					last++;
+					fetch("http://localhost/shop/shop/global/modul.php", {
 						method: 'post',
 						headers: {
 							"Content-type": "text/html"
@@ -221,16 +219,40 @@
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-
+					
 				}
 
 			}
 
-			function buy(id, anzahl){
+			function buy(id){
+
+				let anzel = document.querySelector("#"+id+" > div:nth-child(6) > input:nth-child(2)");
+				let jsong = getCookie("articles");
+				alert(jsong);
+
+				let arr = JSON.parse(jsong);
+
+				arr.push([id, anzel]);
+
+				document.cookie = "articles="+JSON.stringify(arr);
 
 
+			}
 
-
+			function getCookie(cname) {
+				var name = cname + "=";
+				var decodedCookie = decodeURIComponent(document.cookie);
+				var ca = decodedCookie.split(';');
+				for(var i = 0; i <ca.length; i++) {
+					var c = ca[i];
+					while (c.charAt(0) == ' ') {
+						c = c.substring(1);
+					}
+					if (c.indexOf(name) == 0) {
+						return c.substring(name.length, c.length);
+					}
+				}
+				return "";
 			}
 		</script>
 	</main>

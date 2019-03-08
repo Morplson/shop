@@ -15,7 +15,7 @@
 	$score = 2;
 	$comments =3;
 
-	$pID = $last-1;
+	$pID = $last;
 	
 	$title = "Titel";
 
@@ -134,7 +134,7 @@
 			</div>
 
 			<div class="values buy">
-				<button class="btn" id="<?php echo $pID; ?>">Kaufen</button>
+				<button class="btn" id="<?php echo $pID; ?>" onClick="buy(<?php echo $pID; ?>)">Kaufen</button>
 				<input class="num" id="<?php echo $pID; ?>" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 			</div>
 
