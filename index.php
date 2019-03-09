@@ -226,13 +226,14 @@
 
 			function buy(id){
 
-				let anzel = document.querySelector("#"+id+" > div:nth-child(6) > input:nth-child(2)");
+				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("articles");
-				alert(jsong);
+
+				document.getElementById(id+"button").style.backgroundColor = "#00bfff";;
 
 				let arr = JSON.parse(jsong);
 
-				arr.push([id, anzel]);
+				arr.push([id, anzel.value]);
 
 				document.cookie = "articles="+JSON.stringify(arr);
 
