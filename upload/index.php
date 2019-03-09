@@ -120,7 +120,7 @@
 			<br>
 			<div class="plain">
 				<input class="" id="tytle" type="text" name="tytle"></input>
-				<input id="file" type="file" name="file"></input>
+				<input id="datei" type="file" name="datei"></input>
 				<textarea  id="description" name="description"></textarea >
 				<input id="image_anonymous" type="checkbox" name="anonymous"></input>
 				  <script src="https://www.google.com/recaptcha/api.js?render=6LcXq5QUAAAAAMmKgVonf55bUCb5O7xmw1E_EFGz"></script>
@@ -133,6 +133,7 @@
   </script>
 				
 			</div>
+
 		</main>
 		
 		

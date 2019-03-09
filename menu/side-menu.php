@@ -172,7 +172,7 @@
 
 
 <script>
-window.onload = function(){
+document.addEventListener('DOMContentLoaded', function(){
 	document.getElementById("info").addEventListener("click", animationTrigger, false);
 	document.getElementById("profile").addEventListener("click", animationTrigger, false);
 	document.getElementById("playlist").addEventListener("click", animationTrigger, false);
@@ -288,5 +288,5 @@ window.onload = function(){
 		
 
 	}
-}
+});
 </script>
