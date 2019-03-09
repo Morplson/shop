@@ -151,8 +151,8 @@
 					<div class="itembartext">Profil</div>
 			</div>
 			<div class="itembarmodul" id="playlist">
-					<div class="itembaricon"><i class="si fas fa-cog"></i></div>
-					<div class="itembartext">Playlists</div>
+					<div class="itembaricon"><i class="si fas fa-heart"></i></div>
+					<div class="itembartext">Wunschliste</div>
 			</div>
 			<div class="itembarmodul" id="upload">
 					<div class="itembaricon"><i class="si fas fa-upload"></i></div>

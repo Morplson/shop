@@ -81,6 +81,11 @@
 				float: right;
 				width: 4rem;
 			}
+
+			.num:hover{
+				background-color: #f2f2f2;
+			}
+
 		</style>
 		<div class="container" id="<?php echo $pID; ?>">
 			<div class="values scores">
