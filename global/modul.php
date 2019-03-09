@@ -15,7 +15,7 @@
 	$score = 2;
 	$comments =3;
 
-	$pID = $last;
+	$pID = rand();//$last;
 	
 	$title = "Titel";
 
@@ -134,8 +134,8 @@
 			</div>
 
 			<div class="values buy">
-				<button class="btn" id="<?php echo $pID; ?>" onClick="buy(<?php echo $pID; ?>)">Kaufen</button>
-				<input class="num" id="<?php echo $pID; ?>" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+				<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
+				<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 			</div>
 
 		</div>
