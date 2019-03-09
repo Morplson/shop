@@ -1,18 +1,9 @@
-<?php
-
-
-
-
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Profile</title>
+	<title>Wahrenkorb</title>
 </head>
 <body>
-
-
 
 </body>
 </html>

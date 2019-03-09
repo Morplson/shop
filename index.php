@@ -22,8 +22,8 @@
 	<style type="text/css">
 		*{
 			font-size: 16pt;
-		    font-family: 'Raleway', sans-serif;
-		    scroll-behavior: smooth;
+			font-family: 'Raleway', sans-serif;
+			scroll-behavior: smooth;
 		}
 
 		body{
@@ -80,13 +80,13 @@
 			margin: 0 1.5rem;
 			border-radius: 3rem;
 			padding: 0.5rem;
-			border: 1px solid #e6e6e6;
+			border: 1px solid #E8E8E8;
 			float: right;
 			text-align: center;
 		}
 
 		.container{
-			border: 1px solid #d9d9d9;
+			border: 1px solid #E8E8E8;
 			height: auto;
 			width: 13.5rem;
 			margin: 0.25rem;
@@ -110,7 +110,7 @@
 		.values{
 			height:1.5rem;
 			line-height: 1.5rem;
-			background-color: #d9d9d9;
+			background-color: #E8E8E8;
 			text-align: center;
 			white-space: nowrap;
 			word-wrap: break-word;
@@ -158,6 +158,10 @@
 			margin: 0.25rem -1px;
 		}
 
+		.values.buy>.btn:hover, .values.buy>.num:hover{
+			background-color: #D8D8D8;
+		}
+
 	</style>
 
 </head>
@@ -188,17 +192,19 @@
 			
 		</div>
 		<script type="text/javascript">
+
 			document.addEventListener('DOMContentLoaded', function(){
 				request("main",40,null,"new")
 			});
- 
 
- 			document.onscroll = function(){
- 				if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight-20){
- 					var last = document.getElementById("main").lastChild.id;
- 					request("main",40,last,"new");
- 				}
- 			}
+
+			document.onscroll = function(){
+				if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight-20){
+					var last = document.getElementById("main").lastChild.id;
+					request("main",40,last,"new");
+				}
+			}
+
 
 			function request(where, num, last, query){
 
@@ -212,33 +218,34 @@
 						},
 						body: JSON.stringify({last: last, query: query})
 					}).then(function (response) {
-    					return response.text();
-    				}).then(function (data) {
-  						let html = data.trim();
+						return response.text();
+					}).then(function (data) {
+						let html = data.trim();
 						document.getElementById(where).innerHTML += html.trim();
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-					
 				}
-
 			}
+
 
 			function buy(id){
 
 				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("articles");
 
-				document.getElementById(id+"button").style.backgroundColor = "#00bfff";;
+				//document.getElementById(id+"button").style.backgroundColor = "#ff8c00";
+
 
 				let arr = JSON.parse(jsong);
 
-
+				arr.push([id, anzel.value]);
 
 				document.cookie = "articles="+JSON.stringify(arr);
 
-
+				alert(getCookie("articles"));
 			}
+
 
 			function getCookie(cname) {
 				var name = cname + "=";
@@ -255,6 +262,7 @@
 				}
 				return "";
 			}
+
 		</script>
 	</main>
 	<?php

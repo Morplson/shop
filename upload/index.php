@@ -119,19 +119,11 @@
 			</div>
 			<br>
 			<div class="plain">
-				<input class="" id="tytle" type="text" name="tytle"></input>
-				<input id="datei" type="file" name="datei"></input>
-				<textarea  id="description" name="description"></textarea >
-				<input id="image_anonymous" type="checkbox" name="anonymous"></input>
-				  <script src="https://www.google.com/recaptcha/api.js?render=6LcXq5QUAAAAAMmKgVonf55bUCb5O7xmw1E_EFGz"></script>
-  <script>
-  grecaptcha.ready(function() {
-      grecaptcha.execute('6LcXq5QUAAAAAMmKgVonf55bUCb5O7xmw1E_EFGz', {action: 'homepage'}).then(function(token) {
-         ...
-      });
-  });
-  </script>
-				
+				<input class="" id="uplodtitle" type="text" name="title"></input>
+				<input id="uploddatei" type="file" name="datei"></input>
+				<textarea id="uploddescription" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
+				<input id="uplodimage_anonymous" type="checkbox" name="anonymous"></input>
+				<button type="submit" onclick="upload()"></button>
 			</div>
 
 		</main>
@@ -143,24 +135,28 @@
 	</body>
 	<script type="text/javascript">
 	    
-	    function upload(){
-			
+			function upload(where){
 
-			fetch(url, {
-				method: 'post',
-				headers: {
-					"Content-type": "text/html"
-				},
-				body: body
-			}).then(function (response) {
-				return response.text();
-			}).then(function (data) {
-				//console.log(data);
-				
-	
-			}).catch(function (error) {
-				console.log('Request failed', error);
-			});
-	    }
+				var data = new FormData();
+				data.append('file', document.getElementById('uploddatei').files[0]);
+				data.append('title', document.getElementById('uplodtitle').value);
+				data.append('description', document.getElementById('uploddescription').value);
+
+				data.append('anon', document.getElementById('uplodtitle').value);
+
+
+
+
+					fetch("upload-script.php", {
+						method: 'post',
+						body: data
+					}).then(
+						response => response.json()
+					).then(
+						success => console.log(success)
+					).catch(function (error) {
+						console.log('Request failed', error);
+					});
+			}
 	</script>
 </html>

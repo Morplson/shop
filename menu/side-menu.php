@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			switch(e.currentTarget.id){
 				case "info":
 					
-					var url = "shop/info/";
+					var url = "info/";
 					var body = JSON.stringify({});
 					
 					if(document.getElementById("sideinfo").style.display != "block"){
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	
 					break;
 				case "profile":
-					var url = "shop/profile/";
+					var url = "profile/";
 					var body = JSON.stringify({});
 					
 					if(document.getElementById("sideprofile").style.display != "block"){
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function(){
 					}
 					break;
 				case "playlist":
-					var url = "shop/playlist/";
+					var url = "playlist/";
 					var body = JSON.stringify({});
 	
 					if(document.getElementById("sideconfig").style.display != "block"){
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function(){
 					}
 					break;
 				case "upload":
-					var url = "shop/upload/";
+					var url = "upload/";
 					var body = JSON.stringify({});
 	
 					if(document.getElementById("sideupload").style.display != "block"){
