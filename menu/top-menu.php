@@ -45,9 +45,9 @@
 	}
 </style>
 	<div class="header">
-		<a href="http://localhost/shop/"><div class="label topleftli">Boorushop</div></a>
-		<a href="http://localhost/shop/"><div class="topleftli">Beliebt</div></a>
-		<a href="http://localhost/shop/"><div class="topleftli">Neu</div></a>
+		<a href="shop/"><div class="label topleftli">Boorushop</div></a>
+		<a href="shop/"><div class="topleftli">Beliebt</div></a>
+		<a href="shop/"><div class="topleftli">Neu</div></a>
 
 		<a href=""><div class="toprightli">Login</div></a>
 		<div class="toprightli"><input class="search" type="text" placeholder="Search..." name="sInput"></div>

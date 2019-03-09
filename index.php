@@ -205,7 +205,7 @@
 				console.log("acc");
 				for (var i = num; i > 0; i--) {
 					last++;
-					fetch("http://localhost/shop/shop/global/modul.php", {
+					fetch("global/modul.php", {
 						method: 'post',
 						headers: {
 							"Content-type": "text/html"
@@ -232,7 +232,6 @@
 
 				let arr = JSON.parse(jsong);
 
-				arr.push([id, anzel]);
 
 				document.cookie = "articles="+JSON.stringify(arr);
 
