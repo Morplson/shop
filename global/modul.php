@@ -1,6 +1,3 @@
-
-
-
 <?php
 	/**
 	 * AUTHOR: DAVID ZEILINGER
@@ -45,7 +42,7 @@
 			}
 
 			.downvote:hover{
-				color: #e52b06;
+				color: #f91f1f;
 			}
 
 
@@ -63,18 +60,20 @@
 			}
 
 			.values.buy>.btn{
-				padding: 0;
+				padding: 0 1rem;
 				background-color: transparent;
 				border: none;
 
 				height: 1.5rem;
 
-				width: 4rem;
+				width: 6rem;
 				float: left;
+
+				transition: all 0.6s;
 			}
 
 			.values.buy>.num{
-				padding: 0;
+				padding: 0 1rem;
 				background-color: transparent;
 				border: none;
 
@@ -82,17 +81,21 @@
 
 				float: right;
 				width: 4rem;
+
+				transition: all 0.6s;
 			}
 
-			.values.info>.preis{
+			.values.gets>.preis{
 				float: left;
 				padding-left: 1rem;
 			}
 
-			.values.info>.anzahl{
+			.values.gets>.anzahl{
 				float: right;
 				padding-right: 1rem;
+				
 			}
+
 		</style>
 		<div class="container" id="<?php echo $pID; ?>">
 			<div class="values scores">
@@ -119,7 +122,7 @@
 			<picture style="background-image: url(<?php echo $imgLink; ?>);">
 				
 			</picture>
-			<div class="values info">
+			<div class="values gets">
 				<div class="preis">
 					Preis: <?php echo $preis;?>
 				</div>
