@@ -123,6 +123,15 @@
 				<input id="datei" type="file" name="datei"></input>
 				<textarea  id="description" name="description"></textarea >
 				<input id="image_anonymous" type="checkbox" name="anonymous"></input>
+				  <script src="https://www.google.com/recaptcha/api.js?render=6LcXq5QUAAAAAMmKgVonf55bUCb5O7xmw1E_EFGz"></script>
+  <script>
+  grecaptcha.ready(function() {
+      grecaptcha.execute('6LcXq5QUAAAAAMmKgVonf55bUCb5O7xmw1E_EFGz', {action: 'homepage'}).then(function(token) {
+         ...
+      });
+  });
+  </script>
+				
 			</div>
 
 		</main>
