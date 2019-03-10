@@ -1,3 +1,7 @@
+<?
+	include 'open.php';
+?>
+
 <style>
 	input[type="text"].search {
 		vertical-align: middle;

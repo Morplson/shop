@@ -22,14 +22,17 @@
 
 	$anzahl = 40;
 
+	$einheit = "Stk.";
+
 	$preis = 40;
 
 
+
+
 	if ($last == null) {
-		//TODO: MySQL call
-		$last = 1933635;
+		
 	} else {
-		//TODO: MySQL call
+		
 	}
 	?>
 		<style type="text/css">
@@ -97,48 +100,52 @@
 			}
 
 		</style>
-		<div class="container" id="<?php echo $pID; ?>">
-			<div class="values scores">
-				<div class="like">
-					<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-					<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-				</div>
-				<div class="vote">
-					<i class="upvote fa fa-arrow-up" title="Upvote"></i>
-					<span class="score" title="Score"><?php echo $score; ?></span>
-					<i class="downvote fa fa-arrow-down" title="Downvote"></i>
-				</div>
-				<div class="comment">
-					<i class="fa fa-comments"></i>
-					<span class="comments_count" data-image-id="1933082"><?php echo $comments; ?></span>
-				</div>
-			</div>
+<?php
+
+$export = '';
+
+$export .= '<div class="container" id="'.$pID.'">';
+$export .= '<div class="values scores">';
+$export .= '<div class="like">';
+$export .= '<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>';
+$export .= '<span class="favourites" title="Favourites">'.$likes.'</span>';
+$export .= '</div>';
+$export .= '<div class="vote">';
+$export .= '<i class="upvote fa fa-arrow-up" title="Upvote"></i>';
+$export .= '<span class="score" title="Score">'.$score.'</span>';
+$export .= '<i class="downvote fa fa-arrow-down" title="Downvote"></i>';
+$export .= '</div>';
+$export .= '<div class="comment">';
+$export .= '<i class="fa fa-comments"></i>';
+$export .= '<span class="comments_count" data-image-id="'.$pID.'">'.$comments.'</span>';
+$export .= '</div>';
+$export .= '</div>';
 
 			
-			<div class="values title">
-				<?php echo $title;?>
-			</div>
+$export .= '<div class="values title">';
+$export .= $title.'';
+$export .= '</div>';
 
-			<picture style="background-image: url(<?php echo $imgLink; ?>);">
+$export .= '<picture style="background-image: url(\''.$imgLink.'\');">';
 				
-			</picture>
-			<div class="values gets">
-				<div class="preis">
-					Preis: <?php echo $preis;?>
-				</div>
+$export .= '</picture>';
+$export .= '<div class="values gets">';
+$export .= '<div class="preis">';
+$export .= 'Preis: '.$preis.'';
+$export .= '</div>';
 
-				<div class="anzahl">
-					<?php echo $preis;?> Stk.
-				</div>
-			</div>
-			<div class="description">
-				<?php echo $description;?>
-				dfgs afjnbas jidfna snf löj dn fjna sk djfn osaj kdn fdfgs afjnbas jidfna snf löj dn fjna sk djfn osaj kdn fdfgs afjnbas jidfna snf löj dn fjna sk djfn osaj
-			</div>
+$export .= '<div class="anzahl">';
+$export .= $anzahl.' '.$einheit.'';
+$export .= '</div>';
+$export .= '</div>';
+$export .= '<div class="description">';
+$export .= $description.'</div>';
 
-			<div class="values buy">
-				<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-				<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
-			</div>
+$export .= '<div class="values buy">';
+$export .= '<button class="btn" id="'.$pID.'button" onClick="buy(\''.$pID.'\')">Kaufen</button>';
+$export .= '<input class="num" id="'.$pID.'anzahl" type="number" name="anzahl" min="1" max="'.$anzahl.'" value="1">';
+$export .= '</div>';
 
-		</div>
+$export .= '</div>';
+
+echo $export;

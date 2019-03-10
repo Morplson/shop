@@ -63,12 +63,17 @@ class Produkt
     protected $preis;
     
     
-    public function __construct(string $name,string $bes,float $preis,int $anzahl=1) {
+    public function __construct(string $name,string $bes,float $preis,int $gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
         $this->serialID = uniqid(date(DATE_RFC3339_EXTENDED));
         $this->anzahl = $anzahl;
         $this->name = $name;
         $this->bes = $bes;
-        $this->preis = $preis; 
+        $this->preis = $preis;
+        $this->einheit = $einheit;
+        $this->gewicht = $gewicht;
+
+        $this->userID = $userID;
+
     }
     
     public function kaufen(int $anzahl) {
@@ -106,6 +111,18 @@ class Produkt
     public  function getBezeichnung() {
         return $this->bes;
     }
+
+    public  function getEinheit() {
+        return $this->einheit;
+    }
+    
+    public  function getGewicht() {
+        return $this->gewicht;
+    }
+    
+    public  function getBezeichnung() {
+        return $this->bes;
+    }
     
     public function gesammtPreis() {
         return $this->preis*$this->anzahl;
@@ -120,8 +137,8 @@ class Produkt
 class Buch extends Produkt {
     protected $isbn;
     
-    function __construct(string $name,string $bes,float $preis,int $anzahl=1) {
-        parent::__construct($name, $bes, $preis, $anzahl);
+    function __construct(string $name,string $bes,float $preis,int $gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
+        parent::__construct($name, $bes, $preis, $gewicht, $userID, $anzahl, $einheit);
     }
     
     public function print() {
@@ -134,7 +151,7 @@ class Buch extends Produkt {
 class Mixtape extends Produkt {
     protected $tracks = [];
     
-    function __construct(string $name,string $bes,float $preis,int $anzahl=1, $music) {
+    function __construct(string $name,string $bes,float $preis,int $gewicht,$userID,int $anzahl=1,string $einheit='Stk.', $music) {
         parent::__construct($name, $bes, $preis, $anzahl);
         foreach ($music as $track) {
             $this->tracks[] = $track;
@@ -155,7 +172,7 @@ class Music extends Produkt {
     protected $author;
     protected $album;
     
-    function __construct(string $name,string $interpret,string $author,string $album, string $bes,float $preis,int $anzahl=1) {
+    function __construct(string $name,string $bes,float $preis,int $gewicht,string $interpret,string $author,string $album,$userID,int $anzahl=1,string $einheit='Stk.') {
         parent::__construct($name, $bes, $preis, $anzahl);
         $this->interpret = $interpret;
         $this->author = $author;

@@ -123,11 +123,12 @@
 
 		}
 
-		.scores{
+		.values.scores{
 			-webkit-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+			letter-spacing: 0.25rem;
 		}
 
 		.content {
@@ -234,7 +235,7 @@
 				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("articles");
 
-				//document.getElementById(id+"button").style.backgroundColor = "#ff8c00";
+				document.getElementById(id+"button").style.color = "#ff8c00";
 
 
 				let arr = JSON.parse(jsong);
@@ -243,7 +244,7 @@
 
 				document.cookie = "articles="+JSON.stringify(arr);
 
-				alert(getCookie("articles"));
+				//alert(getCookie("articles"));
 			}
 
 
