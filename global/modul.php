@@ -18,7 +18,20 @@
 
 	$imgLink = null;
 
-	$description = null;
+	$description = "
+
+▓█████▄  ▄▄▄    ██▒   █▓ ██▓▓█████▄ 
+▒██▀ ██▌▒████▄ ▓██░   █▒▓██▒▒██▀ ██▌
+░██   █▌▒██  ▀█▄▓██  █▒░▒██▒░██   █▌
+░▓█▄   ▌░██▄▄▄▄██▒██ █░░░██░░▓█▄   ▌
+░▒████▓  ▓█   ▓██▒▒▀█░  ░██░░▒████▓ 
+ ▒▒▓  ▒  ▒▒   ▓▒█░░ ▐░  ░▓   ▒▒▓  ▒ 
+ ░ ▒  ▒   ▒   ▒▒ ░░ ░░   ▒ ░ ░ ▒  ▒ 
+ ░ ░  ░   ░   ▒     ░░   ▒ ░ ░ ░  ░ 
+   ░          ░  ░   ░   ░     ░    
+ ░                  ░        ░      
+
+";
 
 	$anzahl = 40;
 
@@ -106,16 +119,16 @@ $export = '';
 
 $export .= '<div class="container" id="'.$pID.'">';
 $export .= '<div class="values scores">';
-$export .= '<div class="like">';
+$export .= '<div id="'.$pID.'likes" class="like" onClick="like(\''.$pID.'\')">';
 $export .= '<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>';
 $export .= '<span class="favourites" title="Favourites">'.$likes.'</span>';
 $export .= '</div>';
-$export .= '<div class="vote">';
-$export .= '<i class="upvote fa fa-arrow-up" title="Upvote"></i>';
+$export .= '<div id="'.$pID.'votes" class="vote">';
+$export .= '<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote(\''.$pID.'\',1)"></i>';
 $export .= '<span class="score" title="Score">'.$score.'</span>';
-$export .= '<i class="downvote fa fa-arrow-down" title="Downvote"></i>';
+$export .= '<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote(\''.$pID.'\',-1)"></i>';
 $export .= '</div>';
-$export .= '<div class="comment">';
+$export .= '<div id="'.$pID.'comments" class="comment" onClick="comment(\''.$pID.'\')">';
 $export .= '<i class="fa fa-comments"></i>';
 $export .= '<span class="comments_count" data-image-id="'.$pID.'">'.$comments.'</span>';
 $export .= '</div>';
@@ -126,7 +139,7 @@ $export .= '<div class="values title">';
 $export .= $title.'';
 $export .= '</div>';
 
-$export .= '<picture style="background-image: url(\''.$imgLink.'\');">';
+$export .= '<a href="post.php?id='.$pID.'"><picture style="background-image: url(\''.$imgLink.'\');"></a>';
 				
 $export .= '</picture>';
 $export .= '<div class="values gets">';

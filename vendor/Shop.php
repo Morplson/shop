@@ -1,56 +1,4 @@
 <?php
-/**
- * Shop speichert alle Produkte und User (weil warum nicht)
- * Hier befinden sich auch die statischen methoden zum management.
- */
-class Shop
-{
-    
-    private static $produkte = [];
-    private static $users = [];
-    
-    public static function addProduktToShop(Produkt $produkt){
-        if (Produkt::checkSN($produkt)) {
-            self::$produkte[]=$produkt;
-        }
-    }
-    
-    public static function findProdukt(string $serialID) {
-        foreach (self::$produkte as $produkt) {
-            if ($produkt->getName()==$serialID) {
-                return $produkt;
-            }
-        }
-    }
-    
-    public static function addUserToShop(User $user){
-        self::$users[]=$user;
-    }
-    
-    public static function findUser(string $name) {
-        foreach (self::$users as $user) {
-            if ($user->getName()==$name) {
-                return $user;
-            }
-        }
-    }
-    
-    public static function printall(){
-        echo "\nUser:\n";
-        foreach (self::$users as $user) {
-            $user;
-        }
-        
-        echo "\n\n\nProdukte:\n";
-        foreach (self::$produkte as $produkt) {
-            $produkt->print();
-        }
-    }
-    
-}
-
-
-
 
 
 class Produkt
@@ -61,9 +9,16 @@ class Produkt
     protected $name;
     protected $bes;
     protected $preis;
+    protected $einheit;
+    protected $gewicht;
+    private $userID;
+
+    protected $score;
+    protected $likes;
+    protected $comments;
     
     
-    public function __construct(string $name,string $bes,float $preis,int $gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
+    public function __construct(string $name,string $bes,float $preis,$gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
         $this->serialID = uniqid(date(DATE_RFC3339_EXTENDED));
         $this->anzahl = $anzahl;
         $this->name = $name;
@@ -74,6 +29,9 @@ class Produkt
 
         $this->userID = $userID;
 
+        $this->$score = 0;
+        $this->$likes = 0;
+        $this->$comments = 0;
     }
     
     public function kaufen(int $anzahl) {
@@ -120,8 +78,8 @@ class Produkt
         return $this->gewicht;
     }
     
-    public  function getBezeichnung() {
-        return $this->bes;
+    public  function getUID() {
+        return $this->userID;
     }
     
     public function gesammtPreis() {
@@ -245,41 +203,4 @@ class Wahrenkorb {
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-$shop = new Shop();
-
-$shop::addProduktToShop(new Produkt("hand", "kann sachen aufheben", 33, 40));
-$shop::addProduktToShop(new Produkt("bein", "kann stehen", 33, 50));
-$shop::addProduktToShop(new Produkt("kopf", "kann denken", 33));
-
-//string $name,string $interpret,string $author,string $album, string $bes,int $preis,int $anzahl=1
-$tracks = [new Music("platte", "musiker", "musiker", "lieder", "gut gemacht", 12, 10000),new Music("platte2", "musiker", "musiker", "lieder", "gut gemacht", 1, 10000),new Music("platte3", "musiker", "musiker", "lieder", "nicht so gut", 12, 10000)];
-
-$shop::addProduktToShop($tracks[0]);
-$shop::addProduktToShop($tracks[1]);
-$shop::addProduktToShop($tracks[2]);
-
-$shop::addProduktToShop(new Mixtape("lieder", "lieder von musiker !!top hits!!", 99,99, $tracks));
-
-$shop::addUserToShop(new User("k", "email"));
-
-$shop::findUser("k")->kaufen("kopf",4);
-$shop::findUser("k")->kaufen("bein",4);
-
-$shop::printall();
-
-
 

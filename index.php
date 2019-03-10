@@ -231,22 +231,61 @@
 
 
 			function buy(id){
-
 				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("articles");
 
 				document.getElementById(id+"button").style.color = "#ff8c00";
-
-
+				
 				let arr = JSON.parse(jsong);
-
 				arr.push([id, anzel.value]);
-
+				
 				document.cookie = "articles="+JSON.stringify(arr);
-
 				//alert(getCookie("articles"));
 			}
 
+			function like(id){
+				let anzel = document.getElementById(id+"anzahl");
+				let jsong = getCookie("likes");
+
+				document.getElementById(id+"likes").style.color = "#f91f1f";
+				
+				let arr = JSON.parse(jsong);
+				arr.push([id, anzel.value]);
+				
+				document.cookie = "likes="+JSON.stringify(arr);
+				//alert(getCookie("articles"));
+			}
+
+			function vote(id, vote){
+				let anzel = document.getElementById(id+"anzahl");
+				let jsong = getCookie("votes");
+
+				if(vote<0){
+					document.getElementById(id+"votes").style.color = "#f91f1f";
+				}else if (vote>0) {
+					document.getElementById(id+"votes").style.color = "#5aa51d";
+				}
+				
+				
+				let arr = JSON.parse(jsong);
+				arr.push([id, anzel.value]);
+				
+				document.cookie = "votes="+JSON.stringify(arr);
+				//alert(getCookie("articles"));
+			}
+
+			function comment(id){
+				let anzel = document.getElementById(id+"anzahl");
+				let jsong = getCookie("comments");
+
+				document.getElementById(id+"comments").style.color = "#9273d0";
+				
+				let arr = JSON.parse(jsong);
+				arr.push([id, anzel.value]);
+				
+				document.cookie = "comments="+JSON.stringify(arr);
+				//alert(getCookie("articles"));
+			}
 
 			function getCookie(cname) {
 				var name = cname + "=";
