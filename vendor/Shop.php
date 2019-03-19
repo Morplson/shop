@@ -33,22 +33,6 @@ class Produkt
         $this->likes = 0;
         $this->comments = 0;
     }
-
-    public function __construct(string $serial, string $name,string $bes,float $preis,$gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
-        $this->serialID = $serial;
-        $this->anzahl = $anzahl;
-        $this->name = $name;
-        $this->bes = $bes;
-        $this->preis = $preis;
-        $this->einheit = $einheit;
-        $this->gewicht = $gewicht;
-
-        $this->userID = $userID;
-
-        $this->score = 0;
-        $this->likes = 0;
-        $this->comments = 0;
-    }
     
     public function kaufen(int $anzahl) {
         if ($this->anzahl-$anzahl>=0) {
@@ -73,6 +57,10 @@ class Produkt
     public  function getSerialnumber() {
         return $this->serialID;
     }
+
+    public  function getAnzahl() {
+        return $this->anzahl;
+    }
     
     public  function getName() {
         return $this->name;
@@ -96,6 +84,18 @@ class Produkt
     
     public  function getUID() {
         return $this->userID;
+    }
+
+    public  function getScore() {
+        return $this->score;
+    }
+
+    public  function getLikes() {
+        return $this->likes;
+    }
+
+    public  function getComments() {
+        return $this->comments;
     }
     
     public function gesammtPreis() {

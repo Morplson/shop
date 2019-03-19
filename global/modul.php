@@ -4,13 +4,21 @@
 	 * VERSION: 23_01_2019
 	 * Laedt Daten(posts) aus datenbank
 	 */
+
+	error_reporting(0);
+
+	
+	$_POST = json_decode(file_get_contents('php://input'), true);
+
+
+
 	$last = isset($_POST['last']) ? $_POST['last'] : null;
 	$query = isset($_POST['query']) ? $_POST['query'] : null;
-	$TODO = isset($_POST['max']) ? $_POST['max'] : null;
+	$max = isset($_POST['max']) ? $_POST['max'] : null;
 	
-	$likes = 1;
-	$score = 2;
-	$comments =3;
+	$likes = 0;
+	$score = 0;
+	$comments = 0;
 
 	$pID = rand();//$last;
 	
@@ -33,25 +41,56 @@
 
 ";
 
-	$anzahl = 40;
+	$anzahl = 0;
 
 	$einheit = "Stk.";
 
-	$preis = 40;
+	$preis = 0;
 
 
 
 
-	if ($last == null) {
+	if ($last!=null) {
+		$search = $last;
+		$line_number = false;
+
+		if ($handle = fopen("data/data.txt", "r")) {
+			$count = 0;
+			while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
+				$count++;
+				$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
+			}
+			fclose($handle);
+		}
 		
 	} else {
-		
+		$line_number = 0;
 	}
-	?>
+	
+	$export = '';
+	$lines = file("data/data.txt");
+	for ($i=$line_number; $i < $max; $i++) { 
+		
+		$data = explode(";",$lines[$i]);
+	
 
-<?php
+	$pID = $data[0];
+	$anzahl = $data[1];
+	$title = $data[2]."$last";
+	$preis = $data[3];
+	$description = $data[4];
+	$einheit = $data[5];
+	$gewicht = $data[6];
+	$userID = $data[7];
+	$score = $data[8];
+	$likes = $data[9];
+	$comments = $data[10];
 
-$export = '';
+	$imgLink = "global/data/".md5($pID).".png";
+
+
+
+
 
 $export .= '<div class="container" id="'.$pID.'">';
 $export .= '<div class="values scores">';
@@ -96,5 +135,5 @@ $export .= '<input class="num" id="'.$pID.'anzahl" type="number" name="anzahl" m
 $export .= '</div>';
 
 $export .= '</div>';
-
+}
 echo $export;

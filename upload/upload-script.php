@@ -36,11 +36,14 @@
             }
         }
 
+        $data = $produkt->getSerialnumber().";".$produkt->getAnzahl().";".$produkt->getName().";".$produkt->getPreis().";".$produkt->getBezeichnung().";".$produkt->getEinheit().";".$produkt->getGewicht().";".$produkt->getUID().";".$produkt->getScore().";".$produkt->getLikes().";".$produkt->getComments().";".PHP_EOL;
+
+        $fp = fopen("../global/data/data.txt", 'a');
+        fwrite($fp, $data);
         
-        file_put_contents ( "../global/data/data.json" , json_encode([$produkt->getSerialnumber()=>(array)$produkt]) , FILE_APPEND ) ;
-
-
     }
+    header('Location: ../');
+
 
     
 ?>

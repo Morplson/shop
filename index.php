@@ -274,17 +274,21 @@
 			}
 
 
-			function request(where, num, last, query){
+			function request(where, max, last, query){
 
 				console.log("acc");
-				for (var i = num; i > 0; i--) {
-					last++;
+				//for (var i = num; i > 0; i--) {
+					
 					fetch("global/modul.php", {
-						method: 'post',
-						headers: {
-							"Content-type": "text/html"
-						},
-						body: JSON.stringify({last: last, query: query})
+						method: "POST",
+						body: JSON.stringify({
+							last: last,
+							query: query,
+							max: max
+						}),
+						headers:{
+							'Content-Type': 'application/json'
+						}
 					}).then(function (response) {
 						return response.text();
 					}).then(function (data) {
@@ -293,7 +297,9 @@
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-				}
+
+					last = document.getElementById(where).lastChild.id;
+				//}
 			}
 
 
