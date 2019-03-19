@@ -13,12 +13,79 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
 	<script>
 		document.cookie = "articles="+JSON.stringify([]);
+		document.cookie = "votes="+JSON.stringify([]);
+		document.cookie = "likes="+JSON.stringify([]);
+		document.cookie = "comments="+JSON.stringify([]);
 	</script>
 	<title>Railway</title>
 
 
 
+		<style type="text/css">
+			.values.scores>.like:hover {
+				color: #f91f1f;
+			}
 
+			.upvote:hover{
+				color: #5aa51d;
+			}
+
+			.downvote:hover{
+				color: #f91f1f;
+			}
+
+
+			.values.scores>.comment:hover {
+				color: #9273d0;
+			}
+
+			.description {
+				text-align: justify;
+				padding: 0.125rem;
+				word-break: break-word;
+			}
+
+			.values.buy{
+			}
+
+			.values.buy>.btn{
+				padding: 0 1rem;
+				background-color: transparent;
+				border: none;
+
+				height: 1.5rem;
+
+				width: 6rem;
+				float: left;
+
+				transition: all 0.6s;
+			}
+
+			.values.buy>.num{
+				padding: 0 1rem;
+				background-color: transparent;
+				border: none;
+
+				height: 1.5rem;
+
+				float: right;
+				width: 4rem;
+
+				transition: all 0.6s;
+			}
+
+			.values.gets>.preis{
+				float: left;
+				padding-left: 1rem;
+			}
+
+			.values.gets>.anzahl{
+				float: right;
+				padding-right: 1rem;
+				
+			}
+
+		</style>
 	<style type="text/css">
 		*{
 			font-size: 16pt;
@@ -240,11 +307,10 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "articles="+JSON.stringify(arr);
-				//alert(getCookie("articles"));
+				alert(getCookie("articles"));
 			}
 
 			function like(id){
-				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("likes");
 
 				document.getElementById(id+"likes").style.color = "#f91f1f";
@@ -253,11 +319,10 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "likes="+JSON.stringify(arr);
-				//alert(getCookie("articles"));
+				alert(getCookie("likes"));
 			}
 
 			function vote(id, vote){
-				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("votes");
 
 				if(vote<0){
@@ -271,11 +336,10 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
-				//alert(getCookie("articles"));
+				alert(getCookie("votes"));
 			}
 
 			function comment(id){
-				let anzel = document.getElementById(id+"anzahl");
 				let jsong = getCookie("comments");
 
 				document.getElementById(id+"comments").style.color = "#9273d0";
@@ -284,7 +348,7 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "comments="+JSON.stringify(arr);
-				//alert(getCookie("articles"));
+				alert(getCookie("comments"));
 			}
 
 			function getCookie(cname) {

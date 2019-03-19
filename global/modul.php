@@ -48,71 +48,7 @@
 		
 	}
 	?>
-		<style type="text/css">
-			.values.scores>.like:hover {
-				color: #f91f1f;
-			}
 
-			.upvote:hover{
-				color: #5aa51d;
-			}
-
-			.downvote:hover{
-				color: #f91f1f;
-			}
-
-
-			.values.scores>.comment:hover {
-				color: #9273d0;
-			}
-
-			.description {
-				text-align: justify;
-				padding: 0.125rem;
-				word-break: break-word;
-			}
-
-			.values.buy{
-			}
-
-			.values.buy>.btn{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
-
-				height: 1.5rem;
-
-				width: 6rem;
-				float: left;
-
-				transition: all 0.6s;
-			}
-
-			.values.buy>.num{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
-
-				height: 1.5rem;
-
-				float: right;
-				width: 4rem;
-
-				transition: all 0.6s;
-			}
-
-			.values.gets>.preis{
-				float: left;
-				padding-left: 1rem;
-			}
-
-			.values.gets>.anzahl{
-				float: right;
-				padding-right: 1rem;
-				
-			}
-
-		</style>
 <?php
 
 $export = '';

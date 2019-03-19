@@ -150,7 +150,7 @@
 				Don't post content the artist doesn't want here (or shared in general), especially not content under a DNP listing. This includes commercial content. 
 			</div>
 			<br>
-			<form  method="post" enctype="multipart/form-data" class="plain">
+			<form  method="post" action="upload/upload-script.php" enctype="multipart/form-data" class="plain">
 				<input class="" id="title" type="text" name="title"></input>
 				<input id="file" type="file" name="file"></input>
 				<textarea id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
@@ -161,7 +161,7 @@
 				<input id="einheit" type="text" name="einheit"></input>
 
 				<input id="anonymous" type="checkbox" name="anonymous"></input>
-				<button type="submit" onclick="upload();">sdfdf</button>
+				<button type="submit" onclick="upload()">sdfdf</button>
 			</form>
 
 		</main>

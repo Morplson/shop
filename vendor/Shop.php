@@ -29,9 +29,25 @@ class Produkt
 
         $this->userID = $userID;
 
-        $this->$score = 0;
-        $this->$likes = 0;
-        $this->$comments = 0;
+        $this->score = 0;
+        $this->likes = 0;
+        $this->comments = 0;
+    }
+
+    public function __construct(string $serial, string $name,string $bes,float $preis,$gewicht,$userID,int $anzahl=1,string $einheit='Stk.') {
+        $this->serialID = $serial;
+        $this->anzahl = $anzahl;
+        $this->name = $name;
+        $this->bes = $bes;
+        $this->preis = $preis;
+        $this->einheit = $einheit;
+        $this->gewicht = $gewicht;
+
+        $this->userID = $userID;
+
+        $this->score = 0;
+        $this->likes = 0;
+        $this->comments = 0;
     }
     
     public function kaufen(int $anzahl) {
