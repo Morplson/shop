@@ -71,7 +71,7 @@
 	$lines = file("data/data.txt");
 	for ($i=$line_number; $i < $max; $i++) { 
 		
-		$data = explode(";",$lines[$i]);
+		$data = explode("|||",$lines[$i]);
 	
 
 	$pID = $data[0];
@@ -114,9 +114,12 @@ $export .= '<div class="values title">';
 $export .= $title.'';
 $export .= '</div>';
 
-$export .= '<a href="post.php?id='.$pID.'"><picture style="background-image: url(\''.$imgLink.'\');"></a>';
+$export .= '<a class="picture" href="post.php?id='.$pID.'">';
+$export .= '<picture class="picture" style="background-image: url(\''.$imgLink.'\');">';
 				
 $export .= '</picture>';
+$export .= '</a>';
+
 $export .= '<div class="values gets">';
 $export .= '<div class="preis">';
 $export .= 'Preis: '.$preis.'';

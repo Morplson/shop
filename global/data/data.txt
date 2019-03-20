@@ -1,4 +1,7 @@
-2019-03-19T19:22:19.000+01:005c91335b13564;30;Test;10;Test;Stk.;12;0;0;0;0;
-2019-03-19T19:37:09.000+01:005c9136d5d5400;22;Test 2;0.16;Test 2;Stk.;24;0;0;0;0;
-2019-03-19T19:38:14.000+01:005c913716f1a53;22;Test 2;0.16;Test 2;Stk.;24;0;0;0;0;
-2019-03-19T22:37:01.000+01:005c9160fd58791;20;Reddit;0.14;Lorem ipsum dolor sit amet;Likes;22;0;0;0;0;
+2019-03-20T22:43:00.000+01:005c92b3e45e4c3|||50|||gay|||10|||lololololololololol|||Pers.|||10000000|||0|||0|||0|||0
+2019-03-20T20:27:19.000+01:005c929417343d2|||10|||Test|||20|||Lorem ipsum dolor sit amet, consetetur sadipscing elitr. At vero eos et accusam et justo duo dolores et ea rebum.||||||02|||0|||0|||0|||0|||
+2019-03-20T21:16:29.000+01:005c929f9d38a64|||20|||Glowing David|||100|||lol||||||10000|||0|||0|||0|||0
+2019-03-20T21:40:54.000+01:005c92a556e8860|||10|||MEMORIES|||100|||Die Grünen||||||20|||0|||0|||0|||0
+2019-03-20T21:52:24.000+01:005c92a80817cb3|||1000|||Cool stuff|||100|||lol this is so sad|||Str.|||100|||0|||0|||0|||0
+2019-03-20T22:21:25.000+01:005c92aed5aa672|||17|||Weed|||12|||the best weed you can eat.|||Gramm|||1|||0|||0|||0|||0
+2019-03-20T22:24:10.000+01:005c92af7abba01|||1|||A Raum voller Schimpl|||1000000|||Wenn man einmal rein geht wird man nie wieder raus kommen.|||Raum|||1000|||0|||0|||0|||0

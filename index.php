@@ -162,7 +162,7 @@
 			vertical-align: baseline;
 		}
 
-		picture{
+		picture.picture,a.picture{
 			display: block;
 			height: 12rem;
 			width: 13.5rem;
@@ -207,6 +207,7 @@
 
 		.flex-container{
 			display: flex;
+			
 			clear: both;
 			flex: 1 0 auto;
 			text-align: center;
@@ -219,8 +220,15 @@
 			
 		}
 
+		.content_r {
+			flex: 1 0 auto;
+			width: 15rem;
+			word-wrap: break-word;
+			align-items: center;
+		}
+
 		.content_l .container{
-			width: 97%;
+			width: 98%;
 			height: auto;
 
 			margin: 0.25rem -1px;

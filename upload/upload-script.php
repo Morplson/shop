@@ -1,18 +1,18 @@
 <?php
+
     include "../vendor/Shop.php";
 
-    $title = isset($_POST['title']) ? $_POST['title'] : null;
-    $description = isset($_POST['description']) ? $_POST['description'] : null;
-    $preis = isset($_POST['preis']) ? $_POST['preis'] : null;
-    $gewicht = isset($_POST['gewicht']) ? $_POST['gewicht'] : null;
-    $anzahl = isset($_POST['anzahl']) ? $_POST['anzahl'] : null;
-    $einheit = isset($_POST['einheit']) ? $_POST['einheit'] : 'Stk.';
-    var_dump($_POST);
-    var_dump($_FILES);
+    $title = isset($_POST['title']) ? htmlspecialchars($_POST['title'], ENT_QUOTES, "UTF-8") : null;
+    $description = isset($_POST['description']) ? htmlspecialchars($_POST['description'], ENT_QUOTES, "UTF-8") : null;
+    $preis = isset($_POST['preis']) ? htmlspecialchars($_POST['preis'], ENT_QUOTES, "UTF-8") : null;
+    $gewicht = isset($_POST['gewicht']) ? htmlspecialchars($_POST['gewicht'], ENT_QUOTES, "UTF-8") : null;
+    $anzahl = isset($_POST['anzahl']) ? htmlspecialchars($_POST['anzahl'], ENT_QUOTES, "UTF-8") : null;
+    $einheit = (isset($_POST['einheit'])&&$_POST['einheit']!="") ? htmlspecialchars($_POST['einheit'], ENT_QUOTES, "UTF-8") : 'Stk.';
+
 
 
     if($title==null||$anzahl==null||$preis==null||$description==null){
-        echo "\nfailed to upload\n";
+        echo "failed to upload" . '<br>';
     }else{
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
@@ -28,22 +28,160 @@
 
         if ( 0 < $_FILES['file']['error'] ) {
             echo 'Error: ' . $_FILES['file']['error'] . '<br>';
-            exit();
         }else {
             echo json_encode($_FILES['file']['name'][0]);
-            if($_FILES['file']['mime'] != 'image/jpeg' || $_FILES['file']['mime'] != 'image/png') {
+            if(in_array(mime_content_type($_FILES['file']['tmp_name']),array('image/jpeg','image/png'))) {
                 move_uploaded_file ($_FILES['file']['tmp_name'], '../global/data/'.md5($produkt->getSerialnumber()).".png");
+            } else {
+                echo 'Error: Unsupported type!<br>';
             }
         }
 
-        $data = $produkt->getSerialnumber().";".$produkt->getAnzahl().";".$produkt->getName().";".$produkt->getPreis().";".$produkt->getBezeichnung().";".$produkt->getEinheit().";".$produkt->getGewicht().";".$produkt->getUID().";".$produkt->getScore().";".$produkt->getLikes().";".$produkt->getComments().";".PHP_EOL;
+        $data = $produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
 
-        $fp = fopen("../global/data/data.txt", 'a');
-        fwrite($fp, $data);
+
+
+        $fileContents = file_get_contents("../global/data/data.txt");
+
+        file_put_contents("../global/data/data.txt", $data . $fileContents);
+
         
     }
-    header('Location: ../');
+
+    header( "refresh:10;url=../" );
 
 
     
 ?>
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:900&amp;subset=latin-ext" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
+
+        <title>Upload</title>
+        <style type="text/css">
+            *{
+                font-size: 16pt;
+                font-family: 'Raleway', sans-serif;
+                scroll-behavior: smooth;
+            }
+
+            body{
+                x-overflow: hidden;
+                padding: 0;
+                margin: 0;
+            }
+            h1{
+                font-size: 3rem;
+            }
+            .plain {
+                text-align: justify;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+            }
+
+            .plain a{
+                color: #305ee8;
+                transition: color 0.6s;
+            }
+
+            .plain a:hover{
+                color: #3869fa;
+            }
+
+            
+            .danger {
+                background-color: #ffdddd;
+                border-left: 0.25rem solid #f44336;
+                text-align: justify;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+            }
+
+            .danger a{
+                color: #f44336;
+                transition: color 0.6s;
+            }
+
+            .danger a:hover{
+                color: #fb746a;
+            }
+
+
+            .success {
+                background-color: #ddffdd;
+                border-left: 0.25rem solid #4CAF50;
+                text-align: justify;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+            }
+
+            .success a{
+                color: #4CAF50;
+                transition: color 0.6s;
+            }
+
+            .success a:hover{
+                color:  #7ece80;
+            }
+
+
+            .info {
+                background-color: #e7f3fe;
+                border-left: 6px solid #2196F3;
+                text-align: justify;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+            }
+
+            .info a{
+                color: #2196F3;
+                transition: color 0.6s;
+            }
+
+            .info a:hover{
+                color: #6abafb;
+            }
+
+
+            .warning {
+                background-color: #ffffcc;
+                border-left: 0.25rem solid #ffeb3b;
+                text-align: justify;
+                margin: 0.5rem 0;
+                padding: 0 0.5rem;
+            }
+
+            .warning a{
+                color: #ffeb3b;
+                transition: color 0.6s;
+            }
+
+            .warning a:hover{
+                color: #fff599;
+            }
+
+
+
+            .x0x342{
+                padding: 1rem;
+            }
+
+
+        </style>
+    </head>
+
+
+    <body>
+        <main class="x0x342">
+            <h1>uploading...</h1>
+        
+            
+
+        </main>
+    </body>
+</html>
