@@ -29,7 +29,7 @@
         if ( 0 < $_FILES['file']['error'] ) {
             echo 'Error: ' . $_FILES['file']['error'] . '<br>';
         }else {
-            echo json_encode($_FILES['file']['name'][0]);
+            #echo json_encode($_FILES['file']['name'][0]);
             if(in_array(mime_content_type($_FILES['file']['tmp_name']),array('image/jpeg','image/png'))) {
                 move_uploaded_file ($_FILES['file']['tmp_name'], '../global/data/'.md5($produkt->getSerialnumber()).".png");
             } else {
@@ -37,7 +37,14 @@
             }
         }
 
-        $data = $produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
+        $lines = file("../global/data/data.txt");
+        if(explode("|||",$lines[0])[0]){
+            $id = explode("|||",$lines[0])[0]+1;
+        }else{
+            $id = 1;
+        }
+        
+        $data =  $id."|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
 
 
 

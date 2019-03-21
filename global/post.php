@@ -5,53 +5,18 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	error_reporting(0);
+	#error_reporting(0);
 
+
+
+	$id = isset($_GET['id']) ? $_POST['id'] : null;
 	
-	$_POST = json_decode(file_get_contents('php://input'), true);
-
-
-
-	$last = isset($_POST['last']) ? $_POST['last'] : null;
-	$query = isset($_POST['query']) ? $_POST['query'] : null;
-	$max = isset($_POST['max']) ? $_POST['max'] : null;
-	
-	$likes = 0;
-	$score = 0;
-	$comments = 0;
-
-	$pID = rand();//$last;
-	
-	$title = "Titel";
-
-	$imgLink = null;
-
-	$description = "
-
-▓█████▄  ▄▄▄    ██▒   █▓ ██▓▓█████▄ 
-▒██▀ ██▌▒████▄ ▓██░   █▒▓██▒▒██▀ ██▌
-░██   █▌▒██  ▀█▄▓██  █▒░▒██▒░██   █▌
-░▓█▄   ▌░██▄▄▄▄██▒██ █░░░██░░▓█▄   ▌
-░▒████▓  ▓█   ▓██▒▒▀█░  ░██░░▒████▓ 
- ▒▒▓  ▒  ▒▒   ▓▒█░░ ▐░  ░▓   ▒▒▓  ▒ 
- ░ ▒  ▒   ▒   ▒▒ ░░ ░░   ▒ ░ ░ ▒  ▒ 
- ░ ░  ░   ░   ▒     ░░   ▒ ░ ░ ░  ░ 
-   ░          ░  ░   ░   ░     ░    
- ░                  ░        ░      
-
-";
-
-	$anzahl = 0;
-
-	$einheit = "Stk.";
-
-	$preis = 0;
 
 
 
 
-	if ($last!=null) {
-		$search = $last;
+	if ($id!=null) {
+		$search = $id;
 		$line_number = false;
 
 		if ($handle = fopen("data/data.txt", "r")) {
@@ -115,7 +80,7 @@ $export .= '<div class="values title">';
 $export .= $title.'';
 $export .= '</div>';
 
-$export .= '<a class="picture" href="global/post.php?id='.$pID.'">';
+$export .= '<a class="picture" href="post.php?id='.$pID.'">';
 $export .= '<picture class="picture" style="background-image: url(\''.$imgLink.'\');">';
 				
 $export .= '</picture>';
