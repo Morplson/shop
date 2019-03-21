@@ -162,7 +162,7 @@
 			vertical-align: baseline;
 		}
 
-		picture{
+		picture.picture,a.picture{
 			display: block;
 			height: 12rem;
 			width: 13.5rem;
@@ -207,6 +207,7 @@
 
 		.flex-container{
 			display: flex;
+			
 			clear: both;
 			flex: 1 0 auto;
 			text-align: center;
@@ -219,8 +220,15 @@
 			
 		}
 
+		.content_r {
+			flex: 1 0 auto;
+			width: 15rem;
+			word-wrap: break-word;
+			align-items: center;
+		}
+
 		.content_l .container{
-			width: 97%;
+			width: 98%;
 			height: auto;
 
 			margin: 0.25rem -1px;
@@ -274,17 +282,21 @@
 			}
 
 
-			function request(where, num, last, query){
+			function request(where, max, last, query){
 
 				console.log("acc");
-				for (var i = num; i > 0; i--) {
-					last++;
+				//for (var i = num; i > 0; i--) {
+					
 					fetch("global/modul.php", {
-						method: 'post',
-						headers: {
-							"Content-type": "text/html"
-						},
-						body: JSON.stringify({last: last, query: query})
+						method: "POST",
+						body: JSON.stringify({
+							last: last,
+							query: query,
+							max: max
+						}),
+						headers:{
+							'Content-Type': 'application/json'
+						}
 					}).then(function (response) {
 						return response.text();
 					}).then(function (data) {
@@ -293,7 +305,9 @@
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-				}
+
+					last = document.getElementById(where).lastChild.id;
+				//}
 			}
 
 

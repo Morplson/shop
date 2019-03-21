@@ -151,16 +151,16 @@
 			</div>
 			<br>
 			<form  method="post" action="upload/upload-script.php" enctype="multipart/form-data" class="plain">
-				<input class="" id="title" type="text" name="title"></input>
-				<input id="file" type="file" name="file"></input>
+				<input placeholder="Titel" id="title" type="text" name="title"></input>
+				<input placeholder="Upload file" id="file" type="file" name="file"></input>
 				<textarea id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
-				<input id="preis" name="preis" type="number" step="0.01" min="0"></input>
-				<input id="gewicht" name="gewicht" type="number" min="0"></input> Gramm
+				<input placeholder="Preis" id="preis" name="preis" type="number" step="0.01" min="0"></input>
+				<input placeholder="Gewicht" id="gewicht" name="gewicht" type="number" min="0"></input> Gramm
 				
-				<input id="anzahl" name="anzahl" type="number"></input>
-				<input id="einheit" type="text" name="einheit"></input>
+				<input placeholder="Anzahl" id="anzahl" name="anzahl" type="number"></input>
+				<input placeholder="Einheit" id="einheit" type="text" name="einheit"></input>
 
-				<input id="anonymous" type="checkbox" name="anonymous"></input>
+				<input placeholder="" id="anonymous" type="checkbox" name="anonymous">Post as Anon?</input>
 				<button type="submit" onclick="upload()">sdfdf</button>
 			</form>
 
