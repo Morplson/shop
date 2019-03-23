@@ -12,10 +12,12 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
 	<script>
-		document.cookie = "articles="+JSON.stringify([]);
-		document.cookie = "votes="+JSON.stringify([]);
-		document.cookie = "likes="+JSON.stringify([]);
-		document.cookie = "comments="+JSON.stringify([]);
+		if (document.cookie.indexOf("articles=") < 0){
+			document.cookie = "articles="+JSON.stringify([]);
+			document.cookie = "votes="+JSON.stringify([]);
+			document.cookie = "likes="+JSON.stringify([]);
+			document.cookie = "comments="+JSON.stringify([]);
+		}
 	</script>
 	<title>Railway</title>
 
@@ -166,7 +168,6 @@
 			display: block;
 			height: 12rem;
 			width: 13.5rem;
-			display: inline-block;
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-position: center;
@@ -330,7 +331,7 @@
 				document.getElementById(id+"likes").style.color = "#f91f1f";
 				
 				let arr = JSON.parse(jsong);
-				arr.push([id, anzel.value]);
+				arr.push([id]);
 				
 				document.cookie = "likes="+JSON.stringify(arr);
 				alert(getCookie("likes"));
@@ -347,7 +348,7 @@
 				
 				
 				let arr = JSON.parse(jsong);
-				arr.push([id, anzel.value]);
+				arr.push([id,vote]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 				alert(getCookie("votes"));
@@ -359,7 +360,7 @@
 				document.getElementById(id+"comments").style.color = "#9273d0";
 				
 				let arr = JSON.parse(jsong);
-				arr.push([id, anzel.value]);
+				arr.push([id]);
 				
 				document.cookie = "comments="+JSON.stringify(arr);
 				alert(getCookie("comments"));

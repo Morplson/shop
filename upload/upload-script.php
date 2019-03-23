@@ -26,15 +26,29 @@
     
         $produkt = new Produkt($title, $description, $preis, $gewicht, $userID, $anzahl, $einheit);
 
-        if ( 0 < $_FILES['file']['error'] ) {
-            echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+        if ( 0 < $_FILES['file']['error'][0] ) {
+            echo 'Error: ' . $_FILES['file']['error'][0] . '<br>';
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
-            if(in_array(mime_content_type($_FILES['file']['tmp_name']),array('image/jpeg','image/png'))) {
-                move_uploaded_file ($_FILES['file']['tmp_name'], '../global/data/'.md5($produkt->getSerialnumber()).".png");
-            } else {
-                echo 'Error: Unsupported type!<br>';
+            if(count($_FILES['file']['name'])>1){                                              # wenn mehr als ein file gegeben ist:
+                mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
+                $j=1;
+                foreach ($_FILES['file']['tmp_name'] as $fileone) {
+                    if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
+                        move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
+                        $j++;
+                    } else {
+                        echo 'Error: Unsupported type!<br>';
+                    }
+                }
+            }else{
+                if(in_array(mime_content_type($_FILES['file']['tmp_name'][0]),array('image/jpeg','image/png'))) {
+                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber()).".png"); #lädt file hoch
+                } else {
+                    echo 'Error: Unsupported type!<br>';
+                }
             }
+
         }
 
         $lines = file("../global/data/data.txt");
