@@ -43,7 +43,7 @@
                 }
             }else{
                 if(in_array(mime_content_type($_FILES['file']['tmp_name'][0]),array('image/jpeg','image/png'))) {
-                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber()).".png"); #lädt file hoch
+                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber())."/1.png"); #lädt file hoch
                 } else {
                     echo 'Error: Unsupported type!<br>';
                 }
@@ -58,7 +58,7 @@
             $id = 1;
         }
         
-        $data =  $id."|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
+        $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
 
 
 
@@ -69,7 +69,7 @@
         
     }
 
-    header( "refresh:10;url=../" );
+    header( "refresh:5;url=../" );
 
 
     

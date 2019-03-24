@@ -16,7 +16,7 @@
 
 
 	if ($id!=null) {
-		$search = $id."|||";
+		$search = $id."rna55df|||";
 		$line_number = false;
 
 		if ($handle = fopen("data/data.txt", "r")) {
@@ -38,7 +38,7 @@
 	$data = explode("|||",$lines[$line_number-1]);
 	
 
-	$pID = $data[0];
+	$pID = explode("rna55df",$data[0])[0];
 	$link = $data[1];
 	$anzahl = $data[2];
 	$title = $data[3];
@@ -57,8 +57,6 @@
 		foreach (glob("data/".md5($link)."/*.png") as $file) {
 			$images[] = $file;
 		}
-	}else{
-		$images[0] = "data/".md5($link).".png";
 	}
 	
 
@@ -239,6 +237,8 @@
 				left: 12.5%;
 			}
 
+			.piccontainer {display:none;}
+
 		</style>
 
 
@@ -276,9 +276,9 @@
 			$j = 0;
 			foreach ($images as $imgLink):
 		?>
-			<a class="picture" href="<?php echo $imgLink; ?>">
-			<picture id="<?php echo $j; ?>picture" class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
-			</picture>
+			<a class="picture piccontainer" href="<?php echo $imgLink; ?>">
+				<picture id="<?php echo $j; ?>picture" class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
+				</picture>
 			</a>
 		<?php
 			$j++;
@@ -375,13 +375,16 @@
 				return "";
 			}
 
+			var slideIndex = 1;
+			showDivs(slideIndex);
+
 			function plusDivs(n) {
 				showDivs(slideIndex += n);
 			}
 
 			function showDivs(n) {
 				var i;
-				var x = document.getElementsByClassName("picture");
+				var x = document.getElementsByClassName("piccontainer");
 				if (n > x.length) {slideIndex = 1}
 				if (n < 1) {slideIndex = x.length}
 				for (i = 0; i < x.length; i++) {

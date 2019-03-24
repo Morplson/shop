@@ -74,7 +74,7 @@
 		$data = explode("|||",$lines[$i]);
 	
 
-		$pID = $data[0];
+		$pID = explode("rna55df",$data[0])[0];
 		$link = $data[1];
 		$anzahl = $data[2];
 		$title = $data[3];
@@ -89,13 +89,14 @@
 	
 		#$imgLink = "global/data/".md5($link).".png";
 
-		if(!file_exists("global/data/".md5($link).".png")){
 
+		##################################################
+		###### TODO!: >funktioniert das is_dir nicht
+		##################################################
 
-			$imgLink = "global/data/".md5($link)."/1.png";
-		}else{
-			$imgLink = "global/data/".md5($link).".png";
-		}
+		
+		$imgLink = "global/data/".md5($link)."/1.png";
+	
 
 ?>
 
