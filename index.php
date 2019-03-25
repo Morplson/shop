@@ -220,6 +220,12 @@
 			
 		}
 
+		@media only screen and (max-width: 768px) {
+			.content_l {
+				display: none;
+			}
+		}
+
 		.content_r {
 			flex: 1 0 auto;
 			width: 15rem;

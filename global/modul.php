@@ -76,7 +76,7 @@
 
 	$pID = $data[0];
 	$anzahl = $data[1];
-	$title = $data[2]."$last";
+	$title = $data[2];
 	$preis = $data[3];
 	$description = $data[4];
 	$einheit = $data[5];
