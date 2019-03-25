@@ -152,7 +152,13 @@
 			<br>
 			<form  method="post" action="upload/upload-script.php" enctype="multipart/form-data" class="plain">
 				<input placeholder="Titel" id="title" type="text" name="title"></input>
-				<input placeholder="Upload file" id="file" type="file" name="file"></input>
+
+				<input placeholder="Upload file" id="file" type="file" name="file[]"></input>
+				<input placeholder="Upload file 2" id="file" type="file" name="file[]"></input>
+				<input placeholder="Upload file 3" id="file" type="file" name="file[]"></input>
+				<input placeholder="Upload file 4" id="file" type="file" name="file[]"></input>
+				<input placeholder="Upload file 5" id="file" type="file" name="file[]"></input>
+
 				<textarea id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
 				<input placeholder="Preis" id="preis" name="preis" type="number" step="0.01" min="0"></input>
 				<input placeholder="Gewicht" id="gewicht" name="gewicht" type="number" min="0"></input> Gramm

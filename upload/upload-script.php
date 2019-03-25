@@ -26,18 +26,39 @@
     
         $produkt = new Produkt($title, $description, $preis, $gewicht, $userID, $anzahl, $einheit);
 
-        if ( 0 < $_FILES['file']['error'] ) {
-            echo 'Error: ' . $_FILES['file']['error'] . '<br>';
+        if ( 0 < $_FILES['file']['error'][0] ) {
+            echo 'Error: ' . $_FILES['file']['error'][0] . '<br>';
         }else {
-            echo json_encode($_FILES['file']['name'][0]);
-            if(in_array(mime_content_type($_FILES['file']['tmp_name']),array('image/jpeg','image/png'))) {
-                move_uploaded_file ($_FILES['file']['tmp_name'], '../global/data/'.md5($produkt->getSerialnumber()).".png");
-            } else {
-                echo 'Error: Unsupported type!<br>';
+            #echo json_encode($_FILES['file']['name'][0]);
+            if(count($_FILES['file']['name'])>1){                                              # wenn mehr als ein file gegeben ist:
+                mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
+                $j=1;
+                foreach ($_FILES['file']['tmp_name'] as $fileone) {
+                    if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
+                        move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
+                        $j++;
+                    } else {
+                        echo 'Error: Unsupported type!<br>';
+                    }
+                }
+            }else{
+                if(in_array(mime_content_type($_FILES['file']['tmp_name'][0]),array('image/jpeg','image/png'))) {
+                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber())."/1.png"); #lädt file hoch
+                } else {
+                    echo 'Error: Unsupported type!<br>';
+                }
             }
+
         }
 
-        $data = $produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
+        $lines = file("../global/data/data.txt");
+        if(explode("|||",$lines[0])[0]){
+            $id = explode("|||",$lines[0])[0]+1;
+        }else{
+            $id = 1;
+        }
+        
+        $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
 
 
 
@@ -48,7 +69,7 @@
         
     }
 
-    header( "refresh:10;url=../" );
+    header( "refresh:5;url=../" );
 
 
     
