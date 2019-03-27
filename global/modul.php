@@ -74,6 +74,7 @@
 		$data = explode("|||",$lines[$i]);
 	
 
+
 		$pID = explode("rna55df",$data[0])[0];
 		$link = $data[1];
 		$anzahl = $data[2];
@@ -116,6 +117,7 @@
 			<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
 		</div>
 	</div>
+
 
 			
 	<div class="values title">
