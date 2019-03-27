@@ -31,24 +31,22 @@
 
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
-            if(count($_FILES['file']['name'])>1){                                              # wenn mehr als ein file gegeben ist:
-                mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
-                $j=1;
-                foreach ($_FILES['file']['tmp_name'] as $fileone) {
-                    if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
-                        move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
-                        $j++;
-                    } else {
+
+            mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
+            $j=1;
+
+            foreach ($_FILES['file']['tmp_name'] as $fileone) {
+                if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
+                    move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
+                    $j++;
+                } else {
+                    if(strlen($fileone)>0){
                         $error .= 'Error: Unsupported type!<br>';
                     }
-                }
-            }else{
-                if(in_array(mime_content_type($_FILES['file']['tmp_name'][0]),array('image/jpeg','image/png'))) {
-                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber())."/1.png"); #lädt file hoch
-                } else {
-                    $error .= 'Error: Unsupported type!<br>';
+                    
                 }
             }
+
             $lines = file("../global/data/data.txt");
             if(explode("|||",$lines[0])[0]){
                 $id = explode("|||",$lines[0])[0]+1;
@@ -57,7 +55,7 @@
             }
             
             $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL; 
-            
+
             $fileContents = file_get_contents("../global/data/data.txt");   
 
             file_put_contents("../global/data/data.txt", $data . $fileContents);
