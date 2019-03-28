@@ -13,6 +13,7 @@
 
     if($title==null||$anzahl==null||$preis==null||$description==null){
         $error .= "Failed to upload <br>No inputs given <br>";
+        header( "refresh:1;url=../" );
     }else{
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
@@ -28,7 +29,7 @@
 
         if ( 0 < $_FILES['file']['error'][0] ) {
             $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
-
+            header( "refresh:1;url=../" );
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
 
@@ -42,6 +43,7 @@
                 } else {
                     if(strlen($fileone)>0){
                         $error .= 'Error: Unsupported type!<br>';
+                        header( "refresh:1;url=../" );
                     }
                     
                 }
@@ -215,8 +217,8 @@
                 background-color: #5aa51d;
                 height: 100%;
                 width: 0%;
-                -webkit-animation: strech 5.1s linear infinite;
-                animation: strech 5.1s linear infinite;
+                -webkit-animation: strech 5.5s linear infinite;
+                animation: strech 5.5s linear infinite;
             }
 
             .loading {
@@ -257,15 +259,20 @@
 
     <body>
         <main class="x0x342">
-            <h1>uploading...</h1>
+            <h1>Boorushop-Uploader</h1>
             
             <?php if($error == ""): ?>
+                
+                <h1 id="uploding">uploding</h1>
+                
                 <div class="loader"></div>
                 <br>
                 <div class="loading">
                     <div class="loaderbar"></div>
                 </div>
             <?php else: ?>
+                <br>
+                <br>
                 <div class="danger">
                     <?php echo $error; ?>
                 </div>
@@ -274,4 +281,28 @@
 
         </main>
     </body>
+    <script type="text/javascript">
+        var e = document.getElementById("uploding");
+        var i=-1;
+        var r = setInterval(() => {
+            i++;
+            switch (i){
+                case 0:
+                    e.innerHTML = "uploding";
+                    break;
+                case 1:
+                    e.innerHTML = "uploding.";
+                    break;
+                case 2:
+                    e.innerHTML = "uploding..";
+                    break;
+                case 3:
+                    e.innerHTML = "uploding...";
+                    i=-1;
+                    break;
+                
+            }
+
+        },666);
+    </script>
 </html>
