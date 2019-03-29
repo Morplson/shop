@@ -9,10 +9,11 @@
     $anzahl = isset($_POST['anzahl']) ? htmlspecialchars($_POST['anzahl'], ENT_QUOTES, "UTF-8") : null;
     $einheit = (isset($_POST['einheit'])&&$_POST['einheit']!="") ? htmlspecialchars($_POST['einheit'], ENT_QUOTES, "UTF-8") : 'Stk.';
 
-
+    $error = "";
 
     if($title==null||$anzahl==null||$preis==null||$description==null){
-        echo "failed to upload" . '<br>';
+        $error .= "Failed to upload <br>No inputs given <br>";
+        header( "refresh:1;url=../" );
     }else{
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
@@ -27,44 +28,43 @@
         $produkt = new Produkt($title, $description, $preis, $gewicht, $userID, $anzahl, $einheit);
 
         if ( 0 < $_FILES['file']['error'][0] ) {
-            echo 'Error: ' . $_FILES['file']['error'][0] . '<br>';
+            $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
+            header( "refresh:1;url=../" );
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
-            if(count($_FILES['file']['name'])>1){                                              # wenn mehr als ein file gegeben ist:
-                mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
-                $j=1;
-                foreach ($_FILES['file']['tmp_name'] as $fileone) {
-                    if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
-                        move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
-                        $j++;
-                    } else {
-                        echo 'Error: Unsupported type!<br>';
-                    }
-                }
-            }else{
-                if(in_array(mime_content_type($_FILES['file']['tmp_name'][0]),array('image/jpeg','image/png'))) {
-                    move_uploaded_file ($_FILES['file']['tmp_name'][0], '../global/data/'.md5($produkt->getSerialnumber())."/1.png"); #lädt file hoch
+
+            mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
+            $j=1;
+
+            foreach ($_FILES['file']['tmp_name'] as $fileone) {
+                if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
+                    move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
+                    $j++;
                 } else {
-                    echo 'Error: Unsupported type!<br>';
+                    if(strlen($fileone)>0){
+                        $error .= 'Error: Unsupported type!<br>';
+                        header( "refresh:1;url=../" );
+                    }
+                    
                 }
             }
 
+            $lines = file("../global/data/data.txt");
+            if(explode("|||",$lines[0])[0]){
+                $id = explode("|||",$lines[0])[0]+1;
+            }else{
+                $id = 1;
+            }
+            
+            $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL; 
+
+            $fileContents = file_get_contents("../global/data/data.txt");   
+
+            file_put_contents("../global/data/data.txt", $data . $fileContents);
+
         }
 
-        $lines = file("../global/data/data.txt");
-        if(explode("|||",$lines[0])[0]){
-            $id = explode("|||",$lines[0])[0]+1;
-        }else{
-            $id = 1;
-        }
         
-        $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
-
-
-
-        $fileContents = file_get_contents("../global/data/data.txt");
-
-        file_put_contents("../global/data/data.txt", $data . $fileContents);
 
         
     }
@@ -189,12 +189,69 @@
 
 
             .x0x342{
-                padding: 1rem;
+                padding: 0 12.5%;
             }
 
-            .loader{
+
+            .loader {
+                margin: 0 auto;
+                border: 0.25rem solid #E8E8E8;
+                border-radius: 50%;
+                border-top: 0.25rem solid #5aa51d;
+                width: 6rem;
+                height: 6rem;
+                -webkit-animation: spin 2s linear infinite;
+                animation: spin 2s linear infinite;
+            }
+
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .loaderbar {
+                background-color: #5aa51d;
+                height: 100%;
+                width: 0%;
+                -webkit-animation: strech 5.5s linear infinite;
+                animation: strech 5.5s linear infinite;
+            }
+
+            .loading {
+                margin: 0 auto;
+                border: 0.25rem solid #E8E8E8;
+                background-color: #E8E8E8;
+                width: 25rem;
+                height: 2.5rem;
                 
             }
+
+            @-webkit-keyframes strech {
+                10% { width: 20%; }
+                30% { width: 35%; }
+                50% { width: 43%; }
+                51% { width: 46%; }
+                70% { width: 65%; }
+                90% { width: 80%; }
+                100% { width: 100%; }
+            }
+
+
+            @keyframes strech {
+                10% { width: 20%; }
+                30% { width: 35%; }
+                50% { width: 43%; }
+                51% { width: 46%; }
+                70% { width: 65%; }
+                90% { width: 80%; }
+                100% { width: 100%; }
+            }
+
 
 
         </style>
@@ -203,10 +260,50 @@
 
     <body>
         <main class="x0x342">
-            <h1>uploading...</h1>
-        
-            <div class="loader"></div>
+            <h1>Boorushop-Uploader</h1>
+            
+            <?php if($error == ""): ?>
+                
+                <h1 id="uploding">uploding</h1>
+                
+                <div class="loader"></div>
+                <br>
+                <div class="loading">
+                    <div class="loaderbar"></div>
+                </div>
+            <?php else: ?>
+                <br>
+                <br>
+                <div class="danger">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+
 
         </main>
     </body>
+    <script type="text/javascript">
+        var e = document.getElementById("uploding");
+        var i=-1;
+        var r = setInterval(() => {
+            i++;
+            switch (i){
+                case 0:
+                    e.innerHTML = "uploding";
+                    break;
+                case 1:
+                    e.innerHTML = "uploding.";
+                    break;
+                case 2:
+                    e.innerHTML = "uploding..";
+                    break;
+                case 3:
+                    e.innerHTML = "uploding...";
+                    i=-1;
+                    break;
+                
+            }
+
+        },666);
+    </script>
 </html>
