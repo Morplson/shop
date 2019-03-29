@@ -192,6 +192,10 @@
                 padding: 1rem;
             }
 
+            .loader{
+                
+            }
+
 
         </style>
     </head>
@@ -201,7 +205,7 @@
         <main class="x0x342">
             <h1>uploading...</h1>
         
-            
+            <div class="loader"></div>
 
         </main>
     </body>

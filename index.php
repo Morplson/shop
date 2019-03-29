@@ -339,8 +339,24 @@
 				let arr = JSON.parse(jsong);
 				arr.push([id]);
 				
-				document.cookie = "likes="+JSON.stringify(arr);
 				alert(getCookie("likes"));
+
+				fetch("global/like.php", {
+					method: "POST",
+					body: JSON.stringify({
+						id: id
+					}),
+					headers:{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					let html = data.trim();
+					document.getElementById(where).innerHTML += html.trim();
+				}).catch(function (error) {
+					console.log('Request failed', error);
+				});
 			}
 
 			function vote(id, vote){
@@ -357,7 +373,23 @@
 				arr.push([id,vote]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
-				alert(getCookie("votes"));
+
+				fetch("global/like.php", {
+					method: "POST",
+					body: JSON.stringify({
+						id: id
+					}),
+					headers:{
+						'Content-Type': 'application/json'
+					}
+				}).then(function (response) {
+					return response.text();
+				}).then(function (data) {
+					let html = data.trim();
+					document.getElementById(where).innerHTML += html.trim();
+				}).catch(function (error) {
+					console.log('Request failed', error);
+				});
 			}
 
 			function comment(id){
@@ -369,7 +401,9 @@
 				arr.push([id]);
 				
 				document.cookie = "comments="+JSON.stringify(arr);
-				alert(getCookie("comments"));
+				window.location.replace("global/post.php?id="+id+"#comment");
+
+
 			}
 
 			function getCookie(cname) {
