@@ -214,13 +214,6 @@
 			text-align: center;
 		}
 
-		.content_l {
-			flex: 0 0 auto;
-			width: 15rem;
-			word-wrap: break-word;
-			
-		}
-
 		@media only screen and (max-width: 768px) {
 			.content_l {
 				display: none;
@@ -234,12 +227,7 @@
 			align-items: center;
 		}
 
-		.content_l .container{
-			width: 98%;
-			height: auto;
 
-			margin: 0.25rem -1px;
-		}
 
 		.values.buy>.btn:hover, .values.buy>.num:hover{
 			background-color: #D8D8D8;
@@ -250,41 +238,30 @@
 </head>
 <body>
 	<?php
+		$s = isset($_GET['s']) ? $_GET['s'] : null;
+		$q = isset($_GET['q']) ? $_GET['q'] : null;
 		include "menu/top-menu.php";
 	?>
 
 	<main id="content" class="content flex-container">
-		<aside class="content_l">
-			<div id="trend" class="container">
-				<div class="values">
-					Beliebte Produkte
-				</div>
-			</div>
-			<script type="text/javascript">
-				document.addEventListener('DOMContentLoaded', function(){
-					request("trend",8,null,"top")
-				});
-			</script>
-			<div id="comment" class="container">
-				<div class="values">
-					Recent Comments
-				</div>
-			</div>
-		</aside>	
 		<div id="main" class="content_r">
-			
+			<?php
+				if($q != null){
+					echo "ACTUNG: Querys werden erst beim DB-Store unterstützt!";
+				}
+			?>
 		</div>
 		<script type="text/javascript">
 
 			document.addEventListener('DOMContentLoaded', function(){
-				request("main",40,null,"new",null)
+				request("main",40,null,"<?php echo $q;?>","<?php echo $s;?>");
 			});
 
 
 			document.onscroll = function(){
 				if (document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight-20){
 					var last = document.getElementById("main").lastChild.id;
-					request("main",40,last,"new",null);
+					request("main",40,last,"<?php echo $q;?>","<?php echo $s;?>");
 				}
 			}
 

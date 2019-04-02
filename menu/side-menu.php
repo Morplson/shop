@@ -116,6 +116,8 @@
 		.sidecontainer>div{
 			height: 100%;
 			width: 26rem;
+			overflow: scroll;
+			overflow-x: hidden;
 			display: none;
 		}
 
@@ -185,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			switch(e.currentTarget.id){
 				case "info":
 					
-					var url = "info/";
+					var url = "korb/";
 					var body = JSON.stringify({});
 					
 					if(document.getElementById("sideinfo").style.display != "block"){
@@ -195,6 +197,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 							var destination = "sideinfo"; 
 							sideLoader(url, body, destination);
+							requestkorb("korb");
 					}
 
 	
@@ -213,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function(){
 					}
 					break;
 				case "playlist":
-					var url = "playlist/";
+					var url = "wunschliste/";
 					var body = JSON.stringify({});
 	
 					if(document.getElementById("sideconfig").style.display != "block"){

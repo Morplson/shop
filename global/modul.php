@@ -14,6 +14,7 @@
 
 	$last = isset($_POST['last']) ? $_POST['last'] : null;
 	$query = isset($_POST['query']) ? $_POST['query'] : null;
+	$s = isset($_POST['s']) ? $_POST['s'] : null;
 	$max = isset($_POST['max']) ? $_POST['max'] : null;
 	
 	$likes = 0;
@@ -47,11 +48,11 @@
 
 	$preis = 0;
 
-
+	start:
 
 
 	if ($last!=null) {
-		$search = $last;
+		$search = $last."rna55df|||";
 		$line_number = false;
 
 		if ($handle = fopen("data/data.txt", "r")) {
@@ -66,13 +67,28 @@
 	} else {
 		$line_number = 0;
 	}
+
+
 	
 	$export = '';
 	$lines = file("data/data.txt");
-	for($i=$line_number; $i < $max; $i++):
-		
+	for($i=$line_number; $i < $max+$line_number; $i++):
 		$data = explode("|||",$lines[$i]);
-	
+
+		if ($data[0] == FALSE) {
+
+			continue;
+		}
+
+		if ($s!=null) {
+			if((strpos(strtolower($data[3]), strtolower($s)) == FALSE)&&(strpos(strtolower($data[5]), strtolower($s)) == FALSE)){
+				$max++;
+				continue;
+			}
+		}
+
+
+
 
 
 		$pID = explode("rna55df",$data[0])[0];
@@ -97,7 +113,8 @@
 
 		
 		$imgLink = "global/data/".md5($link)."/1.png";
-	
+		
+
 
 ?>
 

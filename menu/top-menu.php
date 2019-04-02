@@ -58,21 +58,32 @@
 			display: none;
 		}
 	}
-	@media only screen and (min-width: 768px) {
+	@media only screen and (min-width: 767px) {
 		.mobile {
 			display: none;
 		}
 	}
 </style>
 	<div class="header">
-		<a href="shop/"><div class="label topleftli">Boorushop</div></a>
+		<a href="../shop/"><div class="label topleftli">Boorushop</div></a>
 		<a><div class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
-		<a href="shop/"><div class="desktop topleftli">Beliebt</div></a>
-		<a href="shop/"><div class="desktop topleftli">Neu</div></a>
+		<a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
+		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a>
 
-		<a href=""><div class="desktop toprightli">Login</div></a>
-		<div class="desktop toprightli"><input class="search" type="text" placeholder="Search..." name="sInput"></div>
+		<a href="login/"><div class="desktop toprightli">Login</div></a>
+		<div class="desktop toprightli"><input id="search" class="search" type="text" placeholder="Search..." name="sInput"></div>
+
+
 
 		
 	</div>
+	<script type="text/javascript">
+		const searchinp = document.getElementById("search");
+		searchinp.addEventListener("keyup", function(event) {
+    		if (event.key === "Enter") {
+       			window.location.replace("search.php?s="+searchinp.value);
+    		}
+		});
+
+	</script>
 	

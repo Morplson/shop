@@ -29,7 +29,8 @@
 
         if ( 0 < $_FILES['file']['error'][0] ) {
             $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
-            header( "refresh:1;url=../" );
+            header( "refresh:2;url=../" );
+            goto end;
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
 
@@ -43,7 +44,9 @@
                 } else {
                     if(strlen($fileone)>0){
                         $error .= 'Error: Unsupported type!<br>';
-                        header( "refresh:1;url=../" );
+                        header( "refresh:2;url=../" );
+                        goto end;
+                        
                     }
                     
                 }
@@ -68,8 +71,10 @@
 
         
     }
-
     header( "refresh:5;url=../" );
+
+    end:
+        
 
 
     

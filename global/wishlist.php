@@ -13,8 +13,7 @@
 
 
 	$last = isset($_POST['last']) ? $_POST['last'] : null;
-	$query = isset($_POST['query']) ? $_POST['query'] : null;
-	$max = isset($_POST['max']) ? $_POST['max'] : null;
+	$anzl = isset($_POST['anzl']) ? $_POST['anzl'] : null;
 	
 	$likes = 0;
 	$score = 0;
@@ -51,7 +50,7 @@
 
 
 	if ($last!=null) {
-		$search = $last;
+		$search = $last."rna55df|||";
 		$line_number = false;
 
 		if ($handle = fopen("data/data.txt", "r")) {
@@ -69,14 +68,15 @@
 	
 	$export = '';
 	$lines = file("data/data.txt");
+
 		
-	$data = explode("|||",$lines[$i]);
+	$data = explode("|||",$lines[$line_number-1]);
 	
 
 
 	$pID = explode("rna55df",$data[0])[0];
 	$link = $data[1];
-	$anzahl = $data[2];
+	$anzahl = $anzl;
 	$title = $data[3];
 	$preis = $data[4];
 	$description = $data[5];
@@ -94,24 +94,7 @@
 ?>
 
 <div class="container" id="<?php echo $pID; ?>">
-	<div class="values scores">
-		<div id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
-			<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-			<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-		</div>
-		<div id="<?php echo $pID; ?>votes" class="vote">
-			<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
-			<span class="score" title="Score"><?php echo $score; ?></span>
-			<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
-		</div>
-		<div id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
-			<i class="fa fa-comments"></i>
-			<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
-		</div>
-	</div>
-
-
-			
+		
 	<div class="values title">
 		<?php echo $title ?>
 	</div>
@@ -132,4 +115,3 @@
 	</div>
 </div>
 
-<?php endfor; ?>
