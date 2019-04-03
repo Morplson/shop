@@ -87,7 +87,7 @@
 
 </style>
 	<div class="header">
-		<a href="../shop/"><div class="label topleftli">Boorushop</div></a>
+		<a href="../shop/"><div class="label topleftli">Shop.com</div></a>
 		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
 		<a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a>
