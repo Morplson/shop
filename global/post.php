@@ -1,4 +1,5 @@
 <?php
+	session_start();
 	/**
 	 * AUTHOR: DAVID ZEILINGER
 	 * VERSION: 23_01_2019
@@ -75,6 +76,50 @@
 			file_put_contents("data/data.txt", $out);
 		}
 	}
+
+	if($id!=null&&isset($_SESSION['userid'])) {
+		$lines = file_get_contents("data/like.txt");
+		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $lines, $matches)){
+			$collikes = "#f91f1f";
+		}else{
+			$collikes = "black";
+		}
+	}
+
+	if($id!=null&&isset($_SESSION['userid'])) {
+		$lines = file_get_contents("data/vote.txt");
+		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $lines, $matches)){
+			$like = explode("|||", $matches[0][0])[2];
+			if($like==-1){
+				$colvotes = "#f91f1f";
+			}elseif($like==1){
+				$colvotes = "#5aa51d";
+			}else{
+				$colvotes = "black";
+			}
+		}else{
+			$colvotes = "black";
+		}
+	}
+	
+	if($id!=null&&isset($_SESSION['userid'])) {
+		$lines = file_get_contents("data/like.txt");
+		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $lines, $matches)){
+			$colcom = "#9273d0";
+		}else{
+			$colcom = "black";
+		}
+	}
+
 
 
 ?>
@@ -257,99 +302,101 @@
 
 			.piccontainer {display:none;}
 
+			.comments{
+				margin-top: 1.5rem;
+			}
+
+			.comment{
+				margin-top: 0.25rem;
+			}
+
+			.commentbox {
+				text-align: justify;
+				padding: 0.5rem 5%;
+				word-break: break-word;
+			}
+
 		</style>
 	</head>
+	<body>
+
+	<div class="container" id="<?php echo $pID; ?>">
+		<div class="values scores">
+			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
+				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
+				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
+			</div>
+			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
+				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
+				<span class="score" title="Score"><?php echo $score; ?></span>
+				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
+			</div>
+			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
+				<i class="fa fa-comments"></i>
+				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
+			</div>
+		</div>
+
+
 
 
 <?php
-	if("03benutzer"==$data[1]):
+	if($_SESSION['userid']==$data[1]):
 ?>
 
-<body>
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
-<div class="container" id="<?php echo $pID; ?>">
-	<div class="values scores">
-		<div id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
-			<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-			<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-		</div>
-		<div id="<?php echo $pID; ?>votes" class="vote">
-			<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
-			<span class="score" title="Score"><?php echo $score; ?></span>
-			<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
-		</div>
-		<div id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
-			<i class="fa fa-comments"></i>
-			<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
-		</div>
-	</div>
 
-			
-	<div class="values title">
-		<input type="text" name="title" value="<?php echo $title; ?>">
-	</div>
-	<div>
-		<?php if(count($images)>1): ?>
-			<div class="hoverbutton left" onclick="plusDivs(-1)"><i class="fas fa-angle-left"></i></div>
-			<div class="hoverbutton right" onclick="plusDivs(1)"><i class="fas fa-angle-right"></i></div>
-		<?php 
-			endif;
+				
+		<div class="values title">
+			<input type="text" name="title" value="<?php echo $title; ?>">
+		</div>
+		<div>
+			<?php
+				if(count($images)>1):
+			?>
+				<div class="hoverbutton left" onclick="plusDivs(-1)"><i class="fas fa-angle-left"></i></div>
+				<div class="hoverbutton right" onclick="plusDivs(1)"><i class="fas fa-angle-right"></i></div>
+			<?php 
+				endif;	
 
-			$j = 0;
-			foreach ($images as $imgLink):
-		?>
-			<a class="picture piccontainer" href="<?php echo $imgLink; ?>">
-				<picture id="<?php echo $j; ?>picture" class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
-				</picture>
-			</a>
-		<?php
-			$j++;
-			endforeach; 
-		?>		
-	</div>
-	
-	<div class="values gets">
-		<div class="preis">
-			Preis: <input type="number" name="preis" value="<?php echo $preis; ?>">€
+				$j = 0;
+				foreach ($images as $imgLink):
+			?>
+				<a class="picture piccontainer" href="<?php echo $imgLink; ?>">
+					<picture id="<?php echo $j; ?>picture" class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
+					</picture>
+				</a>
+			<?php
+				$j++;
+				endforeach; 
+			?>		
 		</div>
-	</div>
-	<div class="values gets">
-		<div class="preis">
-			<input type="number" name="anzahl" value="<?php echo $anzahl; ?>"><input type="text" name="einheit" value="<?php echo $einheit; ?>">
+		
+		<div class="values gets">
+			<div class="preis">
+				Preis: <input type="number" name="preis" value="<?php echo $preis; ?>">€
+			</div>
 		</div>
+		<div class="values gets">
+			<div class="preis">
+				<input type="number" name="anzahl" value="<?php echo $anzahl; ?>"><input type="text" name="einheit" value="<?php echo $einheit; ?>">
+			</div>
+		</div>
+		<div class="description">
+			<textarea style="resize: none;" name="description"><?php echo $description; ?></textarea>
+		</div>
+		
 	</div>
-	<div class="description">
-		<textarea style="resize: none;" name="description"><?php echo $description; ?></textarea>
-	</div>
-	
-</div>
-<button type="submit" name="b">Bearbeiten</button>
+	<button type="submit" name="b">Bearbeiten</button>
 </form>
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
 	<button type="submit" name="l">Löschen</button>
 </form>
+
 <?php
 	else:
 ?>
 
-<body>
-
-<div class="container" id="<?php echo $pID; ?>">
-	<div class="values scores">
-		<div id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
-			<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-			<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-		</div>
-		<div id="<?php echo $pID; ?>votes" class="vote">
-			<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
-			<span class="score" title="Score"><?php echo $score; ?></span>
-			<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
-		</div>
-		<div id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
-			<i class="fa fa-comments"></i>
-			<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
-		</div>
-	</div>
 
 			
 	<div class="values title">
@@ -377,7 +424,7 @@
 	
 	<div class="values gets">
 		<div class="preis">
-			Preis: <?php echo $preis; ?>
+			Preis: <?php echo $preis; ?>€
 		</div>
 		<div class="anzahl">
 			<?php echo $anzahl." ".$einheit; ?>
@@ -397,59 +444,79 @@
 ?>
 
 
-<script>
-			function buy(id){
-				let anzel = document.getElementById(id+"anzahl");
-				let jsong = getCookie("articles");
 
-				document.getElementById(id+"button").style.color = "#ff8c00";
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id, anzel.value]);
-				
-				document.cookie = "articles="+JSON.stringify(arr);
-				alert(getCookie("articles"));
-			}
 
-			function like(id){
-				let jsong = getCookie("likes");
+<a id="comment"></a>
+<div class="container comments">
+	<div class="values">
+		Kommentare
+	</div>
+	<div class="commentbox">
 
-				document.getElementById(id+"likes").style.color = "#f91f1f";
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
-				document.cookie = "likes="+JSON.stringify(arr);
-				alert(getCookie("likes"));
-			}
+		<div class="container comment">
+			<div class="values">
+				Dein Kommentar
+			</div>
+			<div class="description">
+				<input id="comtitle" type="text" name="title" placeholder="Titel">
 
-			function vote(id, vote){
-				let jsong = getCookie("votes");
+				<textarea id="comtext" style="resize: none;" name="text"></textarea>
+				<div onclick="post(<?php echo $pID; ?>)">Post</div>
+			</div>
+			
+		</div>
 
-				if(vote<0){
-					document.getElementById(id+"votes").style.color = "#f91f1f";
-				}else if (vote>0) {
-					document.getElementById(id+"votes").style.color = "#5aa51d";
+		<?php
+			
+			if($id!=null) {
+				$lines = file_get_contents("data/comment.txt");
+				$pattern = preg_quote($id."postid|||", '/');		
+
+				$pattern = "/^.*$pattern.*\$/m";
+				if(preg_match_all($pattern, $lines, $matches)){
+					foreach ($matches[0] as $line) {	
+						$text = explode("|||", $line);
+
+						?>
+
+						<div class="container comment">
+							<div class="values title">
+								<?php echo $text[2]; ?>
+							</div>
+							<div class="description">
+								<?php echo $text[3]; ?>
+							</div>
+						</div>
+
+						<?php
+					}
 				}
-				
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
-				document.cookie = "votes="+JSON.stringify(arr);
-				alert(getCookie("votes"));
-			}
+			}		
+		?>
 
-			function comment(id){
-				let jsong = getCookie("comments");
+	</div>
+</div>
 
-				document.getElementById(id+"comments").style.color = "#9273d0";
+
+
+<script>
+			function post(id){
+				let title = document.getElementById("comtitle").value;
+				let text = document.getElementById("comtext").value;
 				
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
-				document.cookie = "comments="+JSON.stringify(arr);
-				alert(getCookie("comments"));
+				fetch("comment-script.php", {
+					method: "POST",
+					body: JSON.stringify({
+						id: id,
+						title: title,
+						text: text
+					}),
+					headers:{
+						'Content-Type': 'application/json'
+					}
+				}).catch(function (error) {
+					console.log('Request failed', error);
+				});
 			}
 
 			function getCookie(cname) {

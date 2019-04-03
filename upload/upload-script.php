@@ -22,7 +22,7 @@
         if(($anon||$anon==null)||(!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
             $error .= "Kein Nutzer Angemeldet<br>";
             header( "refresh:1;url=../" );
-            goto end;
+            #goto end; -----------------------------------------------------------------------------------
         }else{
             $userID=$_SESSION['userid'];
         }
@@ -33,7 +33,7 @@
         if ( 0 < $_FILES['file']['error'][0] ) {
             $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
             header( "refresh:2;url=../" );
-            goto end;
+            #goto end; -----------------------------------------------------------------------------------
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
 

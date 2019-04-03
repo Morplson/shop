@@ -86,14 +86,20 @@
 	}
 
 </style>
+<script type="text/javascript">
+	
+</script>
 	<div class="header">
 		<a href="../shop/"><div class="label topleftli">Shop.com</div></a>
 		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
-		<a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
-		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a>
+		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
+		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
 		<a href="login/"><div class="desktop toprightli">Login</div></a>
-		<div class="desktop toprightli"><input id="search" class="search" type="text" placeholder="Search..." name="sInput"></div>
+		<div class="desktop toprightli">
+			<input id="search" class="search" type="text" placeholder="Search..." name="sInput">
+			<i class="fas fa-search" onclick="search()"></i>
+		</div>
 
 
 
@@ -106,17 +112,23 @@
 
 	<script type="text/javascript">
 		const searchinp = document.getElementById("search");
-		searchinp.addEventListener("keyup", function(event) {
-    		if (event.key === "Enter") {
-       			window.location.replace("search.php?s="+searchinp.value);
-    		}
+		searchinp.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
 		});
+
 		const searchinpm = document.getElementById("searchm");
-		searchinpm.addEventListener("keyup", function(event) {
-    		if (event.key === "Enter") {
-       			window.location.replace("search.php?s="+searchinp.value);
-    		}
+		searchinpm.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
 		});
+
+		function search(){
+       		window.location.replace("search.php?s="+searchinp.value);
+    	}
+	
 
 		const mobilemenu = document.getElementById("mobilemenu");
 		mobilemenu.addEventListener("mouseover", function(event) {

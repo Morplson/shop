@@ -359,7 +359,7 @@
 					return response.text();
 				}).then(function (data) {
 					let html = data.trim();
-					document.getElementById(where).innerHTML += html.trim();
+					document.getElementById("content").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
@@ -385,10 +385,11 @@
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 
-				fetch("global/like.php", {
+				fetch("global/vote-script.php", {
 					method: "POST",
 					body: JSON.stringify({
-						id: id
+						id: id,
+						vote: vote
 					}),
 					headers:{
 						'Content-Type': 'application/json'
@@ -397,7 +398,7 @@
 					return response.text();
 				}).then(function (data) {
 					let html = data.trim();
-					document.getElementById(where).innerHTML += html.trim();
+					document.getElementById("comment").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
