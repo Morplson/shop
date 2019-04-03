@@ -63,10 +63,32 @@
 			display: none;
 		}
 	}
+
+	.mobilecontainer{
+
+		background-color: white;
+		z-index: 30;
+
+		position: fixed;
+		box-sizing: content-box;
+
+	}
+	
+	.mobilecontainer>.exput{
+		transition: background-color .6s;
+		line-height: 3rem;
+		height: 3rem;
+		padding: 0 1rem;
+	}
+
+	.exput:hover, .topleftli:hover, .toprightli:hover{
+		background-color: #f2f2f2
+	}
+
 </style>
 	<div class="header">
 		<a href="../shop/"><div class="label topleftli">Boorushop</div></a>
-		<a><div class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
+		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
 		<a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a>
 
@@ -77,6 +99,11 @@
 
 		
 	</div>
+	<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
+		<a class="exput" href="login/">Login</a>
+		<div class="exput"><input id="searchm" class="search" type="text" placeholder="Search..." name="sInput"></div>
+	</div>
+
 	<script type="text/javascript">
 		const searchinp = document.getElementById("search");
 		searchinp.addEventListener("keyup", function(event) {
@@ -84,6 +111,46 @@
        			window.location.replace("search.php?s="+searchinp.value);
     		}
 		});
+		const searchinpm = document.getElementById("searchm");
+		searchinpm.addEventListener("keyup", function(event) {
+    		if (event.key === "Enter") {
+       			window.location.replace("search.php?s="+searchinp.value);
+    		}
+		});
+
+		const mobilemenu = document.getElementById("mobilemenu");
+		mobilemenu.addEventListener("mouseover", function(event) {
+    		
+       		let el = document.getElementById("mobilehovercontainer");
+       		el.style.display = "block";
+       		el.style.left = mobilemenu.offsetLeft+"px";
+       		el.style.top =  mobilemenu.offsetTop+mobilemenu.offsetHeight+"px";
+
+		});
+		mobilemenu.addEventListener("mouseout", function(event) {
+    		
+       		let el = document.getElementById("mobilehovercontainer");
+       		el.style.display = "none";
+    	
+		});
+
+
+
+		const mobilehovercontainer = document.getElementById("mobilehovercontainer");
+		mobilehovercontainer.addEventListener("mouseover", function(event) {
+    		
+       		let el = document.getElementById("mobilehovercontainer");
+       		el.style.display = "block";
+    	
+		});
+		mobilehovercontainer.addEventListener("mouseout", function(event) {
+    		
+       		let el = document.getElementById("mobilehovercontainer");
+       		el.style.display = "none";
+    	
+		});
+
+
 
 	</script>
 	

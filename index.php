@@ -133,9 +133,7 @@
 
 
 
-		.topleftli:hover, .toprightli:hover{
-			background-color: #f2f2f2
-		}
+
 
 		.controlls{
 			position: fixed;
