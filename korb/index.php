@@ -13,6 +13,7 @@
 				background-color: white;
 				transition: all 0.6s;
 				padding: 0.25rem;
+
 			}
 
 			.kaufenbtn:hover{
@@ -24,11 +25,10 @@
 			<div class="content_r">
 <?php
 
-
+error_log(0);
 
 
 $articles = json_decode($_COOKIE["articles"]);
-print_r($articles);
 
 $gesammtpreis = 0;
 for ($i=0; $i < count($articles); $i++) { 
@@ -101,8 +101,6 @@ for ($i=0; $i < count($articles); $i++) {
 <?php
 }
 ?>
-	<div class="kaufenbtn" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</div>	
-			
-	</div>
+	<div class="kaufenbtn" onclick="kaufabschluss()" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</div></div>
 </body>
 </html>
