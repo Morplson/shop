@@ -14,12 +14,15 @@
     if($title==null||$anzahl==null||$preis==null||$description==null){
         $error .= "Failed to upload <br>No inputs given <br>";
         header( "refresh:1;url=../" );
+        goto end;
     }else{
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
         $userID=0;
         if(($anon||$anon==null)||(!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
-            $userID=0;
+            $error .= "Kein Nutzer Angemeldet<br>";
+            header( "refresh:1;url=../" );
+            #goto end; -----------------------------------------------------------------------------------
         }else{
             $userID=$_SESSION['userid'];
         }
@@ -30,7 +33,7 @@
         if ( 0 < $_FILES['file']['error'][0] ) {
             $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
             header( "refresh:2;url=../" );
-            goto end;
+            #goto end; -----------------------------------------------------------------------------------
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
 
@@ -59,12 +62,11 @@
                 $id = 1;
             }
             
-            $data =  $id."rna55df|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL; 
+            $data =  $id."rna55df|||".$userID."benutzer|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL; 
 
             $fileContents = file_get_contents("../global/data/data.txt");   
 
             file_put_contents("../global/data/data.txt", $data . $fileContents);
-
         }
 
         

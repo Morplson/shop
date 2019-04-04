@@ -91,18 +91,18 @@
 
 
 
-		$pID = explode("rna55df",$data[0])[0];
-		$link = $data[1];
-		$anzahl = $data[2];
-		$title = $data[3];
-		$preis = $data[4];
-		$description = $data[5];
-		$einheit = $data[6];
-		$gewicht = $data[7];
-		$userID = $data[8];
-		$score = $data[9];
-		$likes = $data[10];
-		$comments = $data[11];
+	$pID = explode("rna55df",$data[0])[0];
+	$link = $data[2];
+	$anzahl = $data[3];
+	$title = $data[4];
+	$preis = $data[5];
+	$description = $data[6];
+	$einheit = $data[7];
+	$gewicht = $data[8];
+	$userID = $data[9];
+	$score = $data[10];
+	$likes = $data[11];
+	$comments = $data[12];
 	
 		#$imgLink = "global/data/".md5($link).".png";
 
@@ -114,7 +114,6 @@
 		
 		$imgLink = "global/data/".md5($link)."/1.png";
 		
-
 
 ?>
 
