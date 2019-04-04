@@ -1,4 +1,5 @@
 <?php
+	include '../open.php';
 	/**
 	 * AUTHOR: DAVID ZEILINGER
 	 * VERSION: 23_01_2019
@@ -112,7 +113,7 @@
 		##################################################
 
 		
-		$imgLink = "global/data/".md5($link)."/1.png";
+		$imgLink = "global/data/".md5($link)."/thumb.jpeg";
 		
 
 ?>

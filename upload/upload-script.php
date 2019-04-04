@@ -1,5 +1,5 @@
 <?php
-
+    include '../open.php';
     include "../vendor/Shop.php";
 
     $title = isset($_POST['title']) ? htmlspecialchars($_POST['title'], ENT_QUOTES, "UTF-8") : null;
@@ -19,10 +19,10 @@
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
         $userID=0;
-        if(($anon||$anon==null)||(!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
+        if((!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
             $error .= "Kein Nutzer Angemeldet<br>";
             header( "refresh:1;url=../" );
-            #goto end; -----------------------------------------------------------------------------------
+            goto end; 
         }else{
             $userID=$_SESSION['userid'];
         }
@@ -33,16 +33,25 @@
         if ( 0 < $_FILES['file']['error'][0] ) {
             $error .= 'Error when uploading file <br> Error: ' . $_FILES['file']['error'][0] . '<br>';
             header( "refresh:2;url=../" );
-            #goto end; -----------------------------------------------------------------------------------
+            goto end;
         }else {
             #echo json_encode($_FILES['file']['name'][0]);
 
             mkdir('../global/data/'.md5($produkt->getSerialnumber()));                     #erstelle gehashtes dir
             $j=1;
 
+            $filename = $_FILES['file']['tmp_name'][0];
+            $source = imagecreatefromstring( file_get_contents( $filename ) );
+            $img = getimagesize($_FILES['file']['tmp_name'][0]);
+            $thumb = imagecreatetruecolor($img[0]/5,$img[1]/5);
+            
+            imagecopyresized($thumb,$source,0,0,0,0,$img[0]/5,$img[1]/5,$img[0],$img[1]);
+
+            imagejpeg($thumb, '../global/data/'.md5($produkt->getSerialnumber())."/thumb.jpeg", 50);
             foreach ($_FILES['file']['tmp_name'] as $fileone) {
                 if(in_array(mime_content_type($fileone),array('image/jpeg','image/png'))) {
                     move_uploaded_file ($fileone, '../global/data/'.md5($produkt->getSerialnumber())."/$j.png");  #lädt file hoch
+
                     $j++;
                 } else {
                     if(strlen($fileone)>0){
@@ -57,7 +66,7 @@
 
             $lines = file("../global/data/data.txt");
             if(explode("|||",$lines[0])[0]){
-                $id = explode("|||",$lines[0])[0]+1;
+                $id = explode("rna55df|||",$lines[0])[0]+1;
             }else{
                 $id = 1;
             }
@@ -76,8 +85,26 @@
     header( "refresh:5;url=../" );
 
     end:
-        
+/**
 
+Warning: getimagesize(../global/data/dfbe6fd636d42dad3120aebf727c0d75/1.png): failed to open stream: No such file or directory in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 46
+
+Warning: imagecopyresized(): Invalid image dimensions in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 47
+
+Warning: mime_content_type(): Empty filename or path in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 51
+
+Warning: mime_content_type(): Empty filename or path in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 51
+
+Warning: mime_content_type(): Empty filename or path in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 51
+
+Warning: mime_content_type(): Empty filename or path in C:\xampp\htdocs\shop\shop\upload\upload-script.php on line 51
+Boorushop-Uploader
+uploding..
+
+
+
+
+*/
 
     
 ?>

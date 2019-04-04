@@ -1,10 +1,10 @@
 <?php
+	include '../open.php';
 	/**
 	 * AUTHOR: DAVID ZEILINGER
 	 * VERSION: 23_01_2019
 	 * Laedt Daten(posts) aus datenbank
 	 */
-	session_start();
 	error_reporting(0);
 
 	

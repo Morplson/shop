@@ -1,4 +1,5 @@
 <?php
+	include '../open.php';
 	/**
 	 * AUTHOR: DAVID ZEILINGER
 	 * VERSION: 23_01_2019
@@ -6,10 +7,8 @@
 	 */
 
 	#error_reporting(0);
-	$_SESSION['userId'] = "0999";
 	
 	$_POST = json_decode(file_get_contents('php://input'), true);
-
 
 	$postId = isset($_POST['id']) ? $_POST['id'] : null;
 	$userId = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;

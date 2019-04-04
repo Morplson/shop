@@ -1,5 +1,5 @@
 <?php
-	session_start();
+	include '../open.php';
 	/**
 	 * AUTHOR: DAVID ZEILINGER
 	 * VERSION: 23_01_2019
@@ -12,7 +12,40 @@
 
 
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
+	var_dump($_POST);
 
+
+	if($_SERVER['REQUEST_METHOD'] === 'POST'){
+		if(isset($_POST['loeschen'])&&$_POST['loeschen']=='loeschen'){
+			echo "l";
+
+			$out = implode($lines);
+			$out = str_replace($lines[$line_number-1], '', $out);
+			file_put_contents("data/data.txt", $out);
+
+			header("Location:../");
+		}elseif (isset($_POST['bearbeiten'])&&$_POST['bearbeiten']=='bearbeiten') {
+
+			$lines = file_get_contents("../global/data/data.txt");
+			
+			$pattern = preg_quote($pId."rna55df|||", '/');		
+
+			$pattern = "/^.*$pattern.*\$/m";	
+
+			if(preg_match_all($pattern, $lines, $matches)){
+				$text = explode("|||", $matches[0][0]);
+				$text[3] = $_POST['anzahl'];
+				$text[4] = $_POST['title'];
+				$text[5] = $_POST['preis'];
+				$text[6] = $_POST['description'];
+				$text[7] = $_POST['einheit'];
+				$text[8] = $_POST['gewicht'];
+				
+				$out = str_replace($matches[0][0], implode("|||" ,$text), $lines);
+				file_put_contents("../global/data/data.txt", $out);
+			}
+		}
+	}
 
 
 
@@ -61,21 +94,6 @@
 		}
 	}
 	
-	if(isset($_SESSION['userid'])){
-		if(isset($_POST['l'])&&$_SESSION['userid']."benutzer"==$data[1]){
-			$out = implode($lines);
-			$out = str_replace($lines[$line_number-1], '', $out);
-			file_put_contents("data/data.txt", $out);
-
-			header("refresh:1;url=../");
-		}
-
-		if(isset($_POST['b'])){
-
-			$out = str_replace($lines[$line_number-1], '', implode($lines));
-			file_put_contents("data/data.txt", $out);
-		}
-	}
 
 	if($id!=null&&isset($_SESSION['userid'])) {
 		$lines = file_get_contents("data/like.txt");
@@ -341,7 +359,7 @@
 
 
 <?php
-	if($_SESSION['userid']==$data[1]):
+	if($_SESSION['userid']."benutzer"==$data[1]):
 ?>
 
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
@@ -387,10 +405,8 @@
 		</div>
 		
 	</div>
-	<button type="submit" name="b">Bearbeiten</button>
-</form>
-<form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
-	<button type="submit" name="l">Löschen</button>
+	<button type="submit" name="bearbeiten" value="bearbeiten">Bearbeiten</button>
+	<button type="submit" name="loeschen" value="loeschen">Löschen</button>
 </form>
 
 <?php
