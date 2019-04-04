@@ -1,5 +1,5 @@
 <?php
-include 'open.php';
+include '../open.php';
 ?>
 <!DOCTYPE html>
 <html>
