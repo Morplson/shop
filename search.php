@@ -1,3 +1,6 @@
+<?php
+include 'open.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,8 +90,6 @@
 				
 			}
 
-		</style>
-	<style type="text/css">
 		*{
 			font-size: 16pt;
 			font-family: 'Raleway', sans-serif;
@@ -133,9 +134,7 @@
 
 
 
-		.topleftli:hover, .toprightli:hover{
-			background-color: #f2f2f2
-		}
+
 
 		.controlls{
 			position: fixed;
@@ -214,6 +213,13 @@
 			text-align: center;
 		}
 
+		.content_l {
+			flex: 0 0 auto;
+			width: 15rem;
+			word-wrap: break-word;
+			
+		}
+
 		@media only screen and (max-width: 768px) {
 			.content_l {
 				display: none;
@@ -227,7 +233,12 @@
 			align-items: center;
 		}
 
+		.content_l .container{
+			width: 98%;
+			height: auto;
 
+			margin: 0.25rem -1px;
+		}
 
 		.values.buy>.btn:hover, .values.buy>.num:hover{
 			background-color: #D8D8D8;
@@ -264,7 +275,6 @@
 					request("main",40,last,"<?php echo $q;?>","<?php echo $s;?>");
 				}
 			}
-
 
 			function request(where, max, last, query, search){
 
@@ -310,7 +320,6 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "articles="+JSON.stringify(arr);
-				alert(getCookie("articles"));
 			}
 
 			function like(id){
@@ -324,7 +333,6 @@
 				let arr = JSON.parse(jsong);
 				arr.push([id]);
 				
-				alert(getCookie("likes"));
 
 				fetch("global/like.php", {
 					method: "POST",
@@ -338,7 +346,7 @@
 					return response.text();
 				}).then(function (data) {
 					let html = data.trim();
-					document.getElementById(where).innerHTML += html.trim();
+					document.getElementById("content").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
@@ -364,10 +372,11 @@
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 
-				fetch("global/like.php", {
+				fetch("global/vote-script.php", {
 					method: "POST",
 					body: JSON.stringify({
-						id: id
+						id: id,
+						vote: vote
 					}),
 					headers:{
 						'Content-Type': 'application/json'
@@ -376,7 +385,7 @@
 					return response.text();
 				}).then(function (data) {
 					let html = data.trim();
-					document.getElementById(where).innerHTML += html.trim();
+					document.getElementById("comment").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
@@ -416,14 +425,10 @@
 			}
 
 			function requestkorb(where){
-
 				let jsong = JSON.parse(getCookie("articles"));
 
-
-				
 				for (var i = jsong.length-1; i >= 0; i--) {
 					
-
 					fetch("global/wishlist.php", {
 						method: "POST",
 						body: JSON.stringify({
@@ -441,10 +446,36 @@
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-
 				}
 			}
 
+			function kaufabschluss() {
+				let jsong = getCookie("articles");
+				let arr = JSON.parse(jsong);
+
+				for (var i = arr.length - 1; i >= 0; i--) {
+					fetch("global/kaufabschluss.php", {
+						method: "POST",
+						body: JSON.stringify({
+							id: arr[i][0],
+							anzahl: arr[i][1]
+						}),
+						headers:{
+							'Content-Type': 'application/json'
+						}
+					}).then(function (response) {
+						return response.text();
+					}).then(function (data) {
+						let html = data.trim();
+						document.getElementById("comment").innerHTML += html.trim();
+					}).catch(function (error) {
+						console.log('Request failed', error);
+					});
+				}
+
+				document.cookie = "articles="+JSON.stringify([]);
+
+			}
 
 
 		</script>

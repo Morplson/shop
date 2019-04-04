@@ -105,34 +105,69 @@
 	$likes = $data[11];
 	$comments = $data[12];
 	
-		#$imgLink = "global/data/".md5($link).".png";
-
-
-		##################################################
-		###### TODO!: >funktioniert das is_dir nicht
-		##################################################
-
 		
-		$imgLink = "global/data/".md5($link)."/thumb.jpeg";
-		
+	$imgLink = "global/data/".md5($link)."/thumb.jpeg";
+
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/like.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $linesx, $matches)){
+			$collikes = "#f91f1f";
+		}else{
+			$collikes = "black";
+		}
+	}
+
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/vote.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $linesx, $matches)){
+			$like = explode("|||", $matches[0][0])[2];
+			if($like==-1){
+				$colvotes = "#f91f1f";
+			}elseif($like==1){
+				$colvotes = "#5aa51d";
+			}else{
+				$colvotes = "black";
+			}
+		}else{
+			$colvotes = "black";
+		}
+	}
+	
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/like.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+		$pattern = "/^.*$pattern.*\$/m";
+		if(preg_match_all($pattern, $linesx, $matches)){
+			$colcom = "#9273d0";
+		}else{
+			$colcom = "black";
+		}
+	}
 
 ?>
 
 <div class="container" id="<?php echo $pID; ?>">
 	<div class="values scores">
-		<div id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
-			<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-			<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-		</div>
-		<div id="<?php echo $pID; ?>votes" class="vote">
-			<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
-			<span class="score" title="Score"><?php echo $score; ?></span>
-			<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
-		</div>
-		<div id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
-			<i class="fa fa-comments"></i>
-			<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
-		</div>
+			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
+				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
+				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
+			</div>
+			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
+				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
+				<span class="score" title="Score"><?php echo $score; ?></span>
+				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
+			</div>
+			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
+				<i class="fa fa-comments"></i>
+				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
+			</div>
 	</div>
 
 

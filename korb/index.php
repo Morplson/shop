@@ -1,3 +1,6 @@
+<?php
+include 'open.php';
+?>
 <!DOCTYPE html>
 <html>
 	<head>

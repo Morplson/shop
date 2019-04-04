@@ -1,3 +1,6 @@
+<?php
+include 'open.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,8 +90,6 @@
 				
 			}
 
-		</style>
-	<style type="text/css">
 		*{
 			font-size: 16pt;
 			font-family: 'Raleway', sans-serif;
@@ -345,7 +346,7 @@
 				arr.push([id]);
 				
 
-				fetch("global/like.php", {
+				fetch("global/like-script.php", {
 					method: "POST",
 					body: JSON.stringify({
 						id: id
