@@ -11,41 +11,75 @@ $bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt 
 $bemailBenutzt = 0;																							//Speichert ob der
 
 $i=0;
-$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-	$teile=$gname[$i];																					//teile bekommt einen Namen
-	if($bname==$teile){
-		$bnameBenutzt = 1;																			  //Namen gibt es schon
-		$error .="Benutzername oder Password falsch";
-	}
-}
+
+//$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
+//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
+//	$teile=$gname[$i];																					//teile bekommt einen Namen
+//	if($bname==$teile){
+//		$bnameBenutzt = 1;																			  //Namen gibt es schon
+//		$error .="Benutzername oder Password falsch";
+//	}
+//}
+
+//$gemail = file ( "../global/data/bemail.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
+//for ( $i = 0 ; $i < count ( $gemail ) ; $i ++ ) {
+//	$teile=$gemail[$i];																					//teile bekommt einen Namen
+//	if($bname==$teile){
+//		$bemailBenutzt = 1;																			  //Namen gibt es schon
+//		$error .="Benutzername oder Password falsch";
+//	}
+//}
 
 
-$gemail = file ( "../global/data/bemail.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-for ( $i = 0 ; $i < count ( $gemail ) ; $i ++ ) {
-	$teile=$gemail[$i];																					//teile bekommt einen Namen
-	if($bname==$teile){
-		$bemailBenutzt = 1;																			  //Namen gibt es schon
-		$error .="Benutzername oder Password falsch";
+$line_number1 = -1;
+
+if ($bname!=null) {
+	$search = $bname;
+	$line_number1 = false;
+
+	if ($handle = fopen("../global/data/bname.txt", "r")) {
+		$count = 0;
+		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number1) {
+			$count++;
+			$line_number1 = (strpos($line, $search) !== FALSE) ? $count : $line_number1;
+		}
+		fclose($handle);
 	}
+
+} else {
+	$line_number1 = -1;
 }
-if($bnameBenutzt==0&&$bemailBenutzt==0&&$bname!=""&&$bpassw!=""&&$bemail!=""){
+
+$line_number3 = -1;
+
+if ($bemail!=null) {
+	$search = $bname;
+	$line_number3 = false;
+
+	if ($handle = fopen("../global/data/bemail.txt", "r")) {
+		$count = 0;
+		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number3) {
+			$count++;
+			$line_number3 = (strpos($line, $search) !== FALSE) ? $count : $line_number3;
+		}
+		fclose($handle);
+	}
+
+} else {
+	$line_number3 = -1;
+}
+
+if($line_number1==false&&$line_number3==false){
 	file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
 	file_put_contents ("../global/data/bpassw.txt" , PHP_EOL.$bpassw,  FILE_APPEND) ;
 	file_put_contents ("../global/data/bemail.txt" , PHP_EOL.$bemail,  FILE_APPEND) ;
-	if($i>0){
+
 		//$i--;
-		file_put_contents ("../global/data/idAll.txt" , PHP_EOL.$i,  FILE_APPEND) ;
-		file_put_contents ("../global/data/idUsedNow.txt" , $i ) ;
-	}
 	$_SESSION [ 'name' ] = $bname ;
 	echo "succesfull";
-	echo $i;
 } else{
 		echo "failed";
-		echo $i;
 }
-//file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bpasw,  FILE_APPEND) ;
 
 
 
@@ -75,41 +109,6 @@ if($bnameBenutzt==0&&$bemailBenutzt==0&&$bname!=""&&$bpassw!=""&&$bemail!=""){
 			document.cookie = "likes="+JSON.stringify([]);
 			document.cookie = "comments="+JSON.stringify([]);
 		}
-
-    function reg(){
-      var b = document.getElementById("nameReg");
-          alert("BOI");
-    }
-
-
-    function request(where, max, last, query){
-
-      console.log("acc");
-      //for (var i = num; i > 0; i--) {
-
-        fetch("global/modul.php", {
-          method: "POST",
-          body: JSON.stringify({
-            last: last,
-            query: query,
-            max: max
-          }),
-          headers:{
-            'Content-Type': 'application/json'
-          }
-        }).then(function (response) {
-          return response.text();
-        }).then(function (data) {
-          let html = data.trim();
-          document.getElementById(where).innerHTML += html.trim();
-        }).catch(function (error) {
-          console.log('Request failed', error);
-        });
-
-        last = document.getElementById(where).lastChild.id;
-      //}
-    }
-
 
 
 	</script>

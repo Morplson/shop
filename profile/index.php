@@ -1,20 +1,25 @@
 <?php
+session_start ( ) ;
+
 
 $log=file("../global/data/logedIn.txt" ) ;
 
-if($log[0]=="yes"){
-$nummer = file ( "../global/data/idUsedNow.txt" ) ;
-$n2=$nummer[0];
+if ($_SESSION [ 'istAngemeldet' ]==true ) {
+$nummer = $_SESSION['userid'];
+$n2=$nummer;
 
 $name = file ( "../global/data/bname.txt" ) ;
 
 $email = file ( "../global/data/bemail.txt" ) ;
 
+echo "Username: ";
+echo $_SESSION['name'];
+echo "<br>";
+echo "UserId ";
 echo $n2;
-echo ";";
-echo $name[$n2];
-echo ";";
-echo $email[$n2];
+echo "<br>";
+echo "E-mail: ";
+echo $email[$_SESSION['id']-1];
 }
 ?>
 <!DOCTYPE html>

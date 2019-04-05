@@ -1,4 +1,6 @@
 <?php
+session_start ( ) ;
+
 
 $bname = $_POST["Benutzername"];																//Eingegebener Benutzername
 $bpassw = $_POST["Passwort"];																		// Eingegebenes Passwort
@@ -42,20 +44,42 @@ $gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array ge
 //     '<b>' . substr($text, $pos, $len) . '</b>' .
 //     substr($text, $pos+$len);
 
-$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-echo array_search($bname,$gname);
-for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-	$teile=$gname[$i];																					//teile bekommt einen Namen
-	if($bname==$teile){
-		$bnameBenutzt = 1;																			  //Namen gibt es schon
+//$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
+//echo array_search($bname,$gname);
+//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
+//	$teile=$gname[$i];																					//teile bekommt einen Namen
+//	if($bname==$teile){
+//		$bnameBenutzt = 1;																			  //Namen gibt es schon
+//	}
+//}
+
+$line_number = -1;
+
+if ($bname!=null) {
+	$search = $bname;
+	$line_number = false;
+
+	if ($handle = fopen("../global/data/bname.txt", "r")) {
+		$count = 0;
+		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
+			$count++;
+			$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
+		}
+		fclose($handle);
 	}
+
+} else {
+	$line_number = -1;
 }
 
 
-if($bnameBenutzt==1){
+if($line_number!=false){
 	echo "succesfull";
-	file_put_contents ("../global/data/idUsedNow.txt" , $i-1 ) ;
-	file_put_contents ("../global/data/logedIn.txt" , "yes" ) ;
+	$hashid=$bname;
+	$_SESSION['name'] = $bname;
+	$_SESSION ['userid'] = md5($bname);
+	$_SESSION ['id'] = $count;
+	$_SESSION [ 'istAngemeldet' ] = true ;
 } else{
 	echo "failed";
 }
@@ -64,6 +88,8 @@ if($bnameBenutzt==1){
 echo $error;
 
 $bname="";
+
+
 
 
 
@@ -373,13 +399,12 @@ $bname="";
 			<?php
 			$_POST["Benutzername"] = "";															//Eingegebener Benutzername
 			$_POST["Passwort"] = "";
-				file_put_contents ("../global/data/idUsedNow.txt" , "" ) ;
-				file_put_contents ("../global/data/logedIn.txt" , "no" ) ;
+			$_SESSION [ 'logedIn' ] = null ;
 			?>
 		</form>
 
 		<form action = "../index.php" method = "post" >
-			<input type="submit" value="back">
+			<input type="submit" value="Startseite">
 		</form>
   </div>
 </main>
