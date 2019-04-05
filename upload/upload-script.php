@@ -27,7 +27,7 @@
             $userID=$_SESSION['userid'];
         }
 
-    
+
         $produkt = new Produkt($title, $description, $preis, $gewicht, $userID, $anzahl, $einheit);
 
         if ( 0 < $_FILES['file']['error'][0] ) {
@@ -49,9 +49,9 @@
                         $error .= 'Error: Unsupported type!<br>';
                         header( "refresh:2;url=../" );
                         goto end;
-                        
+
                     }
-                    
+
                 }
             }
 
@@ -61,34 +61,34 @@
             }else{
                 $id = 1;
             }
-            
-            $data =  $id."rna55df|||".$userID."benutzer|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL; 
 
-            $fileContents = file_get_contents("../global/data/data.txt");   
+            $data =  $id."rna55df|||".$userID."benutzer|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
+
+            $fileContents = file_get_contents("../global/data/data.txt");
 
             file_put_contents("../global/data/data.txt", $data . $fileContents);
         }
 
-        
 
-        
+
+
     }
     header( "refresh:5;url=../" );
 
     end:
-        
 
 
-    
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:900&amp;subset=latin-ext" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:900&amp;subset=latin-ext" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
         <title>Upload</title>
         <style type="text/css">
@@ -121,7 +121,7 @@
                 color: #3869fa;
             }
 
-            
+
             .danger {
                 background-color: #ffdddd;
                 border-left: 0.25rem solid #f44336;
@@ -235,7 +235,7 @@
                 background-color: #E8E8E8;
                 width: 25rem;
                 height: 2.5rem;
-                
+
             }
 
             @-webkit-keyframes strech {
@@ -268,11 +268,11 @@
     <body>
         <main class="x0x342">
             <h1>Boorushop-Uploader</h1>
-            
+
             <?php if($error == ""): ?>
-                
+
                 <h1 id="uploding">uploding</h1>
-                
+
                 <div class="loader"></div>
                 <br>
                 <div class="loading">
@@ -308,7 +308,7 @@
                     e.innerHTML = "uploding...";
                     i=-1;
                     break;
-                
+
             }
 
         },666);

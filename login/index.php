@@ -11,19 +11,53 @@ $error = "";																										//errormessage
 $bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
 
 $gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-for ( $i = 1 ; $i < count ( $gname ) ; $i ++ ) {
+//for ( $i = 0 ; $i > count ( $gname ) ; $i ++ ) {
+//	$teile=$gname[$i];																					//teile bekommt einen Namen
+//	if($bname==$teile){
+//		$bnameBenutzt = 1;																			  //Namen gibt es schon
+//		echo $bnameBenutzt;
+//	}
+//}
+
+//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
+//	echo $i . ": " . $gname [ $i ] . "<br><br>" ;
+//	if($bname==$gname[$i]){
+//		$bnameBenutzt = 1;
+//	}
+//}
+
+//foreach ( $gname AS $bname ) {
+//	$user_info = explode ( ";" , $bname ) ;
+//	if ( $user_info [0] == $bname) {
+//		$bnameBenutzt = 1;
+//	}
+//}
+
+//$search = $bname;
+//$text = file_get_contents('../global/data/bname.txt');
+//$pos = strpos($text, $search);
+//if (!$pos) die('nichts gefunden');
+//$len = strlen($search);
+//echo substr($text, 0, $pos-1) .
+//     '<b>' . substr($text, $pos, $len) . '</b>' .
+//     substr($text, $pos+$len);
+
+$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
+echo array_search($bname,$gname);
+for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
 	$teile=$gname[$i];																					//teile bekommt einen Namen
 	if($bname==$teile){
 		$bnameBenutzt = 1;																			  //Namen gibt es schon
-		echo $bnameBenutzt;
 	}
 }
-//file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bpasw,  FILE_APPEND) ;
+
 
 if($bnameBenutzt==1){
-	echo "succesfull login";
+	echo "succesfull";
+	file_put_contents ("../global/data/idUsedNow.txt" , $i-1 ) ;
+	file_put_contents ("../global/data/logedIn.txt" , "yes" ) ;
 } else{
-	echo "  /login failed";
+	echo "failed";
 }
 
 
@@ -333,6 +367,20 @@ $bname="";
 		<br>
 		<br>
 	  <input type = "Submit" value = "Absenden" /> </form>
+
+		<form action = "../index.php" method = "post" >
+			<input type="submit" value="logout">
+			<?php
+			$_POST["Benutzername"] = "";															//Eingegebener Benutzername
+			$_POST["Passwort"] = "";
+				file_put_contents ("../global/data/idUsedNow.txt" , "" ) ;
+				file_put_contents ("../global/data/logedIn.txt" , "no" ) ;
+			?>
+		</form>
+
+		<form action = "../index.php" method = "post" >
+			<input type="submit" value="back">
+		</form>
   </div>
 </main>
 
