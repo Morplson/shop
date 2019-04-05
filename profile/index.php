@@ -2,12 +2,6 @@
 
 include '../open.php';
 
-
-$jj = $_SESSION [ 'istAngemeldet' ];
-echo $jj."asdas";
-
-var_dump($_SESSION);
-
 if ($_SESSION [ 'istAngemeldet' ]==true ) {
 $nummer = $_SESSION['userid'];
 $n2=$nummer;

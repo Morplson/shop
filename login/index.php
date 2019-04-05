@@ -76,7 +76,7 @@ if ($bname!=null) {
 
 if($line_number!=false){
 	echo "succesfull";
-	$hashid=$bname;
+	#$hashid=$bname;
 	$_SESSION['name'] = $bname;
 	$_SESSION ['userid'] = md5($bname);
 	$_SESSION ['id'] = $count;
@@ -304,7 +304,7 @@ $bname="";
 			top: 4.5rem;
 			right:4.5rem;
 			left: 2rem;
-      width: 90%;
+      width: 30%;
       margin: 1.5rem 25%;
 		}
 
@@ -356,9 +356,8 @@ $bname="";
     .contentv2 {
 			position: absolute;
 			top: 0rem;;
-			right:4.5rem;
-			left: 2rem;
-      width: 90%;
+
+      width: 10%;
       margin: 1.5rem 25%;
 		}
 
@@ -395,13 +394,8 @@ $bname="";
 		<br>
 	  <input type = "Submit" value = "Absenden" /> </form>
 
-		<form action = "../index.php" method = "post" >
+		<form action = "logout.php" method = "post" >
 			<input type="submit" value="logout">
-			<?php
-			$_POST["Benutzername"] = "";															//Eingegebener Benutzername
-			$_POST["Passwort"] = "";
-			session_destroy ( ) ;
-			?>
 		</form>
 
 		<form action = "../index.php" method = "post" >

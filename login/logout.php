@@ -1,95 +1,11 @@
 <?php
-
-include '../open.php';
-
-$bname = $_POST["rname"];																//Eingegebener Benutzername
-$bpassw = $_POST["rpasswort"];																		// Eingegebenes Passwort
-$bemail = $_POST["remail"];
-
-$teile="";																													//für die teile des namensarray
-
-$error = "";																										//errormessage
-
-$bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
-$bemailBenutzt = 0;																							//Speichert ob der
-
-$i=0;
-
-//$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-//	$teile=$gname[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bnameBenutzt = 1;																			  //Namen gibt es schon
-//		$error .="Benutzername oder Password falsch";
-//	}
-//}
-
-//$gemail = file ( "../global/data/bemail.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//for ( $i = 0 ; $i < count ( $gemail ) ; $i ++ ) {
-//	$teile=$gemail[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bemailBenutzt = 1;																			  //Namen gibt es schon
-//		$error .="Benutzername oder Password falsch";
-//	}
-//}
-
-
-$line_number1 = -1;
-
-if ($bname!=null) {
-	$search = $bname;
-	$line_number1 = false;
-
-	if ($handle = fopen("../global/data/bname.txt", "r")) {
-		$count = 0;
-		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number1) {
-			$count++;
-			$line_number1 = (strpos($line, $search) !== FALSE) ? $count : $line_number1;
-		}
-		fclose($handle);
-	}
-
-} else {
-	$line_number1 = -1;
-}
-
-$line_number3 = -1;
-
-if ($bemail!=null) {
-	$search = $bname;
-	$line_number3 = false;
-
-	if ($handle = fopen("../global/data/bemail.txt", "r")) {
-		$count = 0;
-		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number3) {
-			$count++;
-			$line_number3 = (strpos($line, $search) !== FALSE) ? $count : $line_number3;
-		}
-		fclose($handle);
-	}
-
-} else {
-	$line_number3 = -1;
-}
-
-if($line_number1==false&&$line_number3==false){
-	file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
-	file_put_contents ("../global/data/bpassw.txt" , PHP_EOL.$bpassw,  FILE_APPEND) ;
-	file_put_contents ("../global/data/bemail.txt" , PHP_EOL.$bemail,  FILE_APPEND) ;
-
-		//$i--;
-	$_SESSION [ 'name' ] = $bname ;
-	echo "succesfull";
-} else{
+	include "../open.php";
+	$_SESSION [ 'istAngemeldet' ] = false ;
+	if(	$_SESSION [ 'istAngemeldet' ] == false ){
+		echo "succesfull";
+	} else{
 		echo "failed";
-}
-
-
-
-
-
-
-
+	}
 
 ?>
 <!DOCTYPE html>
@@ -112,6 +28,7 @@ if($line_number1==false&&$line_number3==false){
 			document.cookie = "likes="+JSON.stringify([]);
 			document.cookie = "comments="+JSON.stringify([]);
 		}
+
 
 
 	</script>
@@ -366,28 +283,13 @@ if($line_number1==false&&$line_number3==false){
 </head>
 <body>
 	<main id="content" class="content">
-		<form action = "register.php" method = "post" >
-    <h1>Regristrieren</h1>
-    Benutzername:
-		<br>
-    <input type="text" name="rname" />
-		<br>
-    Passwort:
-		<br>
-    <input type="text" name="rpasswort" />
-		<br>
-    E-mail:
-		<br>
-    <input type="text" name="remail" />
-    <br>
-		<br>
-		<br>
-    <input type="submit" value="Submit">
-		</form>
-		<form action = "../index.php" method = "post" >
-			<input type="submit" value="back">
-		</form>
 
+  <div id="content" class="contentv2">
+
+		<form action = "../index.php" method = "post" >
+			<input type="submit" value="Startseite">
+		</form>
+  </div>
 </main>
 
   </body>
