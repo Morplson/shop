@@ -82,7 +82,7 @@
 		}
 
 		if ($s!=null) {
-			if((strpos(strtolower($data[3]), strtolower($s)) == FALSE)&&(strpos(strtolower($data[5]), strtolower($s)) == FALSE)){
+			if((strpos(strtolower($s), strtolower($data[4])) === false)&&(strpos(strtolower($s), strtolower($data[6])) === false)){
 				$max++;
 				continue;
 			}
