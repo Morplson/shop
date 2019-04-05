@@ -1,3 +1,8 @@
+<?php
+
+include '../open.php';
+?>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -139,7 +144,7 @@
 		<main class="x0x342">
 			<h1>Upload Content.</h1>
 		
-			<div class="plain">
+			<!--div class="plain">
 				Check you can upload the image
 			</div>
 			<div class="danger">
@@ -149,24 +154,27 @@
 
 				Don't post content the artist doesn't want here (or shared in general), especially not content under a DNP listing. This includes commercial content. 
 			</div>
-			<br>
+			<br-->
 			<form  method="post" action="upload/upload-script.php" enctype="multipart/form-data" class="plain">
-				<input placeholder="Titel" id="title" type="text" name="title"></input>
-
+				<input style="width: 100%" placeholder="Titel" id="title" type="text" name="title"></input>
+				<br>
+				Bilder:<br>
 				<input placeholder="Upload file" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 2" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 3" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 4" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 5" id="file" type="file" name="file[]"></input>
 
-				<textarea id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
-				<input placeholder="Preis" id="preis" name="preis" type="number" step="0.01" min="0"></input>
-				<input placeholder="Gewicht" id="gewicht" name="gewicht" type="number" min="0"></input> Gramm
+				<textarea style="resize: none; width: 100%;" id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
+				Text:<br>
+				<input placeholder="Upload file" id="file" type="file" name="text"></input>
+				<br><br>
+				<input style="width: 80%" placeholder="Preis" id="preis" name="preis" type="number" step="0.01" max="1000000" min="0">€</input>
+				<input style="width: 80%" placeholder="Gewicht" id="gewicht" name="gewicht" type="number" step="0.0001" max="1000000" min="0">Kg</input> 
 				
-				<input placeholder="Anzahl" id="anzahl" name="anzahl" type="number"></input>
-				<input placeholder="Einheit" id="einheit" type="text" name="einheit"></input>
-
-				<input placeholder="" id="anonymous" type="checkbox" name="anonymous">Post as Anon?</input>
+				<input style="width: 46%" placeholder="Anzahl" id="anzahl" name="anzahl" min="0" max="1000000" type="number"></input>
+				<input style="width: 46%" placeholder="Einheit" id="einheit" type="text" name="einheit"></input>
+				<br>
 				<button type="submit" onclick="upload()">sdfdf</button>
 			</form>
 

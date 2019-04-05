@@ -17,8 +17,14 @@ include 'open.php';
 	<script>
 		if (document.cookie.indexOf("articles=") < 0){
 			document.cookie = "articles="+JSON.stringify([]);
+		}
+		if (document.cookie.indexOf("votes=") < 0){
 			document.cookie = "votes="+JSON.stringify([]);
+		}
+		if (document.cookie.indexOf("likes=") < 0){
 			document.cookie = "likes="+JSON.stringify([]);
+		}
+		if (document.cookie.indexOf("comments=") < 0){
 			document.cookie = "comments="+JSON.stringify([]);
 		}
 	</script>
@@ -344,6 +350,7 @@ include 'open.php';
 
 				let arr = JSON.parse(jsong);
 				arr.push([id]);
+				document.cookie = "likes="+JSON.stringify(arr);
 				
 
 				fetch("global/like-script.php", {
@@ -393,11 +400,6 @@ include 'open.php';
 					headers:{
 						'Content-Type': 'application/json'
 					}
-				}).then(function (response) {
-					return response.text();
-				}).then(function (data) {
-					let html = data.trim();
-					document.getElementById("comment").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
@@ -475,11 +477,6 @@ include 'open.php';
 						headers:{
 							'Content-Type': 'application/json'
 						}
-					}).then(function (response) {
-						return response.text();
-					}).then(function (data) {
-						let html = data.trim();
-						document.getElementById("comment").innerHTML += html.trim();
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
@@ -487,11 +484,15 @@ include 'open.php';
 
 				document.cookie = "articles="+JSON.stringify([]);
 
+
+
 			}
 
 
 		</script>
+
 	</main>
+
 	<?php
 		include "menu/side-menu.php";
 		include "menu/coinhive_footer.php";

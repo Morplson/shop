@@ -2,6 +2,8 @@
 session_start ( ) ;
 
 
+include '../open.php';
+
 $log=file("../global/data/logedIn.txt" ) ;
 
 if ($_SESSION [ 'istAngemeldet' ]==true ) {

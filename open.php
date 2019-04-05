@@ -1,7 +1,21 @@
 <?php
+	
+	include "vendor/Shop.php";
 
-session_start();
+	if(!isset($_SESSION)){
+		session_start();
+	}
+	if(!isset($_SESSION['istAngemeldet'])){
+		$_SESSION['istAngemeldet'] = false;
+		$_SESSION['userid'] = '';
+		$_SESSION['username'] = '';
+	}
 
-$_SESSION["userid"] = "0999";
-$_SESSION['istAngemeldet'] = true;
+	$nl = "\n";
+	$brnl = "<br>\n";
+	$ausgabe = '';
+	$meldung = '';
+
+
+
 ?>

@@ -1,6 +1,3 @@
-<?
-	include 'open.php';
-?>
 
 <style>
 	input[type="text"].search {

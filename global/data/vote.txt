@@ -1,4 +1,1 @@
-12postid|||0999userid|||1
-10postid|||0999userid|||-1
-9postid|||0999userid|||1
-11postid|||0999userid|||-1
+1postid|||0999userid|||1
