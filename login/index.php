@@ -56,6 +56,7 @@ $gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array ge
 //}
 
 $line_number = -1;
+$count=0;
 
 if ($bname!=null) {
 	$search = $bname;
@@ -402,6 +403,7 @@ $bname="";
 			$_POST["Benutzername"] = "";															//Eingegebener Benutzername
 			$_POST["Passwort"] = "";
 			$_SESSION [ 'logedIn' ] = null ;
+			session_destroy ( ) ;
 			?>
 		</form>
 
