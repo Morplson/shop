@@ -1,6 +1,4 @@
 <?php
-session_start ( ) ;
-
 
 include '../open.php';
 
@@ -402,7 +400,6 @@ $bname="";
 			<?php
 			$_POST["Benutzername"] = "";															//Eingegebener Benutzername
 			$_POST["Passwort"] = "";
-			$_SESSION [ 'logedIn' ] = null ;
 			session_destroy ( ) ;
 			?>
 		</form>

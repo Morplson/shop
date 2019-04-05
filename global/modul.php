@@ -8,7 +8,7 @@
 
 	error_reporting(0);
 
-	
+
 	$_POST = json_decode(file_get_contents('php://input'), true);
 
 
@@ -17,29 +17,29 @@
 	$query = isset($_POST['query']) ? $_POST['query'] : null;
 	$s = isset($_POST['s']) ? $_POST['s'] : null;
 	$max = isset($_POST['max']) ? $_POST['max'] : null;
-	
+
 	$likes = 0;
 	$score = 0;
 	$comments = 0;
 
 	$pID = rand();//$last;
-	
+
 	$title = "Titel";
 
 	$imgLink = null;
 
 	$description = "
 
-▓█████▄  ▄▄▄    ██▒   █▓ ██▓▓█████▄ 
+▓█████▄  ▄▄▄    ██▒   █▓ ██▓▓█████▄
 ▒██▀ ██▌▒████▄ ▓██░   █▒▓██▒▒██▀ ██▌
 ░██   █▌▒██  ▀█▄▓██  █▒░▒██▒░██   █▌
 ░▓█▄   ▌░██▄▄▄▄██▒██ █░░░██░░▓█▄   ▌
-░▒████▓  ▓█   ▓██▒▒▀█░  ░██░░▒████▓ 
- ▒▒▓  ▒  ▒▒   ▓▒█░░ ▐░  ░▓   ▒▒▓  ▒ 
- ░ ▒  ▒   ▒   ▒▒ ░░ ░░   ▒ ░ ░ ▒  ▒ 
- ░ ░  ░   ░   ▒     ░░   ▒ ░ ░ ░  ░ 
-   ░          ░  ░   ░   ░     ░    
- ░                  ░        ░      
+░▒████▓  ▓█   ▓██▒▒▀█░  ░██░░▒████▓
+ ▒▒▓  ▒  ▒▒   ▓▒█░░ ▐░  ░▓   ▒▒▓  ▒
+ ░ ▒  ▒   ▒   ▒▒ ░░ ░░   ▒ ░ ░ ▒  ▒
+ ░ ░  ░   ░   ▒     ░░   ▒ ░ ░ ░  ░
+   ░          ░  ░   ░   ░     ░
+ ░                  ░        ░
 
 ";
 
@@ -64,13 +64,13 @@
 			}
 			fclose($handle);
 		}
-		
+
 	} else {
 		$line_number = 0;
 	}
 
 
-	
+
 	$export = '';
 	$lines = file("data/data.txt");
 	for($i=$line_number; $i < $max+$line_number; $i++):
@@ -104,13 +104,13 @@
 	$score = $data[10];
 	$likes = $data[11];
 	$comments = $data[12];
-	
-		
+
+
 	$imgLink = "global/data/".md5($link)."/thumb.jpeg";
 
 	if($pID!=null&&isset($_SESSION['userid'])) {
 		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
 		if(preg_match_all($pattern, $linesx, $matches)){
@@ -122,7 +122,7 @@
 
 	if($pID!=null&&isset($_SESSION['userid'])) {
 		$linesx = file_get_contents("data/vote.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
 		if(preg_match_all($pattern, $linesx, $matches)){
@@ -138,10 +138,10 @@
 			$colvotes = "black";
 		}
 	}
-	
+
 	if($pID!=null&&isset($_SESSION['userid'])) {
 		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');		
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
 		if(preg_match_all($pattern, $linesx, $matches)){
@@ -171,7 +171,7 @@
 	</div>
 
 
-			
+
 	<div class="values title">
 		<?php echo $title ?>
 	</div>

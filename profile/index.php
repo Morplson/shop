@@ -1,10 +1,13 @@
 <?php
-session_start ( ) ;
-
 
 include '../open.php';
 
 $log=file("../global/data/logedIn.txt" ) ;
+
+$jj = $_SESSION [ 'istAngemeldet' ];
+echo $jj."asdas";
+
+var_dump($_SESSION);
 
 if ($_SESSION [ 'istAngemeldet' ]==true ) {
 $nummer = $_SESSION['userid'];
