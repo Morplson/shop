@@ -1,6 +1,7 @@
 <?php
     include '../open.php';
-    include "../vendor/Shop.php";
+
+    error_log(0);
 
     $title = isset($_POST['title']) ? htmlspecialchars($_POST['title'], ENT_QUOTES, "UTF-8") : null;
     $description = isset($_POST['description']) ? htmlspecialchars($_POST['description'], ENT_QUOTES, "UTF-8") : null;
@@ -11,7 +12,7 @@
 
     $error = "";
 
-    if($title==null||$anzahl==null||$preis==null||$description==null){
+    if($title==null||$anzahl==null||$preis==null||($description==null&&$_FILES['text']==null)){
         $error .= "Failed to upload <br>No inputs given <br>";
         header( "refresh:1;url=../" );
         goto end;
@@ -27,6 +28,12 @@
             $userID=$_SESSION['userid'];
         }
 
+
+
+        if ($_FILES['text']['error'] == UPLOAD_ERR_OK && is_uploaded_file($_FILES['text']['tmp_name']) && $_FILES["text"]["type"] !== "text/plain") {
+
+            $description = file_get_contents($_FILES['text']['tmp_name']); 
+        }
 
         $produkt = new Produkt($title, $description, $preis, $gewicht, $userID, $anzahl, $einheit);
 
@@ -64,6 +71,8 @@
                 }
             }
 
+
+
             $lines = file("../global/data/data.txt");
             if(explode("|||",$lines[0])[0]){
                 $id = explode("rna55df|||",$lines[0])[0]+1;
@@ -85,9 +94,6 @@
     header( "refresh:5;url=../" );
 
     end:
-
-
-
 
 
 ?>

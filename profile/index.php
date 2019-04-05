@@ -1,5 +1,7 @@
 <?php
 
+include '../open.php';
+
 $log=file("../global/data/logedIn.txt" ) ;
 
 if($log[0]=="yes"){

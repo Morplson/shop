@@ -1,4 +1,7 @@
 <?php
+
+include '../open.php';
+
 $bname = $_POST["rname"];																//Eingegebener Benutzername
 $bpassw = $_POST["rpasswort"];																		// Eingegebenes Passwort
 $bemail = $_POST["remail"];

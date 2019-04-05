@@ -1,5 +1,7 @@
 <?php
 
+include '../open.php';
+
 $bname = $_POST["Benutzername"];																//Eingegebener Benutzername
 $bpassw = $_POST["Passwort"];																		// Eingegebenes Passwort
 
