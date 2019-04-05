@@ -2,7 +2,6 @@
 
 include '../open.php';
 
-$log=file("../global/data/logedIn.txt" ) ;
 
 $jj = $_SESSION [ 'istAngemeldet' ];
 echo $jj."asdas";
