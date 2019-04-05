@@ -8,9 +8,9 @@ $teile="";																													//für die teile des namensarray
 $error = "";																										//errormessage
 
 $bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
-$bpasswBenutzt = 0;																							//Speichert ob der
+$bemailBenutzt = 0;																							//Speichert ob der
 
-
+$i=0;
 $gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
 for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
 	$teile=$gname[$i];																					//teile bekommt einen Namen
@@ -19,9 +19,31 @@ for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
 		$error .="Benutzername oder Password falsch";
 	}
 }
-if($bnameBenutzt==0){
-file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
-	echo "succesfull login";
+
+
+$gemail = file ( "../global/data/bemail.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
+for ( $i = 0 ; $i < count ( $gemail ) ; $i ++ ) {
+	$teile=$gemail[$i];																					//teile bekommt einen Namen
+	if($bname==$teile){
+		$bemailBenutzt = 1;																			  //Namen gibt es schon
+		$error .="Benutzername oder Password falsch";
+	}
+}
+if($bnameBenutzt==0&&$bemailBenutzt==0&&$bname!=""&&$bpassw!=""&&$bemail!=""){
+	file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
+	file_put_contents ("../global/data/bpassw.txt" , PHP_EOL.$bpassw,  FILE_APPEND) ;
+	file_put_contents ("../global/data/bemail.txt" , PHP_EOL.$bemail,  FILE_APPEND) ;
+	if($i>0){
+		//$i--;
+		file_put_contents ("../global/data/idAll.txt" , PHP_EOL.$i,  FILE_APPEND) ;
+		file_put_contents ("../global/data/idUsedNow.txt" , $i ) ;
+	}
+	$_SESSION [ 'name' ] = $bname ;
+	echo "succesfull";
+	echo $i;
+} else{
+		echo "failed";
+		echo $i;
 }
 //file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bpasw,  FILE_APPEND) ;
 
@@ -361,7 +383,9 @@ file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
 		<br>
     <input type="submit" value="Submit">
 		</form>
-
+		<form action = "../index.php" method = "post" >
+			<input type="submit" value="back">
+		</form>
 
 </main>
 
