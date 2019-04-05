@@ -1,3 +1,6 @@
+<?php
+include 'open.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,8 +90,6 @@
 				
 			}
 
-		</style>
-	<style type="text/css">
 		*{
 			font-size: 16pt;
 			font-family: 'Raleway', sans-serif;
@@ -331,7 +332,6 @@
 				arr.push([id, anzel.value]);
 				
 				document.cookie = "articles="+JSON.stringify(arr);
-				alert(getCookie("articles"));
 			}
 
 			function like(id){
@@ -345,9 +345,8 @@
 				let arr = JSON.parse(jsong);
 				arr.push([id]);
 				
-				alert(getCookie("likes"));
 
-				fetch("global/like.php", {
+				fetch("global/like-script.php", {
 					method: "POST",
 					body: JSON.stringify({
 						id: id
@@ -438,14 +437,10 @@
 			}
 
 			function requestkorb(where){
-
 				let jsong = JSON.parse(getCookie("articles"));
 
-
-				
 				for (var i = jsong.length-1; i >= 0; i--) {
 					
-
 					fetch("global/wishlist.php", {
 						method: "POST",
 						body: JSON.stringify({
@@ -463,10 +458,36 @@
 					}).catch(function (error) {
 						console.log('Request failed', error);
 					});
-
 				}
 			}
 
+			function kaufabschluss() {
+				let jsong = getCookie("articles");
+				let arr = JSON.parse(jsong);
+
+				for (var i = arr.length - 1; i >= 0; i--) {
+					fetch("global/kaufabschluss.php", {
+						method: "POST",
+						body: JSON.stringify({
+							id: arr[i][0],
+							anzahl: arr[i][1]
+						}),
+						headers:{
+							'Content-Type': 'application/json'
+						}
+					}).then(function (response) {
+						return response.text();
+					}).then(function (data) {
+						let html = data.trim();
+						document.getElementById("comment").innerHTML += html.trim();
+					}).catch(function (error) {
+						console.log('Request failed', error);
+					});
+				}
+
+				document.cookie = "articles="+JSON.stringify([]);
+
+			}
 
 
 		</script>
