@@ -103,7 +103,12 @@ for ($i=0; $i < count($articles); $i++) {
 </div>
 <?php
 }
+if($gesammtpreis>0){
 ?>
-	<div class="kaufenbtn" onclick="kaufabschluss()" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</div></div>
+<div class="kaufenbtn" onclick="kaufabschluss()" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</div></div>
+<?php
+}
+?>
+	
 </body>
 </html>

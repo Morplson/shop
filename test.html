@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+			.inputfield{
+				border: 0; 
+				padding: 0.5rem 1rem; 
+				border: 1px solid #ccc; 
+				position: relative; 
+				background: transparent;
+			}
+
+			.inputfield ~ .focus-bg{
+				position: absolute; 
+				left: 0; 
+				top: 0; 
+				width: 0; 
+				height: 100%; 
+				background-color: transparent; 
+				transition: 0.4s; 
+				z-index: -1;
+			}
+			.inputfield:focus ~ .focus-bg, .x0x342.inputfield ~ .focus-bg{
+				transition: 0.4s;
+				width: 100%;
+				background-color: #ededed;
+			}
+			.inputfield ~ label{
+				position: absolute; 
+				left: 0.5rem; 
+				width: 100%; 
+				top: 0.5rem; 
+				color: #aaa; 
+				transition: 0.3s; 
+				z-index: -1; 
+			}
+			.inputfield:focus ~ label, .x0x342.effect-22 ~ label{
+				top: -0.75rem;
+				left: 0;
+				font-size: 0.75rem; 
+				color: #333; 
+				transition: 0.3s;
+			}
+
+			input[type="text"]{
+				color: #333;
+				width: 100%; 
+				box-sizing: border-box; 
+			}
+
+			:focus{outline: none;}
+
+			.input1{
+				float: left;
+				width: 100%;
+				margin: 1rem 3%;
+				position: relative;
+			}
+
+	</style>
+</head>
+<body>
+				<div class="input1">
+					<input class="inputfield" type="text" placeholder="">
+					<label>Titel</label>
+					<span class="focus-bg"></span>
+				</div>
+</body>
+</html>

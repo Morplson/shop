@@ -18,6 +18,7 @@
 	$s = isset($_POST['s']) ? $_POST['s'] : null;
 	$max = isset($_POST['max']) ? $_POST['max'] : null;
 
+
 	$likes = 0;
 	$score = 0;
 	$comments = 0;
@@ -52,7 +53,7 @@
 	start:
 
 
-	if ($last!=null) {
+	if ($last!==null) {
 		$search = $last."rna55df|||";
 		$line_number = false;
 
@@ -75,14 +76,12 @@
 	$lines = file("data/data.txt");
 	for($i=$line_number; $i < $max+$line_number; $i++):
 		$data = explode("|||",$lines[$i]);
-
 		if ($data[0] == FALSE) {
-
 			continue;
 		}
 
 		if ($s!=null) {
-			if((strpos(strtolower($s), strtolower($data[4])) === false)&&(strpos(strtolower($s), strtolower($data[6])) === false)){
+			if((strpos(strtolower($data[4]), strtolower($s)) === false)&&(strpos(strtolower($data[6]), strtolower($s)) === false)){
 				$max++;
 				continue;
 			}
@@ -181,7 +180,7 @@
 	</a>
 	<div class="values gets">
 		<div class="preis">
-			Preis: <?php echo $preis; ?>
+			Preis: <?php echo $preis; ?>€
 		</div>
 		<div class="anzahl">
 			<?php echo $anzahl." ".$einheit ?>
