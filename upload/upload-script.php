@@ -50,9 +50,9 @@
             $filename = $_FILES['file']['tmp_name'][0];
             $source = imagecreatefromstring( file_get_contents( $filename ) );
             $img = getimagesize($_FILES['file']['tmp_name'][0]);
-            $thumb = imagecreatetruecolor($img[0]/5,$img[1]/5);
+            $thumb = imagecreatetruecolor(500,500);
 
-            imagecopyresized($thumb,$source,0,0,0,0,$img[0]/5,$img[1]/5,$img[0],$img[1]);
+            imagecopyresized($thumb,$source,0,0,0,0,500,500,$img[0],$img[1]);
 
             imagejpeg($thumb, '../global/data/'.md5($produkt->getSerialnumber())."/thumb.jpeg", 50);
             foreach ($_FILES['file']['tmp_name'] as $fileone) {

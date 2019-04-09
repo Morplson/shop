@@ -542,7 +542,7 @@ $bname="";
 	  <br>
 	  Passwort:
 		<br>
-		<input type = "text" name = "Passwort" />
+		<input type = "password" name = "Passwort" />
 	  <br>
 		<br>
 		<br>

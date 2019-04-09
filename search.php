@@ -227,6 +227,12 @@ include 'open.php';
 		}
 
 		.content_r {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			align-items: stretch;
+			align-content:flex-start;
 			flex: 1 0 auto;
 			width: 15rem;
 			word-wrap: break-word;

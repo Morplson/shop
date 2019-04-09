@@ -374,11 +374,11 @@ if($line_number1==false&&$line_number3==false){
 		<br>
     Passwort:
 		<br>
-    <input type="text" name="rpasswort" />
+    <input type="password" name="rpasswort" />
 		<br>
     E-mail:
 		<br>
-    <input type="text" name="remail" />
+    <input type="email" name="remail" />
     <br>
 		<br>
 		<br>

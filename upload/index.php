@@ -104,6 +104,73 @@ include '../open.php';
 				padding: 1rem;
 			}
 
+
+
+			.inputfield{
+				border: 0; 
+				padding: 0.5rem 1rem; 
+				border: 1px solid #ccc; 
+				position: relative; 
+				background: transparent;
+			}
+
+			.inputfield ~ .focus-bg{
+				position: absolute; 
+				left: 0; 
+				top: 0; 
+				width: 0; 
+				height: 100%; 
+				background-color: transparent; 
+				transition: 0.4s; 
+				z-index: -1;
+			}
+			.inputfield:focus ~ .focus-bg, .x0x342.inputfield ~ .focus-bg{
+				transition: 0.4s;
+				width: 100%;
+				background-color: #ededed;
+			}
+			.inputfield ~ label{
+				position: absolute; 
+				left: 0.5rem; 
+				width: 100%; 
+				top: 0.5rem; 
+				color: #aaa; 
+				transition: 0.3s; 
+				z-index: -1; 
+			}
+			.inputfield:focus ~ label, .inputfield:not(:placeholder-shown) ~ label, .x0x342.effect-22 ~ label{
+				top: -1rem;
+				left: 0;
+				font-size: 0.75rem; 
+				color: #333; 
+				transition: 0.3s;
+			}
+
+			input[type="text"]{
+				color: #333;
+				width: 100%; 
+				box-sizing: border-box; 
+			}
+			input[type="number"]{
+				color: #333;
+				width: 100%; 
+				box-sizing: border-box; 
+			}
+			textarea{
+				color: #333;
+				width: 100%; 
+				box-sizing: border-box; 
+			}
+
+			:focus{outline: none;}
+
+			.input1{
+				float: left;
+				width: 100%;
+				margin: 1rem 0 0.25rem 0;
+				position: relative;
+			}
+
 			
 		</style>
 		<script type="text/javascript">
@@ -156,7 +223,11 @@ include '../open.php';
 			</div>
 			<br-->
 			<form  method="post" action="upload/upload-script.php" enctype="multipart/form-data" class="plain">
-				<input style="width: 100%" placeholder="Titel" id="title" type="text" name="title"></input>
+				<div class="input1">
+					<input class="inputfield" type="text" id="title" type="text" name="title" placeholder="">
+					<label>Titel</label>
+					<span class="focus-bg"></span>
+				</div>
 				<br>
 				Bilder:<br>
 				<input placeholder="Upload file" id="file" type="file" name="file[]"></input>
@@ -164,18 +235,42 @@ include '../open.php';
 				<input placeholder="Upload file 3" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 4" id="file" type="file" name="file[]"></input>
 				<input placeholder="Upload file 5" id="file" type="file" name="file[]"></input>
-
-				<textarea style="resize: none; width: 100%;" id="description" name="description" maxlength="1200" placeholder="here goes your text!"></textarea>
-				Text:<br>
-				<input placeholder="Upload file" id="file" type="file" name="text"></input>
-				<br><br>
-				<input style="width: 80%" placeholder="Preis" id="preis" name="preis" type="number" step="0.01" max="1000000" min="0">€</input>
-				<input style="width: 80%" placeholder="Gewicht" id="gewicht" name="gewicht" type="number" step="0.0001" max="1000000" min="0">Kg</input> 
-				
-				<input style="width: 46%" placeholder="Anzahl" id="anzahl" name="anzahl" min="0" max="1000000" type="number"></input>
-				<input style="width: 46%" placeholder="Einheit" id="einheit" type="text" name="einheit"></input>
 				<br>
-				<button type="submit" onclick="upload()">sdfdf</button>
+				<div class="input1">
+					<textarea style="resize: none;" class="inputfield" type="text" id="description" name="description" maxlength="1200" placeholder=""></textarea>
+					<label>Deine Produktbeschreibung</label>
+					<span class="focus-bg"></span>
+				</div>
+				<br>Text:<br>
+				<input placeholder="Upload file" id="file" type="file" name="text"></input>
+				<br>
+				
+				<div class="input1">
+					<input class="inputfield" id="preis" name="preis" type="number" step="0.01" max="1000000" min="0" placeholder="">
+					<label>Preis in €</label>
+					<span class="focus-bg"></span>
+				</div>
+				<div class="input1">
+					<input class="inputfield" id="gewicht" name="gewicht" type="number" step="0.0001" max="1000000" min="0" placeholder="">
+					<label>Gewicht in Kg</label>
+					<span class="focus-bg"></span>
+				</div>
+				
+				<div style="width: 50%" class="input1">
+					<input class="inputfield" id="anzahl" name="anzahl" min="0" max="1000000" type="number" placeholder="">
+					<label>Anzahl</label>
+					<span class="focus-bg"></span>
+				</div>
+
+				<div style="width: 50%" class="input1">
+					<input class="inputfield" id="einheit" type="text" name="einheit" placeholder="">
+					<label>Einheit</label>
+					<span class="focus-bg"></span>
+				</div>
+
+				<br>
+				<br>
+				<button type="submit" onclick="upload()">Posten</button>
 			</form>
 
 		</main>

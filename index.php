@@ -181,7 +181,7 @@ include 'open.php';
 
 
 		.values{
-			height:1.5rem;
+			min-height:1.5rem;
 			line-height: 1.5rem;
 			background-color: #E8E8E8;
 			text-align: center;
@@ -233,6 +233,12 @@ include 'open.php';
 		}
 
 		.content_r {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-evenly;
+			align-items: stretch;
+			align-content:flex-start;
 			flex: 1 0 auto;
 			width: 15rem;
 			word-wrap: break-word;
@@ -343,15 +349,25 @@ include 'open.php';
 			function like(id){
 				let jsong = getCookie("likes");
 
-				let buts = document.querySelectorAll("[id^='"+id+"likes']");
-				for (var i = buts.length - 1; i >= 0; i--) {
-					buts[i].style.color = "#f91f1f";
-				}
-
 				let arr = JSON.parse(jsong);
+
 				arr.push([id]);
+
 				document.cookie = "likes="+JSON.stringify(arr);
-				
+
+				let buts = document.querySelectorAll("[id^='"+id+"likes']");
+
+				for (var i = buts.length - 1; i >= 0; i--) {
+					
+					if (buts[i].style.color == "black") {
+						buts[i].style.color = "#f91f1f";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)+1;
+					}else{
+						buts[i].style.color = "black";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)-1;
+					}
+					
+				}
 
 				fetch("global/like-script.php", {
 					method: "POST",
@@ -374,20 +390,35 @@ include 'open.php';
 			function vote(id, vote){
 				let jsong = getCookie("votes");
 
+				let arr = JSON.parse(jsong);
+				let d = indexOfArray([id,vote],arr);
+
+				arr.push([id,vote]);
+
 				let buts = document.querySelectorAll("[id^='"+id+"votes']");
 				if(vote<0){
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#5aa51d";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-2;
+						}
 						buts[i].style.color = "#f91f1f";
 					}
 				}else if (vote>0) {
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#f91f1f";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+2;
+						}
 						buts[i].style.color = "#5aa51d";
 					}
 				}
-				
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id,vote]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 
@@ -403,6 +434,7 @@ include 'open.php';
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
+
 			}
 
 			function comment(id){
@@ -420,6 +452,14 @@ include 'open.php';
 				window.location.replace("global/post.php?id="+id+"#comment");
 
 
+			}
+
+			function indexOfArray(val, array) {
+				var hash = {}, indexes = {}, i, j;
+				for(i = 0; i < array.length; i++) {
+					hash[array[i]] = i;
+				}
+				return (hash.hasOwnProperty(val)) ? hash[val] : -1;
 			}
 
 			function getCookie(cname) {
@@ -483,7 +523,8 @@ include 'open.php';
 				}
 
 				document.cookie = "articles="+JSON.stringify([]);
-
+				alert("Kauf erfolgreich abgeschlossen!\n");
+				location.reload(); 
 
 
 			}

@@ -120,6 +120,12 @@
 			overflow: scroll;
 			overflow-x: hidden;
 			display: none;
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+
+		.sidecontainer>div::-webkit-scrollbar { 
+			display: none;
 		}
 
 		.closeside{
