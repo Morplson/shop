@@ -75,6 +75,8 @@ if ($bname!=null) {
 
 
 if($line_number!=false){
+	echo "<br>";
+	echo "<br>";
 	echo "succesfull";
 	#$hashid=$bname;
 	$_SESSION['name'] = $bname;
@@ -82,13 +84,13 @@ if($line_number!=false){
 	$_SESSION ['id'] = $count;
 	$_SESSION [ 'istAngemeldet' ] = true ;
 } else{
+	echo "<br>";
+	echo "<br>";
 	echo "failed";
 }
 
 
 echo $error;
-
-$bname="";
 
 
 
@@ -357,13 +359,13 @@ $bname="";
 			position: absolute;
 			top: 0rem;;
 
-      width: 10%;
+      width: 50%;
       margin: 1.5rem 25%;
 		}
 
     h1{
       size: 15px;
-      color: red;
+      color: black;
     }
 
 		input[type="text"].search {
@@ -448,6 +450,12 @@ $bname="";
 			background-color: #f2f2f2
 		}
 
+		.bbutton{
+			width: 6rem;
+			height: 3rem;
+			border-radius: 3rem;
+			border: 1px solid #E8E8E8;
+		}
 
 	</style>
 
@@ -547,14 +555,14 @@ $bname="";
 		<br>
 		<br>
 		<br>
-	  <input type = "Submit" value = "Absenden" /> </form>
+	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
 
 		<form action = "logout.php" method = "post" >
-			<input type="submit" value="logout">
+			<input type="submit" value="logout" class="bbutton">
 		</form>
 
-		<form action = "../index.php" method = "post" >
-			<input type="submit" value="Startseite">
+		<form action = "../index.php" method = "post" > <p> Noch kein Account? Rechts oben können Sie einen erstellen:</p>
+			<input type="submit" value="Startseite" class="bbutton">
 		</form>
   </div>
 </main>
