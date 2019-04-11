@@ -1,9 +1,10 @@
 <?php
+	error_log(0);
 
 include '../open.php';
 
-$bname = $_POST["Benutzername"];																//Eingegebener Benutzername
-$bpassw = $_POST["Passwort"];																		// Eingegebenes Passwort
+$bname = isset($_POST['Benutzername']) ? $_POST['Benutzername'] : null;																//Eingegebener Benutzername
+$bpassw = isset($_POST['Passwort']) ? $_POST['Passwort'] : null;																		// Eingegebenes Passwort
 
 
 $teile = "";																													//für die teile des namensarray
@@ -36,18 +37,14 @@ if ($bname!=null) {
 
 
 if($line_number!=false){
-	echo "<br>";
-	echo "<br>";
-	echo "succesfull";
+
 	#$hashid=$bname;
 	$_SESSION['name'] = $bname;
 	$_SESSION ['userid'] = md5($bname);
 	$_SESSION ['id'] = $count;
 	$_SESSION [ 'istAngemeldet' ] = true ;
 } else{
-	echo "<br>";
-	echo "<br>";
-	echo "failed";
+
 	$_SESSION [ 'istAngemeldet' ] = false ;
 }
 
@@ -62,6 +59,8 @@ echo $error;
 <!DOCTYPE html>
 <html>
 <head>
+		<link rel="stylesheet" type="text/css" href="../css/main.css">
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width">
@@ -85,6 +84,90 @@ echo $error;
 	</script>
 	<title>Railway</title>
 
+	<style>
+	input[type="text"].search {
+		vertical-align: middle;
+		margin: 0;
+		padding: 0;
+
+		background-color: transparent;
+		border: none;
+		color: black;
+	}
+
+	.header{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;		
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 5;
+		padding-left: 3.5rem;
+		padding-right: 9rem;
+		background-color: white;
+
+		height: 3rem;
+		overflow: hidden;
+	}
+
+	.label{
+		font-weight: bold;
+
+	}
+
+	.topleftli{
+
+		transition: background-color .6s;
+
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: left;
+	}
+
+	.toprightli{
+		transition: background-color .6s;
+
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: right;
+	}
+
+	@media only screen and (max-width: 768px) {
+		.desktop {
+			display: none;
+		}
+	}
+	@media only screen and (min-width: 767px) {
+		.mobile {
+			display: none;
+		}
+	}
+
+	.mobilecontainer{
+
+		background-color: white;
+		z-index: 30;
+
+		position: fixed;
+		box-sizing: content-box;
+
+	}
+	
+	.mobilecontainer>.exput{
+		transition: background-color .6s;
+		line-height: 3rem;
+		height: 3rem;
+		padding: 0 1rem;
+	}
+
+	.exput:hover, .topleftli:hover, .toprightli:hover{
+		background-color: #f2f2f2
+	}
+
+</style>
 </head>
 <body>
 	<div class="header">
@@ -93,6 +176,7 @@ echo $error;
 		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
+		<a href="logout.php"><div class="desktop toprightli">Logout</div></a>
 		<a href="register.php"><div class="desktop toprightli">Register</div></a>
 		<div class="desktop toprightli">
 		</div>
@@ -102,8 +186,7 @@ echo $error;
 
 	</div>
 	<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
-		<a class="exput" href="login/"></a>
-		<div class="exput"><input id="searchm" class="search" type="text" placeholder="" name="sInput"></div>
+		<a class="exput" href="register.php">Register</a>
 	</div>
 
 	<script type="text/javascript">
@@ -170,24 +253,24 @@ echo $error;
 
 		<form action = "index.php" method = "post" >
 		<h1>Anmelden</h1>
-	  Benutzername:
 		<br>
-		<input type = "text" name = "Benutzername" />
-	  <br>
-	  Passwort:
-		<br>
-		<input type = "password" name = "Passwort" />
-	  <br>
-		<br>
-		<br>
-		<br>
-	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
+	<div class="description">
+		<div class="input1">
+			<input class="inputfield" type="text" type="text" name="Benutzername" placeholder="">
+			<label>Benutzername</label>
+			<span class="focus-bg"></span>
+		</div>
 
-		<form action = "logout.php" method = "post" >
-			<input type="submit" value="logout" class="bbutton">
-		</form>
+		<div class="input1">
+			<input class="inputfield" type="password" type="text" name="Passwort" placeholder="">
+			<label>Passwort</label>
+			<span class="focus-bg"></span>
+		</div>
+	</div>
 
-	<p> Noch kein Account? Rechts oben können Sie einen erstellenss</p>
+	  <input type = "Submit" value = "Absenden" class="submitbutton" /> </form>
+	</form>
+
   </div>
 </main>
 

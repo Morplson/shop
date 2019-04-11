@@ -93,24 +93,24 @@
 	}
 	
 
-	if($id!=null&&isset($_SESSION['userid'])) {
-		$lines = file_get_contents("data/like.txt");
-		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/like.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $lines, $matches)){
+		if(preg_match_all($pattern, $linesx, $matches)){
 			$collikes = "#f91f1f";
 		}else{
 			$collikes = "black";
 		}
 	}
 
-	if($id!=null&&isset($_SESSION['userid'])) {
-		$lines = file_get_contents("data/vote.txt");
-		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/vote.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $lines, $matches)){
+		if(preg_match_all($pattern, $linesx, $matches)){
 			$like = explode("|||", $matches[0][0])[2];
 			if($like==-1){
 				$colvotes = "#f91f1f";
@@ -123,18 +123,19 @@
 			$colvotes = "black";
 		}
 	}
-	
-	if($id!=null&&isset($_SESSION['userid'])) {
-		$lines = file_get_contents("data/like.txt");
-		$pattern = preg_quote($id."postid|||".$_SESSION['userid']."userid|||", '/');		
+
+	if($pID!=null&&isset($_SESSION['userid'])) {
+		$linesx = file_get_contents("data/like.txt");
+		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
 		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $lines, $matches)){
+		if(preg_match_all($pattern, $linesx, $matches)){
 			$colcom = "#9273d0";
 		}else{
 			$colcom = "black";
 		}
 	}
+	
 
 
 

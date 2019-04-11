@@ -357,6 +357,24 @@
 			width: 100%; 
 			box-sizing: border-box; 
 		}
+
+		input[type="number"].num{
+			color: #333;
+			width: 100%; 
+			box-sizing: content-box; 
+		}
+
+		input[type="password"]{
+			color: #333;
+			width: 100%; 
+			box-sizing: border-box; 
+		}
+
+		input[type="email"]{
+			color: #333;
+			width: 100%; 
+			box-sizing: border-box; 
+		}
 		
 		textarea{
 			color: #333;

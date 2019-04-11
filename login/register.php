@@ -1,16 +1,17 @@
 <?php
+	error_log(0);
 
 include '../open.php';
 
-$bname = $_POST["rname"];																//Eingegebener Benutzername
-$bpassw = $_POST["rpasswort"];																		// Eingegebenes Passwort
-$bemail = $_POST["remail"];
+$bname = isset($_POST['rname']) ? $_POST['rname'] : null;															//Eingegebener Benutzername
+$bpassw = isset($_POST['rpasswort']) ? $_POST['rpasswort'] : null;																		// Eingegebenes Passwort
+$bemail = isset($_POST['remail']) ? $_POST['remail'] : null;
 
 $teile="";																													//für die teile des namensarray
 
 $error = "";																										//errormessage
 
-$bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
+$bnameBenutzt = 0;	 																			//Speichert ob der bname schon benutzt wurde
 $bemailBenutzt = 0;																							//Speichert ob der
 
 $i=0;
@@ -60,13 +61,9 @@ if($line_number1==false&&$line_number3==false){
 
 		//$i--;
 	$_SESSION [ 'name' ] = $bname ;
-	echo "<br>";
-	echo "<br>";
-	echo "succesfull";
+
 } else{
-	echo "<br>";
-	echo "<br>";
-		echo "failed";
+
 }
 
 
@@ -80,6 +77,7 @@ if($line_number1==false&&$line_number3==false){
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width">
@@ -102,436 +100,194 @@ if($line_number1==false&&$line_number3==false){
 	</script>
 	<title>Railway</title>
 
-
-
-		<style type="text/css">
-			.values.scores>.like:hover {
-				color: #f91f1f;
-			}
-
-			.upvote:hover{
-				color: #5aa51d;
-			}
-
-			.downvote:hover{
-				color: #f91f1f;
-			}
-
-
-			.values.scores>.comment:hover {
-				color: #9273d0;
-			}
-
-			.description {
-				text-align: justify;
-				padding: 0.125rem;
-				word-break: break-word;
-			}
-
-			.values.buy{
-			}
-
-			.values.buy>.btn{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
-
-				height: 1.5rem;
-
-				width: 6rem;
-				float: left;
-
-				transition: all 0.6s;
-			}
-
-			.values.buy>.num{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
-
-				height: 1.5rem;
-
-				float: right;
-				width: 4rem;
-
-				transition: all 0.6s;
-			}
-
-			.values.gets>.preis{
-				float: left;
-				padding-left: 1rem;
-			}
-
-			.values.gets>.anzahl{
-				float: right;
-				padding-right: 1rem;
-
-			}
-
-		</style>
-		<style type="text/css">
-			*{
-				font-size: 16pt;
-				font-family: 'Raleway', sans-serif;
-				scroll-behavior: smooth;
-			}
-
-			body{
-				x-overflow: hidden;
-				padding: 0;
-				margin: 0;
-			}
-
-			a, a:visited, a:hover, a:active{
-				text-decoration: none;
-				color: inherit;
-			}
-
-			.playarea{
-				z-index: 0;
-			}
-			.playcontent{
-				margin-left: 10%;
-			}
-
-			.playbar{
-				z-index: 5;
-
-				height: 7rem;
-				width: 40%;
-				min-width: 25rem;
-
-				bottom: 0;
-				left: 0;
-
-				position: absolute;
-
-				overflow: hidden;
-
-				background-color: black;
-			}
-
-
-
-
-			.topleftli:hover, .toprightli:hover{
-				background-color: #f2f2f2
-			}
-
-			.controlls{
-				position: fixed;
-				bottom: 1rem;
-				right: 7rem;
-
-			}
-			.controllbutton{
-				width: 3rem;
-				height: 3rem;
-				margin: 0 1.5rem;
-				border-radius: 3rem;
-				padding: 0.5rem;
-				border: 1px solid #E8E8E8;
-				float: right;
-				text-align: center;
-			}
-
-			.container{
-				border: 1px solid #E8E8E8;
-				height: auto;
-				width: 13.5rem;
-				margin: 0.25rem;
-				display: inline-block;
-				position: relative;
-				vertical-align: baseline;
-			}
-
-			picture.picture,a.picture{
-				display: block;
-				height: 12rem;
-				width: 13.5rem;
-				background-repeat: no-repeat;
-				background-size: contain;
-				background-position: center;
-			}
-
-
-
-			.values{
-				height:1.5rem;
-				line-height: 1.5rem;
-				background-color: #E8E8E8;
-				text-align: center;
-				white-space: nowrap;
-				word-wrap: break-word;
-
-			}
-
-			.values div{
-				width: auto;
-				display: inline-block;
-
-			}
-
-			.values.scores{
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				letter-spacing: 0.25rem;
-			}
-
-			.content {
-				position: absolute;
-				top: 4.5rem;
-				right:4.5rem;
-				left: 2rem;
-	      width: 30%;
-	      margin: 1.5rem 25%;
-			}
-
-			.flex-container{
-				display: flex;
-
-				clear: both;
-				flex: 1 0 auto;
-				text-align: center;
-			}
-
-			.content_l {
-				flex: 0 0 auto;
-				width: 15rem;
-				word-wrap: break-word;
-
-			}
-
-			@media only screen and (max-width: 768px) {
-				.content_l {
-					display: none;
-				}
-			}
-
-			.content_r {
-				flex: 1 0 auto;
-				width: 15rem;
-				word-wrap: break-word;
-				align-items: center;
-			}
-
-			.content_l .container{
-				width: 98%;
-				height: auto;
-
-				margin: 0.25rem -1px;
-			}
-
-			.values.buy>.btn:hover, .values.buy>.num:hover{
-				background-color: #D8D8D8;
-			}
-	    .con1{
-	      top: 25%;
-	      right:50%;
-	      width:10%;
-	      height: 15px;
-	    }
-
-	    .contentv2 {
-				position: absolute;
-				top: 0rem;;
-
-	      width: 10%;
-	      margin: 1.5rem 25%;
-			}
-
-	    h1{
-	      size: 15px;
-	      color: red;
-	    }
-
-			.header{
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				position: fixed;
-				top: 0;
-				left: 0;
-				right: 0;
-				z-index: 5;
-				padding-left: 3.5rem;
-				padding-right: 9rem;
-				background-color: white;
-
-				height: 3rem;
-				overflow: hidden;
-			}
-
-			.label{
-				font-weight: bold;
-
-			}
-
-			.topleftli{
-
-				transition: background-color .6s;
-
-				padding: 0 1rem;
-				line-height: 3rem;
-				float: left;
-			}
-
-			.toprightli{
-				transition: background-color .6s;
-
-				padding: 0 1rem;
-				line-height: 3rem;
-				float: right;
-			}
-
-			@media only screen and (max-width: 768px) {
-				.desktop {
-					display: none;
-				}
-			}
-			@media only screen and (min-width: 767px) {
-				.mobile {
-					display: none;
-				}
-			}
-
-			.mobilecontainer{
-
-				background-color: white;
-				z-index: 30;
-
-				position: fixed;
-				box-sizing: content-box;
-
-			}
-
-			.mobilecontainer>.exput{
-				transition: background-color .6s;
-				line-height: 3rem;
-				height: 3rem;
-				padding: 0 1rem;
-			}
-
-			.exput:hover, .topleftli:hover, .toprightli:hover{
-				background-color: #f2f2f2
-			}
-
-			.bbutton{
-				width: 6rem;
-				height: 3rem;
-				border-radius: 3rem;
-				border: 1px solid #E8E8E8;
-			}
-
-
-
-
-		</style>
-
+	<style>
+	input[type="text"].search {
+		vertical-align: middle;
+		margin: 0;
+		padding: 0;
+
+		background-color: transparent;
+		border: none;
+		color: black;
+	}
+
+	.header{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;		
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 5;
+		padding-left: 3.5rem;
+		padding-right: 9rem;
+		background-color: white;
+
+		height: 3rem;
+		overflow: hidden;
+	}
+
+	.label{
+		font-weight: bold;
+
+	}
+
+	.topleftli{
+
+		transition: background-color .6s;
+
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: left;
+	}
+
+	.toprightli{
+		transition: background-color .6s;
+
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: right;
+	}
+
+	@media only screen and (max-width: 768px) {
+		.desktop {
+			display: none;
+		}
+	}
+	@media only screen and (min-width: 767px) {
+		.mobile {
+			display: none;
+		}
+	}
+
+	.mobilecontainer{
+
+		background-color: white;
+		z-index: 30;
+
+		position: fixed;
+		box-sizing: content-box;
+
+	}
+	
+	.mobilecontainer>.exput{
+		transition: background-color .6s;
+		line-height: 3rem;
+		height: 3rem;
+		padding: 0 1rem;
+	}
+
+	.exput:hover, .topleftli:hover, .toprightli:hover{
+		background-color: #f2f2f2
+	}
+
+</style>
 </head>
 <body>
-	<main id="content" class="content">
+	<div class="header">
+		<a href="../index.php"><div class="label topleftli">Shop.com</div></a>
+		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
+		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
+		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
-		<div class="header">
-			<a href="../index.php"><div class="label topleftli">Shop.com</div></a>
-			<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
-			<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
-			<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
-
-			<a href="register.php"><div class="desktop toprightli">Register</div></a>
-			<div class="desktop toprightli">
-			</div>
-
-
-
-
-		</div>
-		<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
-			<a class="exput" href="login/"></a>
-			<div class="exput"><input id="searchm" class="search" type="text" placeholder="" name="sInput"></div>
+		<a href="logout.php"><div class="desktop toprightli">Logout</div></a>
+		<a href="index.php"><div class="desktop toprightli">Login</div></a>
+		<div class="desktop toprightli">
 		</div>
 
-		<script type="text/javascript">
-			const searchinp = document.getElementById("search");
-			searchinp.addEventListener("keyup", ()=>{
-				if (event.key === "Enter") {
-					search();
-				}
-			});
-
-			const searchinpm = document.getElementById("searchm");
-			searchinpm.addEventListener("keyup", ()=>{
-				if (event.key === "Enter") {
-					search();
-				}
-			});
-
-			function search(){
-						window.location.replace("search.php?s="+searchinp.value);
-				}
-
-
-			const mobilemenu = document.getElementById("mobilemenu");
-			mobilemenu.addEventListener("mouseover", function(event) {
-
-						let el = document.getElementById("mobilehovercontainer");
-						el.style.display = "block";
-						el.style.left = mobilemenu.offsetLeft+"px";
-						el.style.top =  mobilemenu.offsetTop+mobilemenu.offsetHeight+"px";
-
-			});
-			mobilemenu.addEventListener("mouseout", function(event) {
-
-						let el = document.getElementById("mobilehovercontainer");
-						el.style.display = "none";
-
-			});
 
 
 
-			const mobilehovercontainer = document.getElementById("mobilehovercontainer");
-			mobilehovercontainer.addEventListener("mouseover", function(event) {
+	</div>
+	<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
+		<a class="exput" href="register.php">Register</a>
+	</div>
 
-						let el = document.getElementById("mobilehovercontainer");
-						el.style.display = "block";
+	<script type="text/javascript">
+		const searchinp = document.getElementById("search");
+		searchinp.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
+		});
 
-			});
-			mobilehovercontainer.addEventListener("mouseout", function(event) {
+		const searchinpm = document.getElementById("searchm");
+		searchinpm.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
+		});
 
-						let el = document.getElementById("mobilehovercontainer");
-						el.style.display = "none";
-
-			});
-
+		function search(){
+					window.location.replace("search.php?s="+searchinp.value);
+			}
 
 
-		</script>
+		const mobilemenu = document.getElementById("mobilemenu");
+		mobilemenu.addEventListener("mouseover", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "block";
+					el.style.left = mobilemenu.offsetLeft+"px";
+					el.style.top =  mobilemenu.offsetTop+mobilemenu.offsetHeight+"px";
+
+		});
+		mobilemenu.addEventListener("mouseout", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "none";
+
+		});
 
 
+
+		const mobilehovercontainer = document.getElementById("mobilehovercontainer");
+		mobilehovercontainer.addEventListener("mouseover", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "block";
+
+		});
+		mobilehovercontainer.addEventListener("mouseout", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "none";
+
+		});
+
+
+
+	</script>
+
+
+	<br>
 
 		<form action = "register.php" method = "post" >
     <h1>Regristrieren</h1>
-    Benutzername:
-		<br>
-    <input type="text" name="rname" />
-		<br>
-    Passwort:
-		<br>
-    <input type="password" name="rpasswort" />
-		<br>
-    E-mail:
-		<br>
-    <input type="email" name="remail" />
+    	<div class="description">
+    	<div class="input1">
+			<input class="inputfield" type="text" name="rname" placeholder="">
+			<label>Benutzername</label>
+			<span class="focus-bg"></span>
+		</div>
+
+    	<div class="input1">
+			<input class="inputfield"  type="password" name="rpasswort" placeholder="">
+			<label>Passwort</label>
+			<span class="focus-bg"></span>
+		</div>
+
+    	<div class="input1">
+			<input class="inputfield"  type="email" name="remail" placeholder="">
+			<label>E-mail</label>
+			<span class="focus-bg"></span>
+		</div>
+	</div>
     <br>
-		<br>
-		<br>
-    <input type="submit" value="Submit" class="bbutton">
-		</form>
-		<form action = "../index.php" method = "post" >
-			<input type="submit" value="back" class="bbutton">
+
+    <input type="submit" value="Submit" class="submitbutton">
 		</form>
 
 </main>
