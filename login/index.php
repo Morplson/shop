@@ -75,6 +75,8 @@ if ($bname!=null) {
 
 
 if($line_number!=false){
+	echo "<br>";
+	echo "<br>";
 	echo "succesfull";
 	#$hashid=$bname;
 	$_SESSION['name'] = $bname;
@@ -82,13 +84,13 @@ if($line_number!=false){
 	$_SESSION ['id'] = $count;
 	$_SESSION [ 'istAngemeldet' ] = true ;
 } else{
+	echo "<br>";
+	echo "<br>";
 	echo "failed";
 }
 
 
 echo $error;
-
-$bname="";
 
 
 
@@ -357,25 +359,186 @@ $bname="";
 			position: absolute;
 			top: 0rem;;
 
-      width: 10%;
+      width: 50%;
       margin: 1.5rem 25%;
 		}
 
     h1{
       size: 15px;
-      color: red;
+      color: black;
     }
+
+		input[type="text"].search {
+			vertical-align: middle;
+			margin: 0;
+			padding: 0;
+
+			background-color: transparent;
+			border: none;
+			color: black;
+		}
+
+		.header{
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 5;
+			padding-left: 3.5rem;
+			padding-right: 9rem;
+			background-color: white;
+
+			height: 3rem;
+			overflow: hidden;
+		}
+
+		.label{
+			font-weight: bold;
+
+		}
+
+		.topleftli{
+
+			transition: background-color .6s;
+
+			padding: 0 1rem;
+			line-height: 3rem;
+			float: left;
+		}
+
+		.toprightli{
+			transition: background-color .6s;
+
+			padding: 0 1rem;
+			line-height: 3rem;
+			float: right;
+		}
+
+		@media only screen and (max-width: 768px) {
+			.desktop {
+				display: none;
+			}
+		}
+		@media only screen and (min-width: 767px) {
+			.mobile {
+				display: none;
+			}
+		}
+
+		.mobilecontainer{
+
+			background-color: white;
+			z-index: 30;
+
+			position: fixed;
+			box-sizing: content-box;
+
+		}
+
+		.mobilecontainer>.exput{
+			transition: background-color .6s;
+			line-height: 3rem;
+			height: 3rem;
+			padding: 0 1rem;
+		}
+
+		.exput:hover, .topleftli:hover, .toprightli:hover{
+			background-color: #f2f2f2
+		}
+
+		.bbutton{
+			width: 6rem;
+			height: 3rem;
+			border-radius: 3rem;
+			border: 1px solid #E8E8E8;
+		}
+
 	</style>
 
 </head>
 <body>
+	<div class="header">
+		<a href="../index.php"><div class="label topleftli">Shop.com</div></a>
+		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
+		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
+		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
+
+		<a href="register.php"><div class="desktop toprightli">Register</div></a>
+		<div class="desktop toprightli">
+		</div>
+
+
+
+
+	</div>
+	<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
+		<a class="exput" href="login/"></a>
+		<div class="exput"><input id="searchm" class="search" type="text" placeholder="" name="sInput"></div>
+	</div>
+
+	<script type="text/javascript">
+		const searchinp = document.getElementById("search");
+		searchinp.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
+		});
+
+		const searchinpm = document.getElementById("searchm");
+		searchinpm.addEventListener("keyup", ()=>{
+			if (event.key === "Enter") {
+				search();
+			}
+		});
+
+		function search(){
+					window.location.replace("search.php?s="+searchinp.value);
+			}
+
+
+		const mobilemenu = document.getElementById("mobilemenu");
+		mobilemenu.addEventListener("mouseover", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "block";
+					el.style.left = mobilemenu.offsetLeft+"px";
+					el.style.top =  mobilemenu.offsetTop+mobilemenu.offsetHeight+"px";
+
+		});
+		mobilemenu.addEventListener("mouseout", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "none";
+
+		});
+
+
+
+		const mobilehovercontainer = document.getElementById("mobilehovercontainer");
+		mobilehovercontainer.addEventListener("mouseover", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "block";
+
+		});
+		mobilehovercontainer.addEventListener("mouseout", function(event) {
+
+					let el = document.getElementById("mobilehovercontainer");
+					el.style.display = "none";
+
+		});
+
+
+
+	</script>
+
 	<main id="content" class="content">
 
   <div id="content" class="contentv2">
-		<form action = "register.php" method = "post" >
-    <h1>Regristrieren</h1>
-    <input type="submit" value="Submit" onclick="reg()">
-		</form>
 
 		<br>
 
@@ -392,14 +555,14 @@ $bname="";
 		<br>
 		<br>
 		<br>
-	  <input type = "Submit" value = "Absenden" /> </form>
+	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
 
 		<form action = "logout.php" method = "post" >
-			<input type="submit" value="logout">
+			<input type="submit" value="logout" class="bbutton">
 		</form>
 
-		<form action = "../index.php" method = "post" >
-			<input type="submit" value="Startseite">
+		<form action = "../index.php" method = "post" > <p> Noch kein Account? Rechts oben können Sie einen erstellen:</p>
+			<input type="submit" value="Startseite" class="bbutton">
 		</form>
   </div>
 </main>
