@@ -6,7 +6,7 @@
 	} else{
 		echo "failed";
 	}
-
+	header("Location: ../index.php");
 ?>
 <!DOCTYPE html>
 <html>
@@ -117,10 +117,6 @@
 			a, a:visited, a:hover, a:active{
 				text-decoration: none;
 				color: inherit;
-			}
-
-			.playarea{
-				z-index: 0;
 			}
 			.playcontent{
 				margin-left: 10%;
@@ -278,19 +274,19 @@
 	      size: 15px;
 	      color: red;
 	    }
+			.bbutton{
+				width: 6rem;
+				height: 3rem;
+				border-radius: 3rem;
+				border: 1px solid #E8E8E8;
+			}
 		</style>
 
 </head>
 <body>
-	<main id="content" class="content">
-
-  <div id="content" class="contentv2">
-
 		<form action = "../index.php" method = "post" >
-			<input type="submit" value="Startseite">
+			<input type="submit" value="Startseite" class="bbutton">
 		</form>
-  </div>
-</main>
 
   </body>
   </html>

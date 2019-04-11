@@ -12,46 +12,7 @@ $error = "";																										//errormessage
 
 $bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
 
-$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//for ( $i = 0 ; $i > count ( $gname ) ; $i ++ ) {
-//	$teile=$gname[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bnameBenutzt = 1;																			  //Namen gibt es schon
-//		echo $bnameBenutzt;
-//	}
-//}
-
-//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-//	echo $i . ": " . $gname [ $i ] . "<br><br>" ;
-//	if($bname==$gname[$i]){
-//		$bnameBenutzt = 1;
-//	}
-//}
-
-//foreach ( $gname AS $bname ) {
-//	$user_info = explode ( ";" , $bname ) ;
-//	if ( $user_info [0] == $bname) {
-//		$bnameBenutzt = 1;
-//	}
-//}
-
-//$search = $bname;
-//$text = file_get_contents('../global/data/bname.txt');
-//$pos = strpos($text, $search);
-//if (!$pos) die('nichts gefunden');
-//$len = strlen($search);
-//echo substr($text, 0, $pos-1) .
-//     '<b>' . substr($text, $pos, $len) . '</b>' .
-//     substr($text, $pos+$len);
-
-//$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//echo array_search($bname,$gname);
-//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-//	$teile=$gname[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bnameBenutzt = 1;																			  //Namen gibt es schon
-//	}
-//}
+$gname = file ( "../global/data/bname.txt" ) ;
 
 $line_number = -1;
 $count=0;
@@ -87,6 +48,7 @@ if($line_number!=false){
 	echo "<br>";
 	echo "<br>";
 	echo "failed";
+	$_SESSION [ 'istAngemeldet' ] = false ;
 }
 
 
@@ -225,9 +187,7 @@ echo $error;
 			<input type="submit" value="logout" class="bbutton">
 		</form>
 
-		<form action = "../index.php" method = "post" > <p> Noch kein Account? Rechts oben können Sie einen erstellen:</p>
-			<input type="submit" value="Startseite" class="bbutton">
-		</form>
+	<p> Noch kein Account? Rechts oben können Sie einen erstellenss</p>
   </div>
 </main>
 
