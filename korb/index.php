@@ -65,7 +65,7 @@ for ($i=0; $i < count($articles); $i++) {
 	$link = $data[2];
 	$anzahl = $articles[$i][1];
 	$title = $data[4];
-	$gesammtpreis += $data[5] * $articles[$i][0];
+	$gesammtpreis += $data[5] * $articles[$i][1];
 	$description = $data[6];
 	$einheit = $data[7];
 	$gewicht = $data[8];
@@ -91,7 +91,7 @@ for ($i=0; $i < count($articles); $i++) {
 	</a>
 	<div class="values gets">
 		<div class="preis">
-			Preis: <?php echo $data[5] * $articles[$i][0]; ?>€
+			Preis: <?php echo $data[5] * $articles[$i][1]; ?>€
 		</div>
 		<div class="anzahl">
 			<?php echo $anzahl." ".$einheit ?>

@@ -66,12 +66,12 @@
 			$out = str_replace($lines[$line_number-1], '', $out);
 			file_put_contents("data/data.txt", $out);
 
-			header("Location:../");
+			//header("Location:../");
 		}elseif (isset($_POST['bearbeiten'])&&$_POST['bearbeiten']=='bearbeiten') {
 
 			$lines = file_get_contents("../global/data/data.txt");
 			
-			$pattern = preg_quote($pId."rna55df|||", '/');		
+			$pattern = preg_quote($id."rna55df|||", '/');		
 
 			$pattern = "/^.*$pattern.*\$/m";	
 
@@ -82,7 +82,6 @@
 				$text[5] = $_POST['preis'];
 				$text[6] = $_POST['description'];
 				$text[7] = $_POST['einheit'];
-				$text[8] = $_POST['gewicht'];
 				
 				$out = str_replace($matches[0][0], implode("|||" ,$text), $lines);
 				file_put_contents("../global/data/data.txt", $out);
@@ -144,7 +143,7 @@
 <html>
 <head>
 	<title><?php echo $title; ?></title>
-
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:900&amp;subset=latin-ext" rel="stylesheet"> 
 	<script src="js/crusader.js"></script>
 
@@ -195,7 +194,6 @@
 
 
 		.values{
-			height:1.5rem;
 			line-height: 1.5rem;
 			background-color: #E8E8E8;
 			text-align: center;
@@ -364,8 +362,8 @@
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
 
 				
-		<div class="values title">
-			<input type="text" name="title" value="<?php echo $title; ?>">
+		<div class="description">
+			
 		</div>
 		<div>
 			<?php
@@ -388,24 +386,46 @@
 				endforeach; 
 			?>		
 		</div>
+
+	<div class="values buy">
+		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+	</div>
 		
-		<div class="values gets">
-			<div class="preis">
-				Preis: <input type="number" name="preis" value="<?php echo $preis; ?>">€
-			</div>
-		</div>
-		<div class="values gets">
-			<div class="preis">
-				<input type="number" name="anzahl" value="<?php echo $anzahl; ?>"><input type="text" name="einheit" value="<?php echo $einheit; ?>">
-			</div>
-		</div>
 		<div class="description">
-			<textarea style="resize: none;" name="description"><?php echo $description; ?></textarea>
+			<div class="input1">
+				<input class="inputfield" type="text" type="text" name="title" value="<?php echo $title; ?>" placeholder="">
+				<label>Titel</label>
+				<span class="focus-bg"></span>
+			</div>
+			<div class="input1">
+				<input class="inputfield" id="preis" name="preis" min="0" max="1000000" type="number" placeholder="" value="<?php echo $preis; ?>">
+				<label>Preis in €</label>
+				<span class="focus-bg"></span>
+			</div>
+
+			<div style="width: 50%" class="input1">
+				<input class="inputfield" id="anzahl" name="anzahl" min="0" max="1000000" type="number" placeholder="" value="<?php echo $anzahl; ?>">
+				<label>Anzahl</label>
+				<span class="focus-bg"></span>
+			</div>
+
+			<div style="width: 50%" class="input1">
+				<input class="inputfield" id="einheit" type="text" name="einheit" placeholder="" value="<?php echo $einheit; ?>">
+				<label>Einheit</label>
+				<span class="focus-bg"></span>
+			</div>
+		
+			<div class="input1">
+				<textarea id="comtext" style="resize: none;" class="inputfield" type="text" id="description" name="description" maxlength="1200" placeholder=""><?php echo $description; ?></textarea>
+				<label>Beschreibung</label>
+				<span class="focus-bg"></span>
+			</div>
 		</div>
 		
 	</div>
-	<button type="submit" name="bearbeiten" value="bearbeiten">Bearbeiten</button>
-	<button type="submit" name="loeschen" value="loeschen">Löschen</button>
+	<button class="submitbutton" type="submit" name="bearbeiten" value="bearbeiten">Bearbeiten</button>
+	<button class="submitbutton" type="submit" name="loeschen" value="loeschen">Löschen</button>
 </form>
 
 <?php
@@ -473,10 +493,19 @@
 				Dein Kommentar
 			</div>
 			<div class="description">
-				<input id="comtitle" type="text" name="title" placeholder="Titel">
+				<div class="input1">
+					<input class="inputfield" type="text" id="comtitle" type="text" name="title" placeholder="">
+					<label>Titel</label>
+					<span class="focus-bg"></span>
+				</div>
 
-				<textarea id="comtext" style="resize: none;" name="text"></textarea>
-				<div onclick="post(<?php echo $pID; ?>)">Post</div>
+				<div class="input1">
+					<textarea id="comtext" style="resize: none;" class="inputfield" type="text" id="description" name="text" maxlength="1200" placeholder=""></textarea>
+					<label>Kommentar</label>
+					<span class="focus-bg"></span>
+				</div>
+				
+				<div class="submitbutton" onclick="post(<?php echo $pID; ?>)">Post</div>
 			</div>
 			
 		</div>

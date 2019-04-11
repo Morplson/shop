@@ -30,7 +30,7 @@
 
 
 
-        if ($_FILES['text']['error'] == UPLOAD_ERR_OK && is_uploaded_file($_FILES['text']['tmp_name']) && $_FILES["text"]["type"] !== "text/plain") {
+        if ($_FILES['text']['error'] == UPLOAD_ERR_OK && is_uploaded_file($_FILES['text']['tmp_name']) && $_FILES["text"]["type"] == "text/plain") {
 
             $description = file_get_contents($_FILES['text']['tmp_name']); 
         }
