@@ -15,25 +15,6 @@ $bemailBenutzt = 0;																							//Speichert ob der
 
 $i=0;
 
-//$gname = file ( "../global/data/bname.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//for ( $i = 0 ; $i < count ( $gname ) ; $i ++ ) {
-//	$teile=$gname[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bnameBenutzt = 1;																			  //Namen gibt es schon
-//		$error .="Benutzername oder Password falsch";
-//	}
-//}
-
-//$gemail = file ( "../global/data/bemail.txt" ) ;								//Genomene namen (array geholt aus bname.txt)
-//for ( $i = 0 ; $i < count ( $gemail ) ; $i ++ ) {
-//	$teile=$gemail[$i];																					//teile bekommt einen Namen
-//	if($bname==$teile){
-//		$bemailBenutzt = 1;																			  //Namen gibt es schon
-//		$error .="Benutzername oder Password falsch";
-//	}
-//}
-
-
 $line_number1 = -1;
 
 if ($bname!=null) {
@@ -539,7 +520,7 @@ if($line_number1==false&&$line_number3==false){
 		<br>
     Passwort:
 		<br>
-    <input type="password" name="rpasswort" />
+    <input type="password" name="rpasswort"  />
 		<br>
     E-mail:
 		<br>
