@@ -16,6 +16,7 @@
 	$ausgabe = '';
 	$meldung = '';
 
+	error_log(0);
 
 
 ?>

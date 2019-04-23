@@ -92,11 +92,15 @@
 		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
+		<div class="desktop" style="float: right; line-height: 3rem;">
+			<script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Us', '#9046b8', 'F2F1TG5Q');kofiwidget2.draw();</script>
+		</div>
 		<a href="login/"><div class="desktop toprightli">Login</div></a>
 		<div class="desktop toprightli">
 			<input id="search" class="search" type="text" placeholder="Search..." name="sInput">
 			<i class="fas fa-search" onclick="search()"></i>
 		</div>
+		
 
 
 

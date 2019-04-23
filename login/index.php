@@ -1,9 +1,10 @@
 <?php
+	error_log(0);
 
 include '../open.php';
 
-$bname = $_POST["Benutzername"];																//Eingegebener Benutzername
-$bpassw = $_POST["Passwort"];																		// Eingegebenes Passwort
+$bname = isset($_POST['Benutzername']) ? $_POST['Benutzername'] : null;																//Eingegebener Benutzername
+$bpassw = isset($_POST['Passwort']) ? $_POST['Passwort'] : null;																		// Eingegebenes Passwort
 
 
 $teile = "";																													//für die teile des namensarray
@@ -35,9 +36,7 @@ if ($handle = fopen("../global/data/bname.txt", "r")) {
 }
 
 if($line_number!=false){
-	echo "<br>";
-	echo "<br>";
-	echo "succesfull";
+
 	#$hashid=$bname;
 	$_SESSION['name'] = $bname;
 	$_SESSION ['userid'] = md5($bname);
@@ -61,6 +60,8 @@ echo $error;
 <!DOCTYPE html>
 <html>
 <head>
+		<link rel="stylesheet" type="text/css" href="../css/main.css">
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width">
@@ -84,342 +85,90 @@ echo $error;
 	</script>
 	<title>Railway</title>
 
+	<style>
+	input[type="text"].search {
+		vertical-align: middle;
+		margin: 0;
+		padding: 0;
 
+		background-color: transparent;
+		border: none;
+		color: black;
+	}
 
-		<style type="text/css">
-			.values.scores>.like:hover {
-				color: #f91f1f;
-			}
+	.header{
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 5;
+		padding-left: 3.5rem;
+		padding-right: 9rem;
+		background-color: white;
 
-			.upvote:hover{
-				color: #5aa51d;
-			}
+		height: 3rem;
+		overflow: hidden;
+	}
 
-			.downvote:hover{
-				color: #f91f1f;
-			}
+	.label{
+		font-weight: bold;
 
+	}
 
-			.values.scores>.comment:hover {
-				color: #9273d0;
-			}
+	.topleftli{
 
-			.description {
-				text-align: justify;
-				padding: 0.125rem;
-				word-break: break-word;
-			}
+		transition: background-color .6s;
 
-			.values.buy{
-			}
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: left;
+	}
 
-			.values.buy>.btn{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
+	.toprightli{
+		transition: background-color .6s;
 
-				height: 1.5rem;
+		padding: 0 1rem;
+		line-height: 3rem;
+		float: right;
+	}
 
-				width: 6rem;
-				float: left;
-
-				transition: all 0.6s;
-			}
-
-			.values.buy>.num{
-				padding: 0 1rem;
-				background-color: transparent;
-				border: none;
-
-				height: 1.5rem;
-
-				float: right;
-				width: 4rem;
-
-				transition: all 0.6s;
-			}
-
-			.values.gets>.preis{
-				float: left;
-				padding-left: 1rem;
-			}
-
-			.values.gets>.anzahl{
-				float: right;
-				padding-right: 1rem;
-
-			}
-
-		</style>
-	<style type="text/css">
-		*{
-			font-size: 16pt;
-			font-family: 'Raleway', sans-serif;
-			scroll-behavior: smooth;
+	@media only screen and (max-width: 768px) {
+		.desktop {
+			display: none;
 		}
-
-		body{
-			x-overflow: hidden;
-			padding: 0;
-			margin: 0;
+	}
+	@media only screen and (min-width: 767px) {
+		.mobile {
+			display: none;
 		}
+	}
 
-		a, a:visited, a:hover, a:active{
-			text-decoration: none;
-			color: inherit;
-		}
+	.mobilecontainer{
 
-		.playarea{
-			z-index: 0;
-		}
-		.playcontent{
-			margin-left: 10%;
-		}
+		background-color: white;
+		z-index: 30;
 
-		.playbar{
-			z-index: 5;
+		position: fixed;
+		box-sizing: content-box;
 
-			height: 7rem;
-			width: 40%;
-			min-width: 25rem;
+	}
 
-			bottom: 0;
-			left: 0;
+	.mobilecontainer>.exput{
+		transition: background-color .6s;
+		line-height: 3rem;
+		height: 3rem;
+		padding: 0 1rem;
+	}
 
-			position: absolute;
+	.exput:hover, .topleftli:hover, .toprightli:hover{
+		background-color: #f2f2f2
+	}
 
-			overflow: hidden;
-
-			background-color: black;
-		}
-
-
-
-
-		.topleftli:hover, .toprightli:hover{
-			background-color: #f2f2f2
-		}
-
-		.controlls{
-			position: fixed;
-			bottom: 1rem;
-			right: 7rem;
-
-		}
-		.controllbutton{
-			width: 3rem;
-			height: 3rem;
-			margin: 0 1.5rem;
-			border-radius: 3rem;
-			padding: 0.5rem;
-			border: 1px solid #E8E8E8;
-			float: right;
-			text-align: center;
-		}
-
-		.container{
-			border: 1px solid #E8E8E8;
-			height: auto;
-			width: 13.5rem;
-			margin: 0.25rem;
-			display: inline-block;
-			position: relative;
-			vertical-align: baseline;
-		}
-
-		picture.picture,a.picture{
-			display: block;
-			height: 12rem;
-			width: 13.5rem;
-			background-repeat: no-repeat;
-			background-size: contain;
-			background-position: center;
-		}
-
-
-
-		.values{
-			height:1.5rem;
-			line-height: 1.5rem;
-			background-color: #E8E8E8;
-			text-align: center;
-			white-space: nowrap;
-			word-wrap: break-word;
-
-		}
-
-		.values div{
-			width: auto;
-			display: inline-block;
-
-		}
-
-		.values.scores{
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			letter-spacing: 0.25rem;
-		}
-
-		.content {
-			position: absolute;
-			top: 4.5rem;
-			right:4.5rem;
-			left: 2rem;
-      width: 30%;
-      margin: 1.5rem 25%;
-		}
-
-		.flex-container{
-			display: flex;
-
-			clear: both;
-			flex: 1 0 auto;
-			text-align: center;
-		}
-
-		.content_l {
-			flex: 0 0 auto;
-			width: 15rem;
-			word-wrap: break-word;
-
-		}
-
-		@media only screen and (max-width: 768px) {
-			.content_l {
-				display: none;
-			}
-		}
-
-		.content_r {
-			flex: 1 0 auto;
-			width: 15rem;
-			word-wrap: break-word;
-			align-items: center;
-		}
-
-		.content_l .container{
-			width: 98%;
-			height: auto;
-
-			margin: 0.25rem -1px;
-		}
-
-		.values.buy>.btn:hover, .values.buy>.num:hover{
-			background-color: #D8D8D8;
-		}
-    .con1{
-      top: 25%;
-      right:50%;
-      width:10%;
-      height: 15px;
-    }
-
-    .contentv2 {
-			position: absolute;
-			top: 0rem;;
-
-      width: 50%;
-      margin: 1.5rem 25%;
-		}
-
-    h1{
-      size: 15px;
-      color: black;
-    }
-
-		input[type="text"].search {
-			vertical-align: middle;
-			margin: 0;
-			padding: 0;
-
-			background-color: transparent;
-			border: none;
-			color: black;
-		}
-
-		.header{
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 5;
-			padding-left: 3.5rem;
-			padding-right: 9rem;
-			background-color: white;
-
-			height: 3rem;
-			overflow: hidden;
-		}
-
-		.label{
-			font-weight: bold;
-
-		}
-
-		.topleftli{
-
-			transition: background-color .6s;
-
-			padding: 0 1rem;
-			line-height: 3rem;
-			float: left;
-		}
-
-		.toprightli{
-			transition: background-color .6s;
-
-			padding: 0 1rem;
-			line-height: 3rem;
-			float: right;
-		}
-
-		@media only screen and (max-width: 768px) {
-			.desktop {
-				display: none;
-			}
-		}
-		@media only screen and (min-width: 767px) {
-			.mobile {
-				display: none;
-			}
-		}
-
-		.mobilecontainer{
-
-			background-color: white;
-			z-index: 30;
-
-			position: fixed;
-			box-sizing: content-box;
-
-		}
-
-		.mobilecontainer>.exput{
-			transition: background-color .6s;
-			line-height: 3rem;
-			height: 3rem;
-			padding: 0 1rem;
-		}
-
-		.exput:hover, .topleftli:hover, .toprightli:hover{
-			background-color: #f2f2f2
-		}
-
-		.bbutton{
-			width: 6rem;
-			height: 3rem;
-			border-radius: 3rem;
-			border: 1px solid #E8E8E8;
-		}
-
-	</style>
-
+</style>
 </head>
 <body>
 	<div class="header">
@@ -428,6 +177,7 @@ echo $error;
 		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
+		<a href="logout.php"><div class="desktop toprightli">Logout</div></a>
 		<a href="register.php"><div class="desktop toprightli">Register</div></a>
 		<div class="desktop toprightli">
 		</div>
@@ -437,8 +187,7 @@ echo $error;
 
 	</div>
 	<div id="mobilehovercontainer" class="mobilecontainer" style="display: none;">
-		<a class="exput" href="login/"></a>
-		<div class="exput"><input id="searchm" class="search" type="text" placeholder="" name="sInput"></div>
+		<a class="exput" href="register.php">Register</a>
 	</div>
 
 	<script type="text/javascript">
@@ -518,11 +267,9 @@ echo $error;
 		<br>
 	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
 
-		<form action = "logout.php" method = "post" >
-			<input type="submit" value="logout" class="bbutton">
-		</form>
+	  <input type = "Submit" value = "Absenden" class="submitbutton" /> </form>
+	</form>
 
-	<p> Noch kein Account? Rechts oben können Sie einen erstellenss</p>
   </div>
 </main>
 
