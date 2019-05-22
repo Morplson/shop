@@ -12,42 +12,28 @@
 
 
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
+	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-	if ($id!=null) {
-		$search = $id."rna55df|||";
-		$line_number = false;
-
-		if ($handle = fopen("data/data.txt", "r")) {
-			$count = 0;
-			while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-				$count++;
-				$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-			}
-			fclose($handle);
-		}
-		
-	} else {
-		$line_number = 0;
-	}
-	
-	$export = '';
-	$lines = file("data/data.txt");
-	
-	$data = explode("|||",$lines[$line_number-1]);
+	$data = $pdo->query("SELECT title,preis,description,gewicht,anzahl,einheit,imgsrc FROM item WHERE pid = $id");
 	
 
-	$pID = explode("rna55df",$data[0])[0];
-	$link = $data[2];
-	$anzahl = $data[3];
-	$title = $data[4];
-	$preis = $data[5];
-	$description = $data[6];
-	$einheit = $data[7];
-	$gewicht = $data[8];
-	$userID = $data[9];
-	$score = $data[10];
-	$likes = $data[11];
-	$comments = $data[12];
+	$link = $data["imgsrc"];
+	$anzahl = $data["anzahl"];
+	$title = $data["title"];
+	$preis = $data["preis"];
+	$description = $data["description"];
+	$einheit = $data["einheit"];
+	$gewicht = $data["gewicht"];
+	$userID = $data["uid"];
+
+	$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $id");
+	$score = $data["score"];
+
+	$data = $pdo->query("SELECT count(*) AS 'liked' FROM liked WHERE pid = $id");
+	$likes = $data["liked"];
+
+	$data = $pdo->query("SELECT count(*) AS 'comment' FROM comment WHERE pid = $id");
+	$comments = $data["comment"];
 
 	$images = array();
 	if(is_dir("data/".md5($link))){
@@ -58,87 +44,62 @@
 	}
 
 
-	if($_SERVER['REQUEST_METHOD'] === 'POST'){
+	if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['userid'] == $userID){
 		if(isset($_POST['loeschen'])&&$_POST['loeschen']=='loeschen'){
-			echo "l";
-
-			$out = implode($lines);
-			$out = str_replace($lines[$line_number-1], '', $out);
-			file_put_contents("data/data.txt", $out);
+			$deleteitem -> execute(array($id));
 
 			//header("Location:../");
 		}elseif (isset($_POST['bearbeiten'])&&$_POST['bearbeiten']=='bearbeiten') {
 
-			$lines = file_get_contents("../global/data/data.txt");
-			
-			$pattern = preg_quote($id."rna55df|||", '/');		
+			$new = array(
+				"name" => $_POST['name'],
+				"cost" => $_POST['preis'],
+				"descr" => $_POST['description'],
+				"weight" => $_POST['weight'],
+				"amount" => $_POST['amount'],
+			);
 
-			$pattern = "/^.*$pattern.*\$/m";	
-
-			if(preg_match_all($pattern, $lines, $matches)){
-				$text = explode("|||", $matches[0][0]);
-				$text[3] = $_POST['anzahl'];
-				$text[4] = $_POST['title'];
-				$text[5] = $_POST['preis'];
-				$text[6] = $_POST['description'];
-				$text[7] = $_POST['einheit'];
-				
-				$out = str_replace($matches[0][0], implode("|||" ,$text), $lines);
-				file_put_contents("../global/data/data.txt", $out);
-
-			}
+			$editname -> execute(array($new['name'], $id));
+			$editkosten -> execute(array($new['cost'], $id));
+			$editbeschreibung -> execute(array($new['descr'], $id));
+			$editmenge -> execute(array($new['amount'], $id));
+			$editgewicht -> execute(array($new['weight'], $id));
+			$editimgsrc -> execute(array($new['img'], $id));
 
 			header("Refresh:0");
 		}
 	}
 	
-
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
-
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$collikes = "#f91f1f";
-		}else{
-			$collikes = "black";
-		}
+	$data = $pdo->query("SELECT * FROM liked WHERE pid = $id AND uid = $uid");
+	if(count($data>0)) {
+		$collikes = "#f91f1f";		
+	}else{
+		$collikes = "black";
 	}
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/vote.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
-
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$like = explode("|||", $matches[0][0])[2];
-			if($like==-1){
-				$colvotes = "#f91f1f";
-			}elseif($like==1){
-				$colvotes = "#5aa51d";
-			}else{
-				$colvotes = "black";
-			}
-		}else{
-			$colvotes = "black";
+	$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $id AND uid = $uid");
+	if(count($data>0)) {
+		if($data["vote"]==-1){
+			$colvotes = "#f91f1f";
+		}elseif($data["vote"]==1){
+			$colvotes = "#5aa51d";
 		}
+	}else{
+		$colvotes = "black";
 	}
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
 
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$colcom = "#9273d0";
-		}else{
-			$colcom = "black";
-		}
+	$data = $pdo->query("SELECT * AS 'comment' FROM vote WHERE pid = $id AND uid = $uid");
+	if(count($data>0)) {
+		$colcom = "#9273d0";
+	}else{
+		$colcom = "black";
 	}
+
 	
 
 
-
+	
 ?>
 <!DOCTYPE html>
 <html>
@@ -336,20 +297,20 @@
 	</head>
 	<body>
 
-	<div class="container" id="<?php echo $pID; ?>">
+	<div class="container" id="<?php echo $id; ?>">
 		<div class="values scores">
-			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
+			<div style="color: <?php echo $collikes; ?>" id="<?php echo $id; ?>likes" class="like" onClick="like('<?php echo $id; ?>')">
 				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
 				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
 			</div>
-			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
-				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
+			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $id; ?>votes" class="vote">
+				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $id; ?>',1)"></i>
 				<span class="score" title="Score"><?php echo $score; ?></span>
-				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
+				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $id; ?>',-1)"></i>
 			</div>
-			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
+			<div style="" id="<?php echo $id; ?>comments" class="comment" onClick="comment('<?php echo $id; ?>')">
 				<i class="fa fa-comments"></i>
-				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
+				<span class="comments_count" data-image-id="<?php echo $id; ?>"><?php echo $comments; ?></span>
 			</div>
 		</div>
 
@@ -389,8 +350,8 @@
 		</div>
 
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="<?php echo $id; ?>button" onClick="buy('<?php echo $id; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $id; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 		
 		<div class="description">
@@ -470,8 +431,8 @@
 		<?php echo $description; ?>
 	</div>
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="<?php echo $id; ?>button" onClick="buy('<?php echo $id; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $id; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 </div>
 
@@ -506,7 +467,7 @@
 					<span class="focus-bg"></span>
 				</div>
 				
-				<div class="submitbutton" onclick="post(<?php echo $pID; ?>)">Post</div>
+				<div class="submitbutton" onclick="post(<?php echo $id; ?>)">Post</div>
 			</div>
 			
 		</div>

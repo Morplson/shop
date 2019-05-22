@@ -80,6 +80,8 @@ for ($i=0; $i < count($articles); $i++) {
 
 ?>
 
+
+
 <div class="container" id="<?php echo $pID; ?>">
 		
 	<div class="values title">
@@ -105,7 +107,12 @@ for ($i=0; $i < count($articles); $i++) {
 }
 if($gesammtpreis>0){
 ?>
-<div class="kaufenbtn" onclick="kaufabschluss()" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</div></div>
+<form method="post" action="/korb/pay.php" enctype="multipart/form-data">
+	<input style="display: none;" type="number" id="preis" name="preis" placeholder="" value="<?=$gesammtpreis?>">
+	<input style="display: none;" type="text" id="title" name="title" placeholder="" value="<?=$gesammtpreis?>">
+	<input type="submit" class="kaufenbtn" onclick="/*kaufabschluss()*/" >Preis: <?php echo $gesammtpreis; ?>€<br>KAUFEN</input>
+</form>
+
 <?php
 }
 ?>
