@@ -6,7 +6,7 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	error_reporting(0);
+	#error_reporting(0);
 
 
 	$_POST = json_decode(file_get_contents('php://input'), true);
@@ -16,165 +16,145 @@
 	$last = isset($_POST['last']) ? $_POST['last'] : null;
 	$query = isset($_POST['query']) ? $_POST['query'] : null;
 	$s = isset($_POST['s']) ? $_POST['s'] : null;
-	$max = isset($_POST['max']) ? $_POST['max'] : null;
+	$max = isset($_POST['max']) ? $_POST['max'] : 20;
+	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-
-	$likes = 0;
-	$score = 0;
-	$comments = 0;
-
-	$pID = rand();//$last;
-
-	$title = "Titel";
-
-	$imgLink = null;
-
-	$description = "
-
-▓█████▄  ▄▄▄    ██▒   █▓ ██▓▓█████▄
-▒██▀ ██▌▒████▄ ▓██░   █▒▓██▒▒██▀ ██▌
-░██   █▌▒██  ▀█▄▓██  █▒░▒██▒░██   █▌
-░▓█▄   ▌░██▄▄▄▄██▒██ █░░░██░░▓█▄   ▌
-░▒████▓  ▓█   ▓██▒▒▀█░  ░██░░▒████▓
- ▒▒▓  ▒  ▒▒   ▓▒█░░ ▐░  ░▓   ▒▒▓  ▒
- ░ ▒  ▒   ▒   ▒▒ ░░ ░░   ▒ ░ ░ ▒  ▒
- ░ ░  ░   ░   ▒     ░░   ▒ ░ ░ ░  ░
-   ░          ░  ░   ░   ░     ░
- ░                  ░        ░
-
-";
-
-	$anzahl = 0;
-
-	$einheit = "Stk.";
-
-	$preis = 0;
-
-	start:
-
-
-	if ($last!==null) {
-		$search = $last."rna55df|||";
-		$line_number = false;
-
-		if ($handle = fopen("data/data.txt", "r")) {
-			$count = 0;
-			while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-				$count++;
-				$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-			}
-			fclose($handle);
+	$sql = "SELECT * FROM post ";
+	if($last != null || $s != null){
+			$sql .= " where ";
 		}
-
-	} else {
-		$line_number = 0;
+	if($last != null){
+		$sql .= " pid < $last ";
 	}
-
-
-
-	$export = '';
-	$lines = file("data/data.txt");
-	for($i=$line_number; $i < $max+$line_number; $i++):
-		$data = explode("|||",$lines[$i]);
-		if ($data[0] == FALSE) {
-			continue;
+	if($s != null){
+		if($last != null){
+			$sql .= " AND ";
 		}
+		$sql .= " title regexp '$s' OR description regexp '$s' ";
+	}
+	$sql .= " order by pid desc limit $max ";
 
-		if ($s!=null) {
-			if((strpos(strtolower($data[4]), strtolower($s)) === false)&&(strpos(strtolower($data[6]), strtolower($s)) === false)){
-				$max++;
-				continue;
+
+	$posts = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($posts as $data){
+		
+		#var_dump($data);
+		
+		$link = $data["imgsrc"];
+		$anzahl = $data["anzahl"];
+		$title = $data["title"];
+		$preis = $data["preis"];
+		$description = $data["description"];
+		$einheit = $data["einheit"];
+		$gewicht = $data["gewicht"];
+		$userID = $data["uid"];	
+		$postID = $data["pid"];
+	
+
+		
+		
+		$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
+		if($data!=false){
+			$score = $data["score"];
+		}else{
+			$score = 0;
+		}	
+
+		$data = $pdo->query("SELECT count(*) AS 'liked' FROM liked WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
+		if($data!=false){
+			$likes = $data["liked"];
+		}else{
+			$likes = 0;
+		}	
+
+		$data = $pdo->query("SELECT count(*) AS 'comment' FROM comment WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
+		if($data!=false){
+			$comments = $data["comment"];
+		}else{
+			$comments = 0;
+		}	
+
+		$images = array();
+		if(is_dir("data/".$link)){	
+
+			foreach (glob("data/".$link."/*.png") as $file) {
+				$images[] = $file;
 			}
-		}
+		}	
 
+			$data = $pdo->query("SELECT * FROM liked WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
 
-
-
-
-	$pID = explode("rna55df",$data[0])[0];
-	$link = $data[2];
-	$anzahl = $data[3];
-	$title = $data[4];
-	$preis = $data[5];
-	$description = $data[6];
-	$einheit = $data[7];
-	$gewicht = $data[8];
-	$userID = $data[9];
-	$score = $data[10];
-	$likes = $data[11];
-	$comments = $data[12];
-
-
-	$imgLink = "global/data/".md5($link)."/thumb.jpeg";
-
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
-
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$collikes = "#f91f1f";
+		if($data!=false){
+			if(count($data>0)) {
+				$collikes = "#f91f1f";		
+			}else{
+				$collikes = "black";
+			}
 		}else{
 			$collikes = "black";
-		}
-	}
+		}	
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/vote.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
+			
 
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$like = explode("|||", $matches[0][0])[2];
-			if($like==-1){
-				$colvotes = "#f91f1f";
-			}elseif($like==1){
-				$colvotes = "#5aa51d";
+		$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
+
+		if($data!=false){
+			if(count($data>0)) {
+				if($data["vote"]==-1){
+					$colvotes = "#f91f1f";
+				}elseif($data["vote"]==1){
+					$colvotes = "#5aa51d";
+				}
 			}else{
 				$colvotes = "black";
 			}
 		}else{
 			$colvotes = "black";
-		}
-	}
+		}	
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
+		$data = $pdo->query("SELECT * FROM comment WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
 
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$colcom = "#9273d0";
+		if($data!=false){
+			if(count($data>0)) {
+				$colcom = "#9273d0";
+			}else{
+				$colcom = "black";
+			}
 		}else{
 			$colcom = "black";
 		}
-	}
+		#echo "dsf";
+		
+
+		$imgLink = "global/data/".$link."/thumb.jpeg";
+
 
 ?>
 
-<div class="container" id="<?php echo $pID; ?>">
+<div class="container" id="<?php echo $postID; ?>">
 	<div class="values scores">
-			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
+			<div style="color: <?php echo $collikes; ?>" id="<?php echo $postID; ?>likes" class="like" onClick="like('<?php echo $postID; ?>')">
 				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
 				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
 			</div>
-			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
-				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
+			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $postID; ?>votes" class="vote">
+				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $postID; ?>',1)"></i>
 				<span class="score" title="Score"><?php echo $score; ?></span>
-				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
+				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $postID; ?>',-1)"></i>
 			</div>
-			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
+			<div style="color: <?php echo $colcom; ?>" id="<?php echo $postID; ?>comments" class="comment" onClick="comment('<?php echo $postID; ?>')">
 				<i class="fa fa-comments"></i>
-				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
+				<span class="comments_count" data-image-id="<?php echo $postID; ?>"><?php echo $comments; ?></span>
 			</div>
 	</div>
 
 
 
 	<div class="values title">
-		<?php echo $title ?>
+		<?php echo $title.$postID?>
 	</div>
-	<a class="picture" href="global/post.php?id=<?php echo $pID; ?>">
+	<a class="picture" href="global/post.php?id=<?php echo $postID; ?>">
 		<picture class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
 		</picture>
 	</a>
@@ -190,9 +170,9 @@
 		<?php echo $description; ?>
 	</div>
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="<?php echo $postID; ?>button" onClick="buy('<?php echo $postID; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $postID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 </div>
 
-<?php endfor; ?>
+<?php } ?>

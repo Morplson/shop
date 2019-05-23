@@ -14,8 +14,8 @@
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
 	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-	$data = $pdo->query("SELECT title,preis,description,gewicht,anzahl,einheit,imgsrc FROM item WHERE pid = $id");
-	
+	$sql = "SELECT * FROM post WHERE pid=$id";
+	$data = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 
 	$link = $data["imgsrc"];
 	$anzahl = $data["anzahl"];
@@ -26,19 +26,34 @@
 	$gewicht = $data["gewicht"];
 	$userID = $data["uid"];
 
-	$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $id");
-	$score = $data["score"];
 
-	$data = $pdo->query("SELECT count(*) AS 'liked' FROM liked WHERE pid = $id");
-	$likes = $data["liked"];
+	
+	
+	$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$score = $data["score"];
+	}else{
+		$score = 0;
+	}
 
-	$data = $pdo->query("SELECT count(*) AS 'comment' FROM comment WHERE pid = $id");
-	$comments = $data["comment"];
+	$data = $pdo->query("SELECT count(*) AS 'liked' FROM liked WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$likes = $data["liked"];
+	}else{
+		$likes = 0;
+	}
+
+	$data = $pdo->query("SELECT count(*) AS 'comment' FROM comment WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$comments = $data["comment"];
+	}else{
+		$comments = 0;
+	}
 
 	$images = array();
-	if(is_dir("data/".md5($link))){
+	if(is_dir("data/".$link)){
 
-		foreach (glob("data/".md5($link)."/*.png") as $file) {
+		foreach (glob("data/".$link."/*.png") as $file) {
 			$images[] = $file;
 		}
 	}
@@ -48,54 +63,62 @@
 		if(isset($_POST['loeschen'])&&$_POST['loeschen']=='loeschen'){
 			$deleteitem -> execute(array($id));
 
-			//header("Location:../");
+			header("Location:../");
 		}elseif (isset($_POST['bearbeiten'])&&$_POST['bearbeiten']=='bearbeiten') {
 
-			$new = array(
-				"name" => $_POST['name'],
-				"cost" => $_POST['preis'],
-				"descr" => $_POST['description'],
-				"weight" => $_POST['weight'],
-				"amount" => $_POST['amount'],
-			);
+			var_dump($_POST);
 
-			$editname -> execute(array($new['name'], $id));
-			$editkosten -> execute(array($new['cost'], $id));
-			$editbeschreibung -> execute(array($new['descr'], $id));
-			$editmenge -> execute(array($new['amount'], $id));
-			$editgewicht -> execute(array($new['weight'], $id));
-			$editimgsrc -> execute(array($new['img'], $id));
+			$editname -> execute(array($_POST['title'], $id));
+			$editkosten -> execute(array($_POST['preis'], $id));
+			$editbeschreibung -> execute(array($_POST['description'], $id));
+			$editmenge -> execute(array($_POST['anzahl'], $id));
+			$editeinheit -> execute(array($_POST['einheit'], $id));
 
 			header("Refresh:0");
 		}
 	}
 	
-	$data = $pdo->query("SELECT * FROM liked WHERE pid = $id AND uid = $uid");
-	if(count($data>0)) {
-		$collikes = "#f91f1f";		
+	$data = $pdo->query("SELECT * FROM liked WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
+
+	if($data!=false){
+		if(count($data>0)) {
+			$collikes = "#f91f1f";		
+		}else{
+			$collikes = "black";
+		}
 	}else{
 		$collikes = "black";
 	}
 
-	$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $id AND uid = $uid");
-	if(count($data>0)) {
-		if($data["vote"]==-1){
-			$colvotes = "#f91f1f";
-		}elseif($data["vote"]==1){
-			$colvotes = "#5aa51d";
+	
+
+	$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
+
+	if($data!=false){
+		if(count($data>0)) {
+			if($data["vote"]==-1){
+				$colvotes = "#f91f1f";
+			}elseif($data["vote"]==1){
+				$colvotes = "#5aa51d";
+			}
+		}else{
+			$colvotes = "black";
 		}
 	}else{
 		$colvotes = "black";
 	}
 
+	$data = $pdo->query("SELECT * FROM comment WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
-	$data = $pdo->query("SELECT * AS 'comment' FROM vote WHERE pid = $id AND uid = $uid");
-	if(count($data>0)) {
-		$colcom = "#9273d0";
+	if($data!=false){
+		if(count($data>0)) {
+			$colcom = "#9273d0";
+		}else{
+			$colcom = "black";
+		}
 	}else{
 		$colcom = "black";
 	}
-
 	
 
 
@@ -318,7 +341,7 @@
 
 
 <?php
-	if($_SESSION['userid']."benutzer"==$data[1]):
+	if($_SESSION['userid']==$userID):
 ?>
 
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">

@@ -1,131 +1,98 @@
-create table post(
-	pid integer auto_increment,
-	uid integer,
-	titel varchar(100),
-	description varchar(2200),
-	link varchar(32),
+DROP DATABASE IF EXISTS shop;
+CREATE DATABASE shop;
+USE shop;
 
-	anzahl smallint,
-	einhet varchar(7),
-	gewicht decimal(8,2),
+CREATE TABLE user (
+  uid INT auto_increment,
+  uname VARCHAR(20),
+  email VARCHAR(100),
+  psw VARCHAR(20), -- bitte NUR hash SIMON!!!!
 
-	score int,
-	likes int,
-	comment int, 
-	primary key (pid),
-	foreign key (uid) references user on delete cascade
-)engine = innodb;
 
-create table user(
-	uid integer auto_increment,
-	hashpsw varchar(100) not null,
-	uname varchar(100) not null,
-	email varchar(100) not null,
-	description varchar(2200),
 
-	location varchar(10),
-	tel varchar(100),
-	vname varchar(100),
-	nname varchar(100),
+  -- VVVVVVVVVVVVVVVVVVVVVVVVVV
+  -- V Wenn du noch spaß hast V
+  -- VVVVVVVVVVVVVVVVVVVVVVVVVV
 
-	created datetime,
-	modified datetime,
-	permission int,
- 
-	primary key (uid),
-)engine = innodb;
+  -- description varchar(2200),
+
+  -- location varchar(10),
+  -- tel varchar(100),
+  -- vname varchar(100),
+  -- nname varchar(100),
+
+  -- created datetime,
+  -- modified datetime,
+  -- permission int,
+
+
+
+
+  PRIMARY KEY (uid)
+)ENGINE=INNODB;
+
+INSERT INTO user(uname,email,psw) VALUES ("superuser","super@user.com","2234");
+
+
+CREATE TABLE post(
+  pid INT auto_increment,
+  uid INT,
+  title VARCHAR(20),
+  preis VARCHAR(20),
+  description VARCHAR(100),
+  gewicht INT,
+  anzahl INT NOT NULL,
+  einheit VARCHAR(20),
+  imgsrc VARCHAR(40),
+  
+  featured boolean Default false, 
+  primary key (pid),
+  foreign key (uid) references user(uid) on update cascade on delete cascade
+)ENGINE=INNODB;
+
+INSERT INTO post(uid, title, preis, description, gewicht, anzahl, einheit, imgsrc) VALUES (1,"test","10","test",4,3,"Stk.","0dcf0ad6c6da4c08441adeb1843540b8") ;
 
 create table vote(
 
-	pid integer,
-	vote tinyint,
-	uid integer,
-	
-	primary key (pid, uid),
-	foreign key (uid) references user on delete cascade,
-	foreign key (pid) references post on delete cascade
+  pid integer,
+  vote tinyint,
+  uid integer,
+  
+  primary key (pid, uid),
+  foreign key (uid) references user(uid) on delete cascade,
+  foreign key (pid) references post(pid) on delete cascade
 )engine = innodb;
 
-create table like(
-	
-	pid integer,
-	uid integer,
-	
-	primary key (pid, uid),
-	foreign key (uid) references user on delete cascade,
-	foreign key (pid) references post on delete cascade
+create table liked(
+  
+  pid integer,
+  uid integer,
+  
+  primary key (pid, uid),
+  foreign key (uid) references user(uid) on delete cascade,
+  foreign key (pid) references post(pid) on delete cascade
 )engine = innodb;
 
 create table comment(
-	
-	cid integer auto_increment,
-	pid integer,
-	uid integer,
+  
+  cid integer auto_increment,
+  pid integer,
+  uid integer,
 
-	titel varchar(100),
-	descreption varchar(2200),
-	
-	primary key (pid, uid, cid),
-	foreign key (uid) references user on delete cascade,
-	foreign key (pid) references post on delete cascade
+  titel varchar(100),
+  descreption varchar(2200),
+  
+  primary key (cid),
+  foreign key (uid) references user(uid) on delete cascade,
+  foreign key (pid) references post(pid) on delete cascade
 )engine = innodb;
 
-create table reply(
-	
-	cid integer,
-	replyid integer,
-	
-	primary key (replyid, cid),
-	foreign key (cid) references comment on delete cascade,
-	foreign key (replyid) references comment on delete cascade
-)engine = innodb;
 
-create table tag(
-	
-	tid integer auto_increment,
+CREATE USER 'shop'@'localhost' IDENTIFIED BY 'shop';
+GRANT ALL ON shop.* TO 'shop'@'localhost';
 
-	name varchar(100),
-	descreption varchar(2200),
-	
-	primary key (tid),
-)engine = innodb;
 
-create table tagalias(
-	
-	tid integer,
+ select * from post;
 
-	alias varchar(100),
-	
-	primary key (tid),
-	foreign key (tid) references tag on delete cascade
-)engine = innodb;
 
-create table taged(
-	
-	pid integer,
-	tid integer,
-	
-	primary key (tid, uid),
-	foreign key (uid) references user on delete cascade,
-	foreign key (tid) references tag on delete cascade
-)engine = innodb;
-
-create table filter(
-	
-	fid integer auto_increment,
-
-	name varchar(100),
-	descreption varchar(2200),
-	
-	primary key (fid),
-)engine = innodb;
-
-create table filteredtag(
-	
-	fid integer,
-	tid integer,
-	
-	primary key (fid, tid),
-	foreign key (fid) references filter on delete cascade,
-	foreign key (tid) references tag on delete cascade
-)engine = innodb;
+ 
