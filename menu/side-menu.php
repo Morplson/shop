@@ -24,7 +24,7 @@
 
 			<div class="itembarmodul" id="info" >
 					<div class="itembaricon"><i class="si fas fa-shopping-basket"></i></div>
-					<div class="itembartext">Wahrenkorb</div>
+					<div class="itembartext">Warenkorb</div>
 			</div>
 			<div class="itembarmodul" id="profile" >
 					<div class="itembaricon"><i class="si fas fa-user"></i></div>

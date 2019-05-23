@@ -8,9 +8,9 @@
  */
 
  define("DB_HOST", 	"localhost");				// hostname
- define("DB_USER", 	"-Please Enter Username-");		// database username
- define("DB_PASSWORD", 	"-Please Enter Password-");		// database password
- define("DB_NAME", 	"-Please Enter Database Name-");	// database name
+ define("DB_USER", 	"shop");		// database username
+ define("DB_PASSWORD", 	"shop");		// database password
+ define("DB_NAME", 	"shop");	// database name
 
 
 
@@ -21,7 +21,10 @@
  *  array("your_privatekey_for_box1", "your_privatekey_for_box2 (otional)", "etc...");
  */
  
- $cryptobox_private_keys = array();
+ $cryptobox_private_keys = array("25654AAo79c3Bitcoin77BTCPRV0JG7w3jg0Tc5Pfi34U8o5JE", "25678AACxnGODogecoin77DOGEPRVFvl6IDdisuWHVJLo5m4eq", 
+                    "25656AAeOGaPBitcoincash77BCHPRV8quZcxPwfEc93ArGB6D", "25657AAOwwzoLitecoin77LTCPRV7hmp8s3ew6pwgOMgxMq81F", 
+                    "25658AAo79c3Dash77DASHPRVG7w3jg0Tc5Pfi34U8o5JEiTss", "20116AA36hi8Speedcoin77SPDPRVNOwjzYNqVn4Sn5XOwMI2c",
+                    "36306AAQUmatBitcoinsv77BSVPRVJQJx21y8kvd7xxEWzK3zA");
 
 
 

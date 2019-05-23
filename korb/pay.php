@@ -1,100 +1,196 @@
-    <?
-        require_once( "cryptobox.class.php" );
+<?php
+    include '../open.php';
+    #require_once( "lib/cryptobox.class.php" );
 
-        $orderID    =  "your_product1_or_signuppage1_etc";
-        $userID     = "";
-        $def_language   = "en"; // default payment box language; en - English, es - Spanish, fr - French, etc
+    // bitcoin/altcoin payment box; open source
+    
+    // Change path to your files
+    // --------------------------------------
+    DEFINE("CRYPTOBOX_PHP_FILES_PATH", "lib/");         // path to directory with files: cryptobox.class.php / cryptobox.callback.php / cryptobox.newpayment.php; 
+                                                // cryptobox.newpayment.php will be automatically call through ajax/php two times - payment received/confirmed
+    DEFINE("CRYPTOBOX_IMG_FILES_PATH", "images/");  // path to directory with coin image files (directory 'images' by default)
+    DEFINE("CRYPTOBOX_JS_FILES_PATH", "js/");           // path to directory with files: ajax.min.js/support.min.js
+    
+    
+    // Change values below
+    // --------------------------------------
+    DEFINE("CRYPTOBOX_LANGUAGE_HTMLID", "alang");   // any value; customize - language selection list html id; change it to any other - for example 'aa';   default 'alang'
+    DEFINE("CRYPTOBOX_COINS_HTMLID", "acoin");      // any value;  customize - coins selection list html id; change it to any other - for example 'bb'; default 'acoin'
+    DEFINE("CRYPTOBOX_PREFIX_HTMLID", "acrypto_");  // any value; prefix for all html elements; change it to any other - for example 'cc';  default 'acrypto_'
+    
+    
+    // Open Source Bitcoin Payment Library
+    // ---------------------------------------------------------------
+    require_once(CRYPTOBOX_PHP_FILES_PATH . "cryptobox.class.php" );
+    
+    
+    
+    /*********************************************************/
+    /****  PAYMENT BOX CONFIGURATION VARIABLES  ****/
+    /*********************************************************/
+    
+    // IMPORTANT: Please read description of options here - https://gourl.io/api-php.html#options
 
-        // Remove all the characters from the string other than a..Z0..9_-@. 
-        $orderID = preg_replace('/[^A-Za-z0-9\.\_\-\@]/', '', $orderID);
-        $userID = preg_replace('/[^A-Za-z0-9\.\_\-\@]/', '', $userID);
+    $_SESSION['preis'] = isset($_POST['preis'])?$_POST['preis']: $_SESSION['preis'];
+    
+    $userID = $_SESSION['userid'];            // place your registered userID or md5(userID) here (user1, user7, uo43DC, etc).
+                                    // You can use php $_SESSION["userABC"] for store userID, amount, etc
+                                    // You don't need to use userID for unregistered website visitors - $userID = "";
+                                    // if userID is empty, system will autogenerate userID and save it in cookies
+    $userFormat = "SESSION";     // save userID in cookies (or you can use IPADDRESS, SESSION, MANUAL)
+    $orderID = md5(uniqid());           // invoice number - 000383
+    $amountUSD = convert_currency_live("EUR", "USD", $_SESSION['preis']);         // invoice amount - 2.21 USD; or you can use - $amountUSD = convert_currency_live("EUR", "USD", 22.37); // convert 22.37EUR to USD
+    
+    $period         = "NOEXPIRY";   // one time payment, not expiry
+    $def_language   = "de";         // default Language in payment box
+    $def_coin           = "bitcoin";        // default Coin in payment box
+    
+    
+    // List of coins that you accept for payments
+    //$coins = array('bitcoin', 'bitcoincash', 'bitcoinsv', 'litecoin', 'dash', 'dogecoin', 'speedcoin', 'reddcoin', 'potcoin', 'feathercoin', 'vertcoin', 'peercoin', 'monetaryunit', 'universalcurrency');
+    $coins = array('bitcoin', 'bitcoincash', 'bitcoinsv', 'litecoin', 'dash', 'speedcoin');  // for example, accept payments in bitcoin, bitcoincash, litecoin, dash, speedcoin 
+    
+    // Create record for each your coin - https://gourl.io/editrecord/coin_boxes/0 ; and get free gourl keys
+    // It is not bitcoin wallet private keys! Place GoUrl Public/Private keys below for all coins which you accept
+    
+    $all_keys = array(  "bitcoin"  =>       array("public_key" => "-your public key for Bitcoin box-",  "private_key" => "-your private key for Bitcoin box-"),
+                    "bitcoincash"  =>   array("public_key" => "-your public key for BitcoinCash box-",  "private_key" => "-your private key for BitcoinCash box-"),
+                    "litecoin" =>       array("public_key" => "-your public key for Litecoin box-", "private_key" => "-your private key for Litecoin box-")); // etc.
+             
+    // Demo Keys; for tests (example - 5 coins)
+    $all_keys = array(  "bitcoin" => array(     "public_key" => "25654AAo79c3Bitcoin77BTCPUBqwIefT1j9fqqMwUtMI0huVL",  
+                                        "private_key" => "25654AAo79c3Bitcoin77BTCPRV0JG7w3jg0Tc5Pfi34U8o5JE"),
+                      "bitcoincash" => array("public_key" => "25656AAeOGaPBitcoincash77BCHPUBOGF20MLcgvHMoXHmMRx", 
+                                        "private_key" => "25656AAeOGaPBitcoincash77BCHPRV8quZcxPwfEc93ArGB6D"),
+                      "bitcoinsv" => array("public_key" => "36306AAQUmatBitcoinsv77BSVPUBlK6jR1TDDQUzaQV1AmWAE", 
+                                        "private_key" => "36306AAQUmatBitcoinsv77BSVPRVJQJx21y8kvd7xxEWzK3zA"),
+                      "litecoin" => array(  "public_key" => "25657AAOwwzoLitecoin77LTCPUB4PVkUmYCa2dR770wNNstdk", 
+                                        "private_key" => "25657AAOwwzoLitecoin77LTCPRV7hmp8s3ew6pwgOMgxMq81F"),
+                      "dogecoin" => array(  "public_key" => "25678AACxnGODogecoin77DOGEPUBZEaJlR9W48LUYagmT9LU8", 
+                                        "private_key" => "25678AACxnGODogecoin77DOGEPRVFvl6IDdisuWHVJLo5m4eq"),
+                      "dash" => array(      "public_key" => "25658AAo79c3Dash77DASHPUBqwIefT1j9fqqMwUtMI0huVL0J", 
+                                        "private_key" => "25658AAo79c3Dash77DASHPRVG7w3jg0Tc5Pfi34U8o5JEiTss"),
+                      "speedcoin" => array( "public_key" => "20116AA36hi8Speedcoin77SPDPUBjTMX31yIra1IBRssY7yFy", 
+                                        "private_key" => "20116AA36hi8Speedcoin77SPDPRVNOwjzYNqVn4Sn5XOwMI2c")); // Demo keys!
 
-        $options = array( 
-            "public_key"  => "",         // place your public key from gourl.io
-            "private_key" => "",         // place your private key from gourl.io
-            "webdev_key"  => "",        // optional, gourl affiliate program key
-            "orderID"     => $orderID,   // few your users can have the same orderID but combination 'orderID'+'userID' should be unique
-            "userID"      => $userID,   // optional; place your registered user id here (user1, user2, etc)
-                    // for example, on premium page you can use for all visitors: orderID="premium" and userID="" (empty) 
-                    // when userID value is empty - system will autogenerate unique identifier for every user and save it in cookies 
-            "userFormat"  => "COOKIE",   // save your user identifier userID in cookies. Available: COOKIE, SESSION, IPADDRESS, MANUAL
-            "amount"      => 0,         // amount in cryptocurrency or in USD below
-            "amountUSD"   => 2,         // price is 2 USD; it will convert to cryptocoins amount, using Live Exchange Rates
-                                        // For convert fiat currencies Euro/GBP/etc. to USD, use function convert_currency_live()
-            "period"      => "24 HOUR",  // payment valid period, after 1 day user need to pay again
-            "iframeID"    => "",         // optional; when iframeID value is empty - system will autogenerate iframe html payment box id
-            "language"    => $def_language // text on EN - english, FR - french, please contact us and we can add your language
-            );  
-
-        // Initialise Bitcoin Payment Class 
-        $box = new Cryptobox ($options);
-
-        // Display payment box with custom width = 560 px and big qr code / or successful result
-        $payment_box = $box->display_cryptobox(true, 560, 230, "border-radius:15px;border:1px solid #eee;padding:3px 6px;margin:10px;",
-                        "display:inline-block;max-width:580px;padding:15px 20px;border:1px solid #eee;margin:7px;line-height:25px;"); 
-
-        // Language selection list for payment box (html code)
-        $languages_list = display_language_box($def_language);
-
-        // Log
-        $message = "";
-        
-        // A. Process Received Payment
-        if ($box->is_paid()) 
-        {
-            $message .= "A. User will see this message during 24 hours after payment has been made!";
-            
-            $message .= "<br>".$box1->amount_paid()." ".$box1->coin_label()."  received<br>";
-            
-            // Your code here to handle a successful cryptocoin payment/captcha verification
-            // For example, give user 24 hour access to your member pages
-            // ...
-        
-            // Please use IPN (instant payment notification) function cryptobox_new_payment() for update db records, etc
-            // Function cryptobox_new_payment($paymentID = 0, $payment_details = array(), $box_status = "") called every time 
-            // when a new payment from any user is received.
-            // IPN description: https://gourl.io/api-php.html#ipn 
-        }  
-        else $message .= "The payment has not been made yet";
-
-        
-        // B. Optional - One-time Process Received Payment
-        if ($box1->is_paid() && !$box1->is_processed()) 
-        {
-            $message .= "B. User will see this message one time after payment has been made!";  
-        
-            // Your code here - user see successful payment result
-            // ...
-
-            // Also you can use $box1->is_confirmed() - return true if payment confirmed 
-            // Average transaction confirmation time - 10-20min for 6 confirmations  
-            
-            // Set Payment Status to Processed
-            $box1->set_status_processed(); 
-            
-            // Optional, cryptobox_reset() will delete cookies/sessions with userID and 
-            // new cryptobox with new payment amount will be show after page reload.
-            // Cryptobox will recognize user as a new one with new generated userID
-            // $box1->cryptobox_reset(); 
-
-
-            // ...
-            // Also you can use IPN function cryptobox_new_payment($paymentID = 0, $payment_details = array(), $box_status = "") 
-            // for send confirmation email, update database, update user membership, etc.
-            // You need to modify file - cryptobox.newpayment.php, read more - https://gourl.io/api-php.html#ipn
-            // ...
-
-        }
+    //  IMPORTANT: Add in file /lib/cryptobox.config.php your database settings and your gourl.io coin private keys (need for Instant Payment Notifications) -
+    /* if you use demo keys above, please add to /lib/cryptobox.config.php - 
+        $cryptobox_private_keys = array("25654AAo79c3Bitcoin77BTCPRV0JG7w3jg0Tc5Pfi34U8o5JE", "25678AACxnGODogecoin77DOGEPRVFvl6IDdisuWHVJLo5m4eq", 
+                    "25656AAeOGaPBitcoincash77BCHPRV8quZcxPwfEc93ArGB6D", "25657AAOwwzoLitecoin77LTCPRV7hmp8s3ew6pwgOMgxMq81F", 
+                    "25658AAo79c3Dash77DASHPRVG7w3jg0Tc5Pfi34U8o5JEiTss", "20116AA36hi8Speedcoin77SPDPRVNOwjzYNqVn4Sn5XOwMI2c",
+                    "36306AAQUmatBitcoinsv77BSVPRVJQJx21y8kvd7xxEWzK3zA");
+        Also create table "crypto_payments" in your database, sql code - https://github.com/cryptoapi/Payment-Gateway#mysql-table
+        Instruction - https://gourl.io/api-php.html         
+    */                 
+    
+    // Re-test - all gourl public/private keys
+    $def_coin = strtolower($def_coin);
+    if (!in_array($def_coin, $coins)) $coins[] = $def_coin;  
+    foreach($coins as $v)
+    {
+        if (!isset($all_keys[$v]["public_key"]) || !isset($all_keys[$v]["private_key"])) die("Please add your public/private keys for '$v' in \$all_keys variable");
+        elseif (!strpos($all_keys[$v]["public_key"], "PUB"))  die("Invalid public key for '$v' in \$all_keys variable");
+        elseif (!strpos($all_keys[$v]["private_key"], "PRV")) die("Invalid private key for '$v' in \$all_keys variable");
+        elseif (strpos(CRYPTOBOX_PRIVATE_KEYS, $all_keys[$v]["private_key"]) === false) 
+                die("Please add your private key for '$v' in variable \$cryptobox_private_keys, file /lib/cryptobox.config.php.");
     }
-    ?>
-    <!DOCTYPE html><html><head>
-    <meta http-equiv='cache-control' content='no-cache'>
-    <script src='cryptobox.min.js' type='text/javascript'></script>
-    </head><body>
+    
+    
+    // Current selected coin by user
+    $coinName = cryptobox_selcoin($coins, $def_coin);
+    
+    
+    // Current Coin public/private keys
+    $public_key  = $all_keys[$coinName]["public_key"];
+    $private_key = $all_keys[$coinName]["private_key"];
+    
+    
+    
+    /** PAYMENT BOX **/
+    $options = array(
+        "public_key"    => $public_key, // your public key from gourl.io
+        "private_key"   => $private_key,    // your private key from gourl.io
+        "webdev_key"    => "",          // optional, gourl affiliate key
+        "orderID"       => $orderID,        // order id or product name
+        "userID"            => $userID,         // unique identifier for every user
+        "userFormat"    => $userFormat,     // save userID in COOKIE, IPADDRESS, SESSION  or MANUAL
+        "amount"        => 0,           // product price in btc/bch/bsv/ltc/doge/etc OR setup price in USD below
+        "amountUSD"     => $amountUSD,  // we use product price in USD
+        "period"            => $period,         // payment valid period
+        "language"      => $def_language  // text on EN - english, FR - french, etc
+    );
+    
+    // Initialise Payment Class
+    $box = new Cryptobox ($options);
+    
+    // coin name
+    $coinName = $box->coin_name();
 
-    <div style='margin:30px 0 5px 480px'>Language: &#160; <?= $languages_list ?></div>
-    <?= $payment_box ?>
-    <?= $message ?>
+    // php code end :)
+    // ---------------------
+    
+    // NOW PLACE IN FILE "lib/cryptobox.newpayment.php", function cryptobox_new_payment(..) YOUR ACTIONS -
+    // WHEN PAYMENT RECEIVED (update database, send confirmation email, update user membership, etc)
+    // IPN function cryptobox_new_payment(..) will automatically appear for each new payment two times - payment received and payment confirmed
+    // Read more - https://gourl.io/api-php.html#ipn
+?>
+            
+            
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <title>Payment Box</title>
 
-    </body>
-    </html>
+    <!-- Bootstrap4 CSS - -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">   
+      
+    <!-- Note - If your website not use Bootstrap4 CSS as main style, please use custom css style below and delete css line above. 
+    It isolate Bootstrap CSS to a particular class 'bootstrapiso' to avoid css conflicts with your site main css style -->
+    <!-- <link rel="stylesheet" href="css/bootstrapcustom.min.css" crossorigin="anonymous"> -->
+
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" crossorigin="anonymous"></script>
+    <script src="<?php echo CRYPTOBOX_JS_FILES_PATH; ?>support.min.js" crossorigin="anonymous"></script>
+
+    <!-- CSS for Payment Box -->
+    <style>
+            html { font-size: 14px; }
+            @media (min-width: 768px) { html { font-size: 16px; } .tooltip-inner { max-width: 350px; } }
+            .mncrpt .container { max-width: 980px; }
+            .mncrpt .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+            img.radioimage-select { padding: 7px; border: solid 2px #ffffff; margin: 7px 1px; cursor: pointer; box-shadow: none; }
+            img.radioimage-select:hover { border: solid 2px #a5c1e5; }
+            img.radioimage-select.radioimage-checked { border: solid 2px #7db8d9; background-color: #f4f8fb; }
+
+
+    </style>
+  </head>
+
+  <body>
+
+  <?php
+  
+    // Text above payment box
+    $custom_text  = "";
+     
+    // Display payment box  
+    echo $box->display_cryptobox_bootstrap($coins, $def_coin, $def_language, $custom_text, 70, 200, true, "images/your_logo.png", "default", 250, "", "curl", false);
+    
+
+    // You can setup method='curl' in function above and use code below on this webpage -
+    // if successful bitcoin payment received .... allow user to access your premium data/files/products, etc.
+    // if ($box->is_paid()) { ... your code here ... }
+
+
+   ?>
+  
+  </body>
+</html>

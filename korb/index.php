@@ -4,7 +4,7 @@ include '../open.php';
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Wahrenkorb</title>
+		<title>Warenkorb</title>
 		<style type="text/css">
 			.kaufenbtn{
 				position: fixed;
@@ -26,7 +26,7 @@ include '../open.php';
 	</head>
 	<body>
 		<main class="x0x342">
-			<h1>Wahrenkorb</h1>
+			<h1>Warenkorb</h1>
 			<div class="content_r">
 <?php
 
@@ -54,6 +54,8 @@ for ($i=0; $i < count($articles); $i++) {
 
 
 	$gesammtpreis += $preis * $articles[$i][1];
+
+
 	
 
 	$imgLink = "global/data/".$link."/1.png";
@@ -90,8 +92,8 @@ if($gesammtpreis>0){
 ?>
 <form method="post" action="korb/pay.php" enctype="multipart/form-data">
 	<input style="display: none;" type="number" id="preis" name="preis" placeholder="" value="<?=$gesammtpreis?>">
-	<input style="display: none;" type="text" id="title" name="title" placeholder="" value="<?=$gesammtpreis?>">
-	<input type="submit" class="kaufenbtn" placeholder="Preis: <?php echo $gesammtpreis; ?>€ KAUFEN">
+	<input style="display: none;" type="text" id="title" name="title" placeholder="" value="">
+	<button  type="submit" onclick="kaufabschluss()" class="kaufenbtn" placeholder="">Preis: <?php echo $gesammtpreis; ?>€<br> KAUFEN</button>
 </form>
 
 <?php

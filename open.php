@@ -32,13 +32,17 @@ $editmenge = $pdo -> prepare("UPDATE post SET anzahl=? WHERE pid=?");
 $editgewicht = $pdo -> prepare("UPDATE post SET gewicht=? WHERE pid=?");
 $editeinheit = $pdo -> prepare("UPDATE post SET einheit=? WHERE pid=?");
 
-$like = $pdo -> prepare("INSERT INTO liked(pid, uid) VALUES (?,?)");
+$insertlike = $pdo -> prepare("INSERT INTO liked(pid, uid) VALUES (?,?)");
+$deletelike = $pdo -> prepare("DELETE FROM liked WHERE pid=? AND uid=?");
 
-$vote = $pdo -> prepare("INSERT INTO vote(pid, vote, uid) VALUES (?,?,?)");
+$insertvote = $pdo -> prepare("INSERT INTO vote(pid, vote, uid) VALUES (?,?,?)");
 $updatevote = $pdo -> prepare("UPDATE vote SET vote=? WHERE pid=? AND uid=?");
+$deletevote = $pdo -> prepare("DELETE FROM vote WHERE pid=? AND uid=?");
 
-$comment = $pdo -> prepare("INSERT INTO liked(pid, uid, title, description) VALUES (?,?,?,?)");
-#$additem->execute(array($_SESSION['userid'],"test2","10","test2",4,3,"Stk.","3b4f55012091385994d7ab5ced1df639"));
+$insertcomment = $pdo -> prepare("INSERT INTO comment(pid, uid, title, description) VALUES (?,?,?,?)");
+
+
+#$additem->execute(array($_SESSION['userid'],"test2","10","test0.5",4,3,"Stk.","3b4f55012091385994d7ab5ced1df639"));
 
 #VALUES (1,"test","10","test",4,3,"Stk.","26b914475cc2c0165a03264d66c0289f") ;
 

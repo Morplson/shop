@@ -19,20 +19,45 @@
 	$max = isset($_POST['max']) ? $_POST['max'] : 20;
 	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-	$sql = "SELECT * FROM post ";
-	if($last != null || $s != null){
+	if($query == "new"){
+		$sql = "SELECT * FROM post ";
+		if($last != null || $s != null){
 			$sql .= " where ";
 		}
-	if($last != null){
-		$sql .= " pid < $last ";
-	}
-	if($s != null){
 		if($last != null){
-			$sql .= " AND ";
+			$sql .= " pid < $last ";
 		}
-		$sql .= " title regexp '$s' OR description regexp '$s' ";
+		if($s != null){
+			if($last != null){
+				$sql .= " AND ";
+			}
+			$sql .= " title regexp '$s' OR description regexp '$s' ";
+		}
+	
+		$sql .= " order by pid desc limit $max ";
 	}
-	$sql .= " order by pid desc limit $max ";
+
+	if($query == "top"){
+		$sql = "SELECT * FROM post NATURAL JOIN (SELECT pid,sum(vote) AS 'score' FROM vote GROUP BY pid) as temp ";
+		if($last != null || $s != null){
+			$sql .= " where ";
+		}
+		if($last != null){
+			$sql .= " pid < $last ";
+		}
+		if($s != null){
+			if($last != null){
+				$sql .= " AND ";
+			}
+			$sql .= " title regexp '$s' OR description regexp '$s' ";
+		}
+
+		$sql .= " order by score desc limit $max ";
+	}
+
+	if($query == "featured"){
+		$sql = "SELECT * FROM post order by featured desc, pid desc limit $max ";
+	}
 
 
 	$posts = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -54,7 +79,7 @@
 
 		
 		
-		$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
+		$data = $pdo->query("SELECT sum(vote) AS 'score' FROM vote WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
 		if($data!=false){
 			$score = $data["score"];
 		}else{
@@ -85,30 +110,23 @@
 
 			$data = $pdo->query("SELECT * FROM liked WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
 
-		if($data!=false){
-			if(count($data>0)) {
+			if($data!=false){
+				#if(count($data>0)) {
 				$collikes = "#f91f1f";		
 			}else{
 				$collikes = "black";
 			}
-		}else{
-			$collikes = "black";
-		}	
-
 			
 
 		$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
 
 		if($data!=false){
-			if(count($data>0)) {
-				if($data["vote"]==-1){
-					$colvotes = "#f91f1f";
-				}elseif($data["vote"]==1){
-					$colvotes = "#5aa51d";
-				}
-			}else{
-				$colvotes = "black";
-			}
+			if($data["vote"]==-1){
+				$colvotes = "#f91f1f";
+			}elseif($data["vote"]==1){
+				$colvotes = "#5aa51d";
+			}	
+
 		}else{
 			$colvotes = "black";
 		}	
@@ -116,16 +134,10 @@
 		$data = $pdo->query("SELECT * FROM comment WHERE pid = $postID AND uid = $uid")->fetch(PDO::FETCH_ASSOC);	
 
 		if($data!=false){
-			if(count($data>0)) {
-				$colcom = "#9273d0";
-			}else{
-				$colcom = "black";
-			}
+			$colcom = "#9273d0";
 		}else{
 			$colcom = "black";
 		}
-		#echo "dsf";
-		
 
 		$imgLink = "global/data/".$link."/thumb.jpeg";
 

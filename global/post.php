@@ -6,7 +6,7 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	#error_reporting(0);
+	error_reporting(0);
 
 
 
@@ -29,9 +29,9 @@
 
 	
 	
-	$data = $pdo->query("SELECT count(*) AS 'score' FROM vote WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	$data = $pdo->query("SELECT sum(vote) AS 'score' FROM vote WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
 	if($data!=false){
-		$score = $data["score"];
+		$score = ($data["score"]!="")?$data["score"]:0;
 	}else{
 		$score = 0;
 	}
@@ -81,11 +81,8 @@
 	$data = $pdo->query("SELECT * FROM liked WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
 	if($data!=false){
-		if(count($data>0)) {
-			$collikes = "#f91f1f";		
-		}else{
-			$collikes = "black";
-		}
+		#if(count($data>0)) {
+		$collikes = "#f91f1f";		
 	}else{
 		$collikes = "black";
 	}
@@ -95,15 +92,12 @@
 	$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
 	if($data!=false){
-		if(count($data>0)) {
-			if($data["vote"]==-1){
-				$colvotes = "#f91f1f";
-			}elseif($data["vote"]==1){
-				$colvotes = "#5aa51d";
-			}
-		}else{
-			$colvotes = "black";
+		if($data["vote"]==-1){
+			$colvotes = "#f91f1f";
+		}elseif($data["vote"]==1){
+			$colvotes = "#5aa51d";
 		}
+
 	}else{
 		$colvotes = "black";
 	}
@@ -111,11 +105,7 @@
 	$data = $pdo->query("SELECT * FROM comment WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
 	if($data!=false){
-		if(count($data>0)) {
-			$colcom = "#9273d0";
-		}else{
-			$colcom = "black";
-		}
+		$colcom = "#9273d0";
 	}else{
 		$colcom = "black";
 	}
@@ -498,30 +488,28 @@
 		<?php
 			
 			if($id!=null) {
-				$lines = file_get_contents("data/comment.txt");
-				$pattern = preg_quote($id."postid|||", '/');		
 
-				$pattern = "/^.*$pattern.*\$/m";
-				if(preg_match_all($pattern, $lines, $matches)){
-					foreach ($matches[0] as $line) {	
-						$text = explode("|||", $line);
+				$comments = $pdo->query("SELECT title, description FROM comment WHERE pid = $id")->fetchAll(PDO::FETCH_ASSOC);
 
-						?>
+				foreach ($comments as $data) {	
+					
 
-						<div class="container comment">
-							<div class="values title">
-								<?php echo $text[2]; ?>
-							</div>
-							<div class="description">
-								<?php echo $text[3]; ?>
-							</div>
+					?>
+
+					<div class="container comment">
+						<div class="values title">
+							<?php echo $data['title']; ?>
 						</div>
+						<div class="description">
+							<?php echo $data['description']; ?>
+						</div>
+					</div>
 
-						<?php
-					}
+					<?php
 				}
-			}		
-		?>
+			}
+		
+	?>
 
 	</div>
 </div>
@@ -599,16 +587,21 @@
 			}
 
 			function like(id){
-				let jsong = getCookie("likes");
+
 
 				let buts = document.querySelectorAll("[id^='"+id+"likes']");
-				for (var i = buts.length - 1; i >= 0; i--) {
-					buts[i].style.color = "#f91f1f";
-				}
 
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
+				for (var i = buts.length - 1; i >= 0; i--) {
+					
+					if (buts[i].style.color == "black") {
+						buts[i].style.color = "#f91f1f";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)+1;
+					}else{
+						buts[i].style.color = "black";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)-1;
+					}
+					
+				}
 
 				fetch("like-script.php", {
 					method: "POST",
@@ -629,22 +622,31 @@
 			}
 
 			function vote(id, vote){
-				let jsong = getCookie("votes");
 
 				let buts = document.querySelectorAll("[id^='"+id+"votes']");
 				if(vote<0){
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#5aa51d";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-2;
+						}
 						buts[i].style.color = "#f91f1f";
 					}
 				}else if (vote>0) {
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#f91f1f";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+2;
+						}
 						buts[i].style.color = "#5aa51d";
 					}
 				}
-				
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id,vote]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 
@@ -657,29 +659,21 @@
 					headers:{
 						'Content-Type': 'application/json'
 					}
-				}).then(function (response) {
-					return response.text();
-				}).then(function (data) {
-					let html = data.trim();
-					document.getElementById("comment").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
+
 			}
 
 			function comment(id){
-				let jsong = getCookie("comments");
 
 				let buts = document.querySelectorAll("[id^='"+id+"comments']");
 				for (var i = buts.length - 1; i >= 0; i--) {
 					buts[i].style.color = "#9273d0";
 				}
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
+
 				document.cookie = "comments="+JSON.stringify(arr);
-				window.location.replace("post.php?id="+id+"#comment");
+				window.location.href = "#comment";
 
 
 			}

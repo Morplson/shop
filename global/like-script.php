@@ -6,7 +6,7 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	error_reporting(0);
+	#error_reporting(0);
 
 	$_POST = json_decode(file_get_contents('php://input'), true);
 
@@ -15,46 +15,14 @@
 	
 	if ($postId!=null&&$userId!=null) {
 		
+		if(!$pdo->query("SELECT * FROM liked WHERE pid = $postId AND uid = $userId")->fetch(PDO::FETCH_ASSOC)){
 
-
-		$lines = file_get_contents("../global/data/like.txt");
-		
-		$pattern = preg_quote($postId."postid|||".$userId."userid|||", '/');	
-
-		$pattern = "/^.*$pattern.*\$/m";
-
-
-
-		if(preg_match_all($pattern, $lines, $matches)){
-			$text = explode("|||", $matches[0][0]);
-
-			$out = str_replace($matches[0][0], "", $lines);
-			file_put_contents("../global/data/like.txt", $out);
-			$dex=false;
+			$insertlike->execute(array($postId, $userId));
 		}else{
-			file_put_contents("../global/data/like.txt", $postId."postid|||".$userId."userid|||".$vote.PHP_EOL,FILE_APPEND);
-			$dex=true;
-		}
-
-		$lines = file_get_contents("../global/data/data.txt");
-		
-		$pattern = preg_quote($postId."rna55df|||", '/');	
-
-		$pattern = "/^.*$pattern.*\$/m";	
-
-		if(preg_match_all($pattern, $lines, $matches)){
-
-			$text = explode("|||", $matches[0][0]);
-			if($dex){
-				$text[11] = $text[11]+1;
-			}else{
-				$text[11] = $text[11]-1;
-			}
 			
-
-			$out = str_replace($matches[0][0], implode("|||" ,$text), $lines);
-			file_put_contents("../global/data/data.txt", $out);
+			$deletelike->execute(array($postId, $userId));
 		}
+		
 	}
 ?>
 

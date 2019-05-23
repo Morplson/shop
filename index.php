@@ -315,7 +315,6 @@ include 'open.php';
 				}
 
 				document.cookie = "articles="+JSON.stringify([]);
-				alert("Kauf erfolgreich abgeschlossen!\n");
 				location.reload(); 
 
 
