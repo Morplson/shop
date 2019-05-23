@@ -4,8 +4,8 @@ USE shop;
 
 CREATE TABLE user (
   uid INT auto_increment,
-  uname VARCHAR(20),
-  email VARCHAR(100),
+  uname VARCHAR(20) UNIQUE,
+  email VARCHAR(100) UNIQUE,
   psw VARCHAR(20), -- bitte NUR hash SIMON!!!!
 
 

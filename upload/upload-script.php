@@ -20,7 +20,7 @@
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
         $userID=0;
-        if((!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
+        if((!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)&&$_SESSION['userid']==0){
             $error .= "Kein Nutzer Angemeldet<br>";
             header( "refresh:1;url=../" );
             goto end;
