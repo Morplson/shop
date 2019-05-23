@@ -22,19 +22,18 @@ if ($bname!=null) {
 	$search = $bname;
 	$line_number = false;
 
-	if ($handle = fopen("../global/data/bname.txt", "r")) {
-		$count = 0;
-		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-			$count++;
-			$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-		}
+if ($handle = fopen("../global/data/bname.txt", "r")) {
+	$count = 0;
+	while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
+		$count++;
+		$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
+	}
 		fclose($handle);
 	}
 
 } else {
 	$line_number = -1;
 }
-
 
 if($line_number!=false){
 
@@ -44,7 +43,9 @@ if($line_number!=false){
 	$_SESSION ['id'] = $count;
 	$_SESSION [ 'istAngemeldet' ] = true ;
 } else{
-
+	echo "<br>";
+	echo "<br>";
+	echo "failed";
 	$_SESSION [ 'istAngemeldet' ] = false ;
 }
 
@@ -99,7 +100,7 @@ echo $error;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
-		user-select: none;		
+		user-select: none;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -155,7 +156,7 @@ echo $error;
 		box-sizing: content-box;
 
 	}
-	
+
 	.mobilecontainer>.exput{
 		transition: background-color .6s;
 		line-height: 3rem;
@@ -253,20 +254,18 @@ echo $error;
 
 		<form action = "index.php" method = "post" >
 		<h1>Anmelden</h1>
+	  Benutzername:
 		<br>
-	<div class="description">
-		<div class="input1">
-			<input class="inputfield" type="text" type="text" name="Benutzername" placeholder="">
-			<label>Benutzername</label>
-			<span class="focus-bg"></span>
-		</div>
-
-		<div class="input1">
-			<input class="inputfield" type="password" type="text" name="Passwort" placeholder="">
-			<label>Passwort</label>
-			<span class="focus-bg"></span>
-		</div>
-	</div>
+		<input type = "text" name = "Benutzername"  />
+	  <br>
+	  Passwort:
+		<br>
+		<input type = "password" name = "Passwort"  />
+	  <br>
+		<br>
+		<br>
+		<br>
+	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
 
 	  <input type = "Submit" value = "Absenden" class="submitbutton" /> </form>
 	</form>

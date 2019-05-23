@@ -115,7 +115,7 @@ if($line_number1==false&&$line_number3==false){
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
-		user-select: none;		
+		user-select: none;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -171,7 +171,7 @@ if($line_number1==false&&$line_number3==false){
 		box-sizing: content-box;
 
 	}
-	
+
 	.mobilecontainer>.exput{
 		transition: background-color .6s;
 		line-height: 3rem;
