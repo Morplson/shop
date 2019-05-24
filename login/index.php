@@ -1,60 +1,51 @@
 <?php
 	error_log(0);
 
-include '../open.php';
+include '../open.php';																	// Eingegebenes Passwort
+
+$pdo = new PDO ( 'mysql:host=localhost;dbname=shop' , 'root' , '' );
 
 $bname = isset($_POST['Benutzername']) ? $_POST['Benutzername'] : null;																//Eingegebener Benutzername
-$bpassw = isset($_POST['Passwort']) ? $_POST['Passwort'] : null;																		// Eingegebenes Passwort
+$bpassw = isset($_POST['Passwort']) ? $_POST['Passwort'] : null;
 
+$bnright = 0;
+$beright = 0;
 
-$teile = "";																													//für die teile des namensarray
-
-$error = "";																										//errormessage
-
-$bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
-
-$gname = file ( "../global/data/bname.txt" ) ;
-
-$line_number = -1;
-$count=0;
-
-if ($bname!=null) {
-	$search = $bname;
-	$line_number = false;
-
-if ($handle = fopen("../global/data/bname.txt", "r")) {
-	$count = 0;
-	while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-		$count++;
-		$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-	}
-		fclose($handle);
-	}
-
-} else {
-	$line_number = -1;
+$sql = "SELECT uname FROM user WHERE uname = $bname" ;
+$user = $pdo -> query ( $sql );
+if($user=$bname){
+	$bnright=1;
 }
 
-if($line_number!=false){
+$sql = "SELECT uid FROM user WHERE uname = $bname" ;
+$user = $pdo -> query ( $sql );
 
-	#$hashid=$bname;
+$sql = "SELECT psw FROM user WHERE uid=$user" ;
+$user = $pdo -> query ( $sql );
+echo $user;
+if($user=$passw){
+	$beright=1;
+} else {
+	$beright=0;
+}
+
+//echo $user;
+
+if($bnright=1&&$beright=1){
+	echo "sumconfirm";
 	$_SESSION['name'] = $bname;
 	$_SESSION ['userid'] = md5($bname);
-	$_SESSION ['id'] = $count;
 	$_SESSION [ 'istAngemeldet' ] = true ;
+	echo "<br>";
+	echo "<br>";
+	echo "success";
+	echo $_SESSION [ 'istAngemeldet' ];
 } else{
 	echo "<br>";
 	echo "<br>";
 	echo "failed";
 	$_SESSION [ 'istAngemeldet' ] = false ;
 }
-
-
-echo $error;
-
-
-
-
 
 ?>
 <!DOCTYPE html>

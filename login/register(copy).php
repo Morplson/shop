@@ -3,40 +3,76 @@
 
 include '../open.php';
 
-$pdo = new PDO ( 'mysql:host=localhost;dbname=shop' , 'root' , '' );
-
 $bname = isset($_POST['rname']) ? $_POST['rname'] : null;															//Eingegebener Benutzername
 $bpassw = isset($_POST['rpasswort']) ? $_POST['rpasswort'] : null;																		// Eingegebenes Passwort
 $bemail = isset($_POST['remail']) ? $_POST['remail'] : null;
 
-$bnright = 0;
-$beright = 0;
+$teile="";																													//für die teile des namensarray
 
-$sql = "SELECT uname FROM user WHERE uname = $bname" ;
-$user = $pdo -> query ( $sql );
-if($user=true){
-	$bnright=1;
+$error = "";																										//errormessage
+
+$bnameBenutzt = 0;	 																			//Speichert ob der bname schon benutzt wurde
+$bemailBenutzt = 0;																							//Speichert ob der
+
+$i=0;
+
+$line_number1 = -1;
+
+if ($bname!=null) {
+	$search = $bname;
+	$line_number1 = false;
+
+	if ($handle = fopen("../global/data/bname.txt", "r")) {
+		$count = 0;
+		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number1) {
+			$count++;
+			$line_number1 = (strpos($line, $search) !== FALSE) ? $count : $line_number1;
+		}
+		fclose($handle);
+	}
+
+} else {
+	$line_number1 = -1;
 }
 
-//echo "";
-echo $user;
+$line_number3 = -1;
 
-$sql = "SELECT email FROM user WHERE email = $bemail" ;
-$user = $pdo -> query ( $sql );
-if($user=true){
-	$beright=1;
+if ($bemail!=null) {
+	$search = $bname;
+	$line_number3 = false;
+
+	if ($handle = fopen("../global/data/bemail.txt", "r")) {
+		$count = 0;
+		while (($line = fgets($handle, 4096)) !== FALSE and !$line_number3) {
+			$count++;
+			$line_number3 = (strpos($line, $search) !== FALSE) ? $count : $line_number3;
+		}
+		fclose($handle);
+	}
+
+} else {
+	$line_number3 = -1;
 }
 
-//echo $user;
+if($line_number1==false&&$line_number3==false){
+	file_put_contents ("../global/data/bname.txt" , PHP_EOL.$bname,  FILE_APPEND) ;
+	file_put_contents ("../global/data/bpassw.txt" , PHP_EOL.$bpassw,  FILE_APPEND) ;
+	file_put_contents ("../global/data/bemail.txt" , PHP_EOL.$bemail,  FILE_APPEND) ;
 
-if($bnright=1&&$beright=1){
-	$statement = $pdo -> prepare ( "INSERT INTO user (uname, psw, email) VALUES (?, ?, ?)" ) ;
-	$statement -> execute ( array ( $bname , $bpassw , $bemail ) ) ;
+		//$i--;
+	$_SESSION [ 'name' ] = $bname ;
+
+} else{
+
 }
 
-//echo $bnright;
-echo "";
-//echo $beright;
+
+
+
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html>

@@ -3,45 +3,65 @@
 
 include '../open.php';
 
-$pdo = new PDO ( 'mysql:host=localhost;dbname=shop' , 'root' , '' );
+$bname = isset($_POST['Benutzername']) ? $_POST['Benutzername'] : null;																//Eingegebener Benutzername
+$bpassw = isset($_POST['Passwort']) ? $_POST['Passwort'] : null;																		// Eingegebenes Passwort
 
-$bname = isset($_POST['rname']) ? $_POST['rname'] : null;															//Eingegebener Benutzername
-$bpassw = isset($_POST['rpasswort']) ? $_POST['rpasswort'] : null;																		// Eingegebenes Passwort
-$bemail = isset($_POST['remail']) ? $_POST['remail'] : null;
 
-$bnright = 0;
-$beright = 0;
+$teile = "";																													//für die teile des namensarray
 
-$sql = "SELECT uname FROM user WHERE uname = $bname" ;
-$user = $pdo -> query ( $sql );
-if($user=true){
-	$bnright=1;
+$error = "";																										//errormessage
+
+$bnameBenutzt = 0;																							//Speichert ob der bname schon benutzt wurde
+
+$gname = file ( "../global/data/bname.txt" ) ;
+
+$line_number = -1;
+$count=0;
+
+if ($bname!=null) {
+	$search = $bname;
+	$line_number = false;
+
+if ($handle = fopen("../global/data/bname.txt", "r")) {
+	$count = 0;
+	while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
+		$count++;
+		$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
+	}
+		fclose($handle);
+	}
+
+} else {
+	$line_number = -1;
 }
 
-//echo "";
-echo $user;
+if($line_number!=false){
 
-$sql = "SELECT email FROM user WHERE email = $bemail" ;
-$user = $pdo -> query ( $sql );
-if($user=true){
-	$beright=1;
+	#$hashid=$bname;
+	$_SESSION['name'] = $bname;
+	$_SESSION ['userid'] = md5($bname);
+	$_SESSION ['id'] = $count;
+	$_SESSION [ 'istAngemeldet' ] = true ;
+} else{
+	echo "<br>";
+	echo "<br>";
+	echo "failed";
+	$_SESSION [ 'istAngemeldet' ] = false ;
 }
 
-//echo $user;
 
-if($bnright=1&&$beright=1){
-	$statement = $pdo -> prepare ( "INSERT INTO user (uname, psw, email) VALUES (?, ?, ?)" ) ;
-	$statement -> execute ( array ( $bname , $bpassw , $bemail ) ) ;
-}
+echo $error;
 
-//echo $bnright;
-echo "";
-//echo $beright;
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
+		<link rel="stylesheet" type="text/css" href="../css/main.css">
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width">
@@ -59,6 +79,7 @@ echo "";
 			document.cookie = "likes="+JSON.stringify([]);
 			document.cookie = "comments="+JSON.stringify([]);
 		}
+
 
 
 	</script>
@@ -157,7 +178,7 @@ echo "";
 		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
 
 		<a href="logout.php"><div class="desktop toprightli">Logout</div></a>
-		<a href="index.php"><div class="desktop toprightli">Login</div></a>
+		<a href="register.php"><div class="desktop toprightli">Register</div></a>
 		<div class="desktop toprightli">
 		</div>
 
@@ -225,35 +246,31 @@ echo "";
 
 	</script>
 
+	<main id="content" class="content">
 
-	<br>
+  <div id="content" class="contentv2">
 
-		<form action = "register.php" method = "post" >
-    <h1>Regristrieren</h1>
-    	<div class="description">
-    	<div class="input1">
-			<input class="inputfield" type="text" name="rname" placeholder="">
-			<label>Benutzername</label>
-			<span class="focus-bg"></span>
-		</div>
+		<br>
 
-    	<div class="input1">
-			<input class="inputfield"  type="password" name="rpasswort" placeholder="">
-			<label>Passwort</label>
-			<span class="focus-bg"></span>
-		</div>
+		<form action = "index.php" method = "post" >
+		<h1>Anmelden</h1>
+	  Benutzername:
+		<br>
+		<input type = "text" name = "Benutzername"  />
+	  <br>
+	  Passwort:
+		<br>
+		<input type = "password" name = "Passwort"  />
+	  <br>
+		<br>
+		<br>
+		<br>
+	  <input type = "Submit" value = "Absenden" class="bbutton" /> </form>
 
-    	<div class="input1">
-			<input class="inputfield"  type="email" name="remail" placeholder="">
-			<label>E-mail</label>
-			<span class="focus-bg"></span>
-		</div>
-	</div>
-    <br>
+	  <input type = "Submit" value = "Absenden" class="submitbutton" /> </form>
+	</form>
 
-    <input type="submit" value="Submit" class="submitbutton">
-		</form>
-
+  </div>
 </main>
 
   </body>
