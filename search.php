@@ -32,22 +32,32 @@ include 'open.php';
 <body>
 	<?php
 		$s = isset($_GET['s']) ? $_GET['s'] : null;
-		$q = isset($_GET['q']) ? $_GET['q'] : null;
+		$q = "new";
+		if(isset($_GET['q'])){
+			switch ($_GET['q']) {
+				case 'top':
+					$q = "top";
+					break;
+
+				case 'featured':
+					$q = "featured";
+					break;
+				
+				case 'new': default:
+					$q = "new";
+					break;
+			}
+		}
 		include "menu/top-menu.php";
 	?>
 
 	<main id="content" class="content flex-container">
 		<div id="main" class="content_r">
-			<?php
-				if($q != null){
-					echo "ACTUNG: Querys werden erst beim DB-Store unterstützt!";
-				}
-			?>
 		</div>
 		<script type="text/javascript">
 
 			document.addEventListener('DOMContentLoaded', function(){
-				request("main",40,null,"new","<?php echo $s ?>")
+				request("main",40,null,"<?php echo $q ?>","<?php echo $s ?>")
 			});
 
 

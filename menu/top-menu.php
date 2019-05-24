@@ -89,8 +89,8 @@
 	<div class="header">
 		<a href="../shop/"><div class="label topleftli">Shop.com</div></a>
 		<a><div id="mobilemenu" class="mobile topleftli"><i class="fas fa-bars"></i></div></a>
-		<!--a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
-		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a-->
+		<a href="../shop/search.php?q=top"><div class="desktop topleftli">Beliebt</div></a>
+		<a href="../shop/search.php?q=new"><div class="desktop topleftli">Neu</div></a>
 
 		<div class="desktop" style="float: right; line-height: 3rem;">
 			<script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Us', '#9046b8', 'F2F1TG5Q');kofiwidget2.draw();</script>

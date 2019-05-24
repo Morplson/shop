@@ -18,7 +18,6 @@
 
 	#error_log(0);
 
-$_SESSION['userid'] = 1;
 
 $pdo = new PDO('mysql:host=localhost;dbname=shop','shop','shop');
 $additem = $pdo -> prepare( "INSERT INTO post(uid, title, preis, description, gewicht, anzahl, einheit, imgsrc)

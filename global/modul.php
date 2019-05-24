@@ -81,7 +81,7 @@
 		
 		$data = $pdo->query("SELECT sum(vote) AS 'score' FROM vote WHERE pid = $postID")->fetch(PDO::FETCH_ASSOC);
 		if($data!=false){
-			$score = $data["score"];
+				$score = ($data["score"]!="")?$data["score"]:0;
 		}else{
 			$score = 0;
 		}	

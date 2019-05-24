@@ -6,7 +6,7 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	error_reporting(0);
+	#error_reporting(0);
 
 
 
