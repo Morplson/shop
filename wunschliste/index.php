@@ -4,7 +4,7 @@ include '../open.php';
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Wahrenkorb</title>
+		<title>Wunschliste</title>
 		<style type="text/css">
 			.kaufenbtn{
 				position: fixed;
@@ -25,6 +25,8 @@ include '../open.php';
 		</style>
 	</head>
 	<body>
+		<main class="x0x342">
+			<h1>Wunschliste</h1>
 			<div class="content_r">
 <?php
 
@@ -36,78 +38,39 @@ $articles = json_decode($_COOKIE["likes"]);
 $gesammtpreis = 0;
 for ($i=0; $i < count($articles); $i++) { 
 
-	if (isset($articles[$i])) {
-		$search = $articles[$i][0]."rna55df|||";
-		$line_number = false;
+	$id = $articles[$i][0];
 
-		if ($handle = fopen("../global/data/data.txt", "r")) {
-			$count = 0;
-			while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-				$count++;
-				$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-			}
-			fclose($handle);
-		}
-		
-	} else {
-		$line_number = 0;
-	}
-	
-	$export = '';
-	$lines = file("../global/data/data.txt");
+	$sql = "SELECT * FROM post WHERE pid=$id";
+	$data = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 
-		
-	$data = explode("|||",$lines[$line_number-1]);
+	$link = $data["imgsrc"];
+	$anzahl = $data["anzahl"];
+	$title = $data["title"];
+	$preis = $data["preis"];
+	$description = $data["description"];
+	$einheit = $data["einheit"];
+	$gewicht = $data["gewicht"];
+	$userID = $data["uid"];
 	
 
-
-	$pID = explode("rna55df",$data[0])[0];
-	$link = $data[2];
-	$anzahl = $articles[$i][1];
-	$title = $data[4];
-	$gesammtpreis += $data[5] * $articles[$i][0];
-	$description = $data[6];
-	$einheit = $data[7];
-	$gewicht = $data[8];
-	$userID = $data[9];
-	$score = $data[10];
-	$likes = $data[11];
-	$comments = $data[12];
+	$imgLink = "global/data/".$link."/1.png";
 	
-
-	$imgLink = "global/data/".md5($link)."/1.png";
 	
 
 ?>
 
-<div class="container" id="<?php echo $pID; ?>">
-
-	<div class="values scores">
-			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
-				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
-				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
-			</div>
-			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
-				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
-				<span class="score" title="Score"><?php echo $score; ?></span>
-				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
-			</div>
-			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
-				<i class="fa fa-comments"></i>
-				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
-			</div>
-	</div>
+<div class="container" id="wunsch<?php echo $id; ?>">
 
 	<div class="values title">
 		<?php echo $title ?>
 	</div>
-	<a class="picture" href="global/post.php?id=<?php echo $pID; ?>">
+	<a class="picture" href="global/post.php?id=<?php echo $id; ?>">
 		<picture class="picture" style="background-image: url('<?php echo $imgLink; ?>');">
 		</picture>
 	</a>
 	<div class="values gets">
 		<div class="preis">
-			Preis: <?php echo $data[5] * $articles[$i][0]; ?>€
+			Preis: <?php echo (float)$preis; ?>€
 		</div>
 		<div class="anzahl">
 			<?php echo $anzahl." ".$einheit ?>
@@ -118,12 +81,13 @@ for ($i=0; $i < count($articles); $i++) {
 	</div>
 
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="wunsch<?php echo $id; ?>button" onClick="buy('<?php echo $id; ?>')">Kaufen</button>
+		<input class="num" id="wunsch<?php echo $id; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 </div>
 <?php
 }
 ?>
+	</main>
 </body>
 </html>

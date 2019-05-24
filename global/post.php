@@ -6,139 +6,113 @@
 	 * Laedt Daten(posts) aus datenbank
 	 */
 
-	#error_reporting(0);
+	error_reporting(0);
 
 
 
 
 	$id = isset($_GET['id']) ? $_GET['id'] : null;
+	$uid = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-	if ($id!=null) {
-		$search = $id."rna55df|||";
-		$line_number = false;
+	$sql = "SELECT * FROM post WHERE pid=$id";
+	$data = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
 
-		if ($handle = fopen("data/data.txt", "r")) {
-			$count = 0;
-			while (($line = fgets($handle, 4096)) !== FALSE and !$line_number) {
-				$count++;
-				$line_number = (strpos($line, $search) !== FALSE) ? $count : $line_number;
-			}
-			fclose($handle);
-		}
-		
-	} else {
-		$line_number = 0;
+	$link = $data["imgsrc"];
+	$anzahl = $data["anzahl"];
+	$title = $data["title"];
+	$preis = $data["preis"];
+	$description = $data["description"];
+	$einheit = $data["einheit"];
+	$gewicht = $data["gewicht"];
+	$userID = $data["uid"];
+
+
+	
+	
+	$data = $pdo->query("SELECT sum(vote) AS 'score' FROM vote WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$score = ($data["score"]!="")?$data["score"]:0;
+	}else{
+		$score = 0;
 	}
-	
-	$export = '';
-	$lines = file("data/data.txt");
-	
-	$data = explode("|||",$lines[$line_number-1]);
-	
 
-	$pID = explode("rna55df",$data[0])[0];
-	$link = $data[2];
-	$anzahl = $data[3];
-	$title = $data[4];
-	$preis = $data[5];
-	$description = $data[6];
-	$einheit = $data[7];
-	$gewicht = $data[8];
-	$userID = $data[9];
-	$score = $data[10];
-	$likes = $data[11];
-	$comments = $data[12];
+	$data = $pdo->query("SELECT count(*) AS 'liked' FROM liked WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$likes = $data["liked"];
+	}else{
+		$likes = 0;
+	}
+
+	$data = $pdo->query("SELECT count(*) AS 'comment' FROM comment WHERE pid = $id")->fetch(PDO::FETCH_ASSOC);
+	if($data!=false){
+		$comments = $data["comment"];
+	}else{
+		$comments = 0;
+	}
 
 	$images = array();
-	if(is_dir("data/".md5($link))){
+	if(is_dir("data/".$link)){
 
-		foreach (glob("data/".md5($link)."/*.png") as $file) {
+		foreach (glob("data/".$link."/*.png") as $file) {
 			$images[] = $file;
 		}
 	}
 
 
-	if($_SERVER['REQUEST_METHOD'] === 'POST'){
+	if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['userid'] == $userID){
 		if(isset($_POST['loeschen'])&&$_POST['loeschen']=='loeschen'){
-			echo "l";
+			$deleteitem -> execute(array($id));
 
-			$out = implode($lines);
-			$out = str_replace($lines[$line_number-1], '', $out);
-			file_put_contents("data/data.txt", $out);
-
-			//header("Location:../");
+			header("Location:../");
 		}elseif (isset($_POST['bearbeiten'])&&$_POST['bearbeiten']=='bearbeiten') {
 
-			$lines = file_get_contents("../global/data/data.txt");
-			
-			$pattern = preg_quote($id."rna55df|||", '/');		
+			var_dump($_POST);
 
-			$pattern = "/^.*$pattern.*\$/m";	
-
-			if(preg_match_all($pattern, $lines, $matches)){
-				$text = explode("|||", $matches[0][0]);
-				$text[3] = $_POST['anzahl'];
-				$text[4] = $_POST['title'];
-				$text[5] = $_POST['preis'];
-				$text[6] = $_POST['description'];
-				$text[7] = $_POST['einheit'];
-				
-				$out = str_replace($matches[0][0], implode("|||" ,$text), $lines);
-				file_put_contents("../global/data/data.txt", $out);
-
-			}
+			$editname -> execute(array($_POST['title'], $id));
+			$editkosten -> execute(array($_POST['preis'], $id));
+			$editbeschreibung -> execute(array($_POST['description'], $id));
+			$editmenge -> execute(array($_POST['anzahl'], $id));
+			$editeinheit -> execute(array($_POST['einheit'], $id));
 
 			header("Refresh:0");
 		}
 	}
 	
+	$data = $pdo->query("SELECT * FROM liked WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
-
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$collikes = "#f91f1f";
-		}else{
-			$collikes = "black";
-		}
+	if($data!=false){
+		#if(count($data>0)) {
+		$collikes = "#f91f1f";		
+	}else{
+		$collikes = "black";
 	}
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/vote.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
+	
 
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$like = explode("|||", $matches[0][0])[2];
-			if($like==-1){
-				$colvotes = "#f91f1f";
-			}elseif($like==1){
-				$colvotes = "#5aa51d";
-			}else{
-				$colvotes = "black";
-			}
-		}else{
-			$colvotes = "black";
+	$data = $pdo->query("SELECT vote AS 'vote' FROM vote WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
+
+	if($data!=false){
+		if($data["vote"]==-1){
+			$colvotes = "#f91f1f";
+		}elseif($data["vote"]==1){
+			$colvotes = "#5aa51d";
 		}
+
+	}else{
+		$colvotes = "black";
 	}
 
-	if($pID!=null&&isset($_SESSION['userid'])) {
-		$linesx = file_get_contents("data/like.txt");
-		$pattern = preg_quote($pID."postid|||".$_SESSION['userid']."userid|||", '/');
+	$data = $pdo->query("SELECT * FROM comment WHERE pid = $id AND uid = $uid")->fetch(PDO::FETCH_ASSOC);
 
-		$pattern = "/^.*$pattern.*\$/m";
-		if(preg_match_all($pattern, $linesx, $matches)){
-			$colcom = "#9273d0";
-		}else{
-			$colcom = "black";
-		}
+	if($data!=false){
+		$colcom = "#9273d0";
+	}else{
+		$colcom = "black";
 	}
 	
 
 
-
+	
 ?>
 <!DOCTYPE html>
 <html>
@@ -336,20 +310,20 @@
 	</head>
 	<body>
 
-	<div class="container" id="<?php echo $pID; ?>">
+	<div class="container" id="<?php echo $id; ?>">
 		<div class="values scores">
-			<div style="color: <?php echo $collikes; ?>" id="<?php echo $pID; ?>likes" class="like" onClick="like('<?php echo $pID; ?>')">
+			<div style="color: <?php echo $collikes; ?>" id="<?php echo $id; ?>likes" class="like" onClick="like('<?php echo $id; ?>')">
 				<span class="fave-span" title="fave"><i class="fa fa-heart"></i></span>
 				<span class="favourites" title="Favourites"><?php echo $likes; ?></span>
 			</div>
-			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $pID; ?>votes" class="vote">
-				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $pID; ?>',1)"></i>
+			<div style="color: <?php echo $colvotes; ?>" id="<?php echo $id; ?>votes" class="vote">
+				<i class="upvote fa fa-arrow-up" title="Upvote" onClick="vote('<?php echo $id; ?>',1)"></i>
 				<span class="score" title="Score"><?php echo $score; ?></span>
-				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $pID; ?>',-1)"></i>
+				<i class="downvote fa fa-arrow-down" title="Downvote" onClick="vote('<?php echo $id; ?>',-1)"></i>
 			</div>
-			<div style="" id="<?php echo $pID; ?>comments" class="comment" onClick="comment('<?php echo $pID; ?>')">
+			<div style="" id="<?php echo $id; ?>comments" class="comment" onClick="comment('<?php echo $id; ?>')">
 				<i class="fa fa-comments"></i>
-				<span class="comments_count" data-image-id="<?php echo $pID; ?>"><?php echo $comments; ?></span>
+				<span class="comments_count" data-image-id="<?php echo $id; ?>"><?php echo $comments; ?></span>
 			</div>
 		</div>
 
@@ -357,7 +331,7 @@
 
 
 <?php
-	if($_SESSION['userid']."benutzer"==$data[1]):
+	if($_SESSION['userid']==$userID):
 ?>
 
 <form  method="post"  enctype="multipart/form-data" action="post.php?id=<?php echo $id; ?>">
@@ -389,8 +363,8 @@
 		</div>
 
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="<?php echo $id; ?>button" onClick="buy('<?php echo $id; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $id; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 		
 		<div class="description">
@@ -470,8 +444,8 @@
 		<?php echo $description; ?>
 	</div>
 	<div class="values buy">
-		<button class="btn" id="<?php echo $pID; ?>button" onClick="buy('<?php echo $pID; ?>')">Kaufen</button>
-		<input class="num" id="<?php echo $pID; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
+		<button class="btn" id="<?php echo $id; ?>button" onClick="buy('<?php echo $id; ?>')">Kaufen</button>
+		<input class="num" id="<?php echo $id; ?>anzahl" type="number" name="anzahl" min="1" max="<?php echo $anzahl; ?>" value="1">
 	</div>
 </div>
 
@@ -506,7 +480,7 @@
 					<span class="focus-bg"></span>
 				</div>
 				
-				<div class="submitbutton" onclick="post(<?php echo $pID; ?>)">Post</div>
+				<div class="submitbutton" onclick="post(<?php echo $id; ?>)">Post</div>
 			</div>
 			
 		</div>
@@ -514,30 +488,28 @@
 		<?php
 			
 			if($id!=null) {
-				$lines = file_get_contents("data/comment.txt");
-				$pattern = preg_quote($id."postid|||", '/');		
 
-				$pattern = "/^.*$pattern.*\$/m";
-				if(preg_match_all($pattern, $lines, $matches)){
-					foreach ($matches[0] as $line) {	
-						$text = explode("|||", $line);
+				$comments = $pdo->query("SELECT title, description FROM comment WHERE pid = $id")->fetchAll(PDO::FETCH_ASSOC);
 
-						?>
+				foreach ($comments as $data) {	
+					
 
-						<div class="container comment">
-							<div class="values title">
-								<?php echo $text[2]; ?>
-							</div>
-							<div class="description">
-								<?php echo $text[3]; ?>
-							</div>
+					?>
+
+					<div class="container comment">
+						<div class="values title">
+							<?php echo $data['title']; ?>
 						</div>
+						<div class="description">
+							<?php echo $data['description']; ?>
+						</div>
+					</div>
 
-						<?php
-					}
+					<?php
 				}
-			}		
-		?>
+			}
+		
+	?>
 
 	</div>
 </div>
@@ -615,16 +587,21 @@
 			}
 
 			function like(id){
-				let jsong = getCookie("likes");
+
 
 				let buts = document.querySelectorAll("[id^='"+id+"likes']");
-				for (var i = buts.length - 1; i >= 0; i--) {
-					buts[i].style.color = "#f91f1f";
-				}
 
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
+				for (var i = buts.length - 1; i >= 0; i--) {
+					
+					if (buts[i].style.color == "black") {
+						buts[i].style.color = "#f91f1f";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)+1;
+					}else{
+						buts[i].style.color = "black";
+						buts[i].querySelector(".favourites").innerHTML = Number(buts[i].querySelector(".favourites").innerHTML)-1;
+					}
+					
+				}
 
 				fetch("like-script.php", {
 					method: "POST",
@@ -645,22 +622,31 @@
 			}
 
 			function vote(id, vote){
-				let jsong = getCookie("votes");
 
 				let buts = document.querySelectorAll("[id^='"+id+"votes']");
 				if(vote<0){
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#5aa51d";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)-2;
+						}
 						buts[i].style.color = "#f91f1f";
 					}
 				}else if (vote>0) {
 					for (var i = buts.length - 1; i >= 0; i--) {
+						let a = document.createElement('div');
+						a.style.color =  "#f91f1f";
+						if (buts[i].style.color == "black") {
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+1;
+						}else if(buts[i].style.color == a.style.color){
+							buts[i].querySelector(".score").innerHTML = Number(buts[i].querySelector(".score").innerHTML)+2;
+						}
 						buts[i].style.color = "#5aa51d";
 					}
 				}
-				
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id,vote]);
 				
 				document.cookie = "votes="+JSON.stringify(arr);
 
@@ -673,29 +659,21 @@
 					headers:{
 						'Content-Type': 'application/json'
 					}
-				}).then(function (response) {
-					return response.text();
-				}).then(function (data) {
-					let html = data.trim();
-					document.getElementById("comment").innerHTML += html.trim();
 				}).catch(function (error) {
 					console.log('Request failed', error);
 				});
+
 			}
 
 			function comment(id){
-				let jsong = getCookie("comments");
 
 				let buts = document.querySelectorAll("[id^='"+id+"comments']");
 				for (var i = buts.length - 1; i >= 0; i--) {
 					buts[i].style.color = "#9273d0";
 				}
-				
-				let arr = JSON.parse(jsong);
-				arr.push([id]);
-				
+
 				document.cookie = "comments="+JSON.stringify(arr);
-				window.location.replace("post.php?id="+id+"#comment");
+				window.location.href = "#comment";
 
 
 			}

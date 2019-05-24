@@ -1,11 +1,11 @@
-48rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-08T16:13:38.000+02:005cab571292d4b|||996|||Cooles spiel|||59.99|||Captain Todd Skyrim Tracker ist das berühmte Puzzlespiel aus dem Hause BeFaster ;)|||todd|||0.05|||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
-47rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||8|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||1|||1|||0
-46rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
+48rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-08T16:13:38.000+02:005cab571292d4b|||994|||Cooles spiel|||59.99|||Captain Todd Skyrim Tracker ist das berühmte Puzzlespiel aus dem Hause BeFaster ;)|||todd|||0.05|||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
+47rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||7|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||1|||1|||0
+46rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||1|||0
 45rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
 44rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
 43rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
 42rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
-41rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
+41rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||6|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||-1|||0|||0
 40rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
 39rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
 38rna55df|||d41d8cd98f00b204e9800998ecf8427ebenutzer|||2019-04-11T08:51:20.000+02:005caee3e84b57f|||9|||cat|||9|||cat|||cat|||9|||d41d8cd98f00b204e9800998ecf8427e|||0|||0|||0
@@ -43,8 +43,8 @@
 07rna55df|||0cc175b9c0f1b6a831c399e269772661benutzer|||2019-04-07T18:12:54.000+02:005caa2186b03e8|||1|||cs|||3|||Xenon is bad|||l|||2|||0cc175b9c0f1b6a831c399e269772661|||0|||0|||0
 08rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T18:11:37.000+02:005caa21393b3d2|||2|||h|||2|||d|||d||||||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
 06rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T11:31:23.000+02:005ca9c36bce470|||1|||Zombie girl|||999|||Cute... and dead!|||Zombie girl||||||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
-05rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T00:35:24.000+02:005ca929acbedd0|||99999|||marx becher|||0|||delicious!|||Becher||||||ac5c74b64b4b8352ef2f181affb5ac2a|||-1|||1|||0
-04rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T00:29:16.000+02:005ca9283ce289d|||12|||Error|||200|||It was a mistake...|||€|||0|||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
+05rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T00:35:24.000+02:005ca929acbedd0|||99998|||marx becher|||0|||delicious!|||Becher||||||ac5c74b64b4b8352ef2f181affb5ac2a|||-1|||1|||0
+04rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T00:29:16.000+02:005ca9283ce289d|||11|||Error|||200|||It was a mistake...|||€|||0|||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
 03rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-07T00:26:28.000+02:005ca9279503901|||1|||Greg|||0.01|||1 Greg|||Greg|||60|||ac5c74b64b4b8352ef2f181affb5ac2a|||0|||0|||0
 02rna55df|||ac5c74b64b4b8352ef2f181affb5ac2abenutzer|||2019-04-05T11:46:13.000+02:005ca723e55be6a|||41|||Sad cats b|||50|||Some sad cats )-;|||Katzen|||4|||ac5c74b64b4b8352ef2f181affb5ac2a|||2|||0|||0
 01rna55df|||0cc175b9c0f1b6a831c399e269772661benutzer|||2019-04-05T11:35:04.000+02:005ca7214838ee3|||27|||Sad cats|||100|||3 sad cats. Very sad cats, who just wanna be cuddled.|||Katzen|||5|||0cc175b9c0f1b6a831c399e269772661|||0|||0|||0

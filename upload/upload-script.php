@@ -1,7 +1,7 @@
 <?php
     include '../open.php';
 
-    error_log(0);
+    #error_log(0);
 
     $title = isset($_POST['title']) ? htmlspecialchars($_POST['title'], ENT_QUOTES, "UTF-8") : null;
     $description = isset($_POST['description']) ? htmlspecialchars($_POST['description'], ENT_QUOTES, "UTF-8") : null;
@@ -20,7 +20,7 @@
         $anon = isset($_POST['anon']) ? $_POST['anon'] : null;
 
         $userID=0;
-        if((!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)){
+        if((!isset($_SESSION['istAngemeldet'])||$_SESSION['istAngemeldet']==false)&&$_SESSION['userid']==0){
             $error .= "Kein Nutzer Angemeldet<br>";
             header( "refresh:1;url=../" );
             goto end;
@@ -72,19 +72,9 @@
             }
 
 
+            #uid, title, preis, description, gewicht, anzahl, einheit, imgsrc
+            $additem -> execute(array($userID, $produkt->getName(), $produkt->getPreis(), $produkt->getBezeichnung(), $produkt->getGewicht(),$produkt->getAnzahl(),$produkt->getEinheit(),md5($produkt->getSerialnumber())));
 
-            $lines = file("../global/data/data.txt");
-            if(explode("|||",$lines[0])[0]){
-                $id = explode("rna55df|||",$lines[0])[0]+1;
-            }else{
-                $id = 1;
-            }
-
-            $data =  $id."rna55df|||".$userID."benutzer|||".$produkt->getSerialnumber()."|||".$produkt->getAnzahl()."|||".$produkt->getName()."|||".$produkt->getPreis()."|||".$produkt->getBezeichnung()."|||".$produkt->getEinheit()."|||".$produkt->getGewicht()."|||".$produkt->getUID()."|||".$produkt->getScore()."|||".$produkt->getLikes()."|||".$produkt->getComments().PHP_EOL;
-
-            $fileContents = file_get_contents("../global/data/data.txt");
-
-            file_put_contents("../global/data/data.txt", $data . $fileContents);
         }
 
 

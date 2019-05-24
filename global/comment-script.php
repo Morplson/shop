@@ -5,7 +5,7 @@
 	 * VERSION: 23_01_2019
 	 * Laedt Daten(posts) aus datenbank
 	 */
-	error_reporting(0);
+	#error_reporting(0);
 
 	
 	$_POST = json_decode(file_get_contents('php://input'), true);
@@ -18,7 +18,7 @@
 	$text = isset($_POST['text']) ? $_POST['text'] : null;
 	
 	if ($postId!=null&&$userId!=null&&$title!=null&&$text!=null) {
-		file_put_contents("../global/data/comment.txt", $postId."postid|||".$userId."userid|||".$title."|||".$text.PHP_EOL,FILE_APPEND);
+		$insertcomment->execute(array($postId, $userId, $title, $text));
 	}
 ?>
 
